@@ -1,0 +1,16 @@
+{
+  "sentence_ref": "MAT 1:2!1-1:6!7",
+  "ordering_counterexample": {
+    "first_tree_item": {"ref":"MAT 1:2!6","text":"δὲ","Start":"4"},
+    "later_tree_item": {"ref":"MAT 1:2!5","text":"Ἰσαὰκ","Start":"5"}
+  },
+  "discontinuous_membership": {
+    "scripture_coordinate": "MAT 1:2",
+    "nodeId":"400010020050040",
+    "Rule":"S-V-O",
+    "Start":"5",
+    "End":"8",
+    "scripture_token_members":[5,7,8,9],
+    "canonical_envelope_non_member":6
+  }
+}

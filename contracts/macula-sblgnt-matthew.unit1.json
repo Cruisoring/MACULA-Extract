@@ -1,0 +1,61 @@
+{
+  "contract_version": 1,
+  "source_family": "MACULA Greek",
+  "edition": "SBLGNT",
+  "source_format": "nodes",
+  "authorized_book": "Matthew",
+  "upstream_repository": "Clear-Bible/macula-greek",
+  "upstream_local_checkout": "C:\\Works\\macula-greek",
+  "revision": "8423afe47b9e8f24b7772e808af45c7159a6fe7e",
+  "allowlist": [
+    {
+      "relative_path": "SBLGNT/nodes/01-matthew.xml",
+      "sha256": "FE1A8FED24DEC268A0D04160EC15BABDBE90105FFFDB915FD041B572C1FC40F4"
+    }
+  ],
+  "network_fetch": false,
+  "implicit_xinclude": false,
+  "directory_wildcard_expansion": false,
+  "fixtures": {
+    "primary": "fixtures/matthew-1-1.expected.json",
+    "boundary": "fixtures/matthew-1-2-boundary.expected.json"
+  },
+  "field_identity": {
+    "scripture_and_referent": ["ref", "Ref"],
+    "identifiers": ["Id", "xml:id", "nodeId", "morphId"],
+    "morphology_tags": ["FunctionalTag", "FormalTag"],
+    "xml_id_expanded_name": "{http://www.w3.org/XML/1998/namespace}id"
+  },
+  "ordering_concepts": [
+    "source_child_sibling_order",
+    "tree_leaf_traversal_order",
+    "source_Start",
+    "source_End",
+    "scripture_coordinate",
+    "canonical_scripture_order",
+    "exact_node_token_membership"
+  ],
+  "fidelity_invariants": {
+    "F-01": "Raw source is source authority.",
+    "F-02": "Typed/normalized fields are deterministic mirrors and must not overwrite raw source.",
+    "F-03": "Missing and present-empty must remain distinguishable.",
+    "F-04": "XML attribute identity preserves namespace, name, and case.",
+    "F-05": "Greek surface text must not undergo destructive normalization.",
+    "F-06": "Lemma must not replace token occurrence.",
+    "F-07": "Exact canonical membership comes from tree ancestry, not Start/End or an envelope.",
+    "F-08": "Upstream identifiers require source, edition, and version scope.",
+    "F-09": "Unknown/unresolved information is retained or explicitly diagnosed, never silently discarded.",
+    "F-10": "MACULA annotations are not automatically BRW evaluated interpretations."
+  },
+  "prohibited_semantic_mappings": [
+    ["S", "Actor"],
+    ["V", "Action"],
+    ["V", "Event"],
+    ["O", "Patient"],
+    ["P", "Identity"],
+    ["P", "Attribute"],
+    ["A0", "Actor"],
+    ["A1", "Patient"],
+    ["A2", "Recipient"]
+  ]
+}
