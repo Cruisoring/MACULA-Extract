@@ -7,13 +7,15 @@
 Authorized phase scope: SBLGNT Matthew source-store vertical slice.
 
 ### Unit 1 — Source Contract & Fixture Freeze
-**Status:** IMPLEMENTED
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED
 
 Unit 1 is limited to source contract, source verification, frozen fixtures, and associated tests. It does not authorize SQLite schema/importer/exporter or semantic projection.
 
+Independent acceptance audit record: [docs/audits/UNIT-1-SOURCE-CONTRACT-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/UNIT-1-SOURCE-CONTRACT-INDEPENDENT-ACCEPTANCE-AUDIT.md) — Decision: ACCEPT. This acceptance does not authorize Unit 2, which remains NOT STARTED / NOT YET IMPLEMENTATION-AUTHORIZED.
+
 Current completed scope: source contract + fail-closed source verification + frozen fixtures + fidelity constraints + Unit 1 tests only.
 
-The Phase remains **AUTHORIZED**, not COMPLETE or CLOSED. Unit 1 implementation does not establish independent acceptance or authorize Unit 2.
+The Phase remains **AUTHORIZED**, not COMPLETE or CLOSED. Unit 1's independent acceptance (see audit record above) does not authorize Unit 2.
 
 ## Unit 1 execution evidence
 
