@@ -11,11 +11,29 @@ Authorized phase scope: SBLGNT Matthew source-store vertical slice.
 
 Unit 1 is limited to source contract, source verification, frozen fixtures, and associated tests. It does not authorize SQLite schema/importer/exporter or semantic projection.
 
-Independent acceptance audit record: [docs/audits/UNIT-1-SOURCE-CONTRACT-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/UNIT-1-SOURCE-CONTRACT-INDEPENDENT-ACCEPTANCE-AUDIT.md) — Decision: ACCEPT. This acceptance does not authorize Unit 2, which remains NOT STARTED / NOT YET IMPLEMENTATION-AUTHORIZED.
+Independent acceptance audit record: [docs/audits/UNIT-1-SOURCE-CONTRACT-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/UNIT-1-SOURCE-CONTRACT-INDEPENDENT-ACCEPTANCE-AUDIT.md) — Decision: ACCEPT. This acceptance itself did not authorize Unit 2. The user subsequently issued a separate formal Unit 2 implementation authorization.
 
-Current completed scope: source contract + fail-closed source verification + frozen fixtures + fidelity constraints + Unit 1 tests only.
+Unit 1 completed scope: source contract + fail-closed source verification + frozen fixtures + fidelity constraints + Unit 1 tests only.
 
-The Phase remains **AUTHORIZED**, not COMPLETE or CLOSED. Unit 1's independent acceptance (see audit record above) does not authorize Unit 2.
+The Phase remains **AUTHORIZED**, not COMPLETE or CLOSED. Unit 1's independent acceptance (see audit record above) is distinct from the user's later Unit 2 authorization.
+
+### Unit 2 — SQLite Source Schema & Parser Contract
+
+**Status:** IMPLEMENTED
+
+The separately authorized schema/contract implementation passed the final pre-commit
+gates recorded below. This is not INDEPENDENTLY ACCEPTED; that requires a separate
+reviewer. Checkpoint parent and final cleanliness are mandatory post-commit gates,
+reported with the actual ending SHA rather than fabricated inside this document.
+
+Scope: executable SQLite schema/version, empty-only bootstrap, XmlReader/occurrence
+contracts, temporary schema verification and directly related documentation.
+Production parser/importer/exporter, ingestion, integration and interpretation remain excluded.
+See [Unit 2 schema contract](../architecture/UNIT-2-SQLITE-SOURCE-SCHEMA-CONTRACT.md).
+
+### Unit 3
+
+**Status:** NOT STARTED / NOT AUTHORIZED.
 
 ## Unit 1 execution evidence
 
@@ -74,3 +92,122 @@ Boundary: tree/Start order `[6,5]`, exact ancestry membership `[5,7,8,9]`, inter
 | AC-U1-21 | PASS | No unexpected unstaged, untracked, ignored or staged files. |
 
 Post-checkpoint verification must confirm one root commit without parents, the same authorized path set, and clean worktree/index/untracked state. The checkpoint hash is reported with the execution result, not fabricated inside its own commit.
+
+## Unit 2 final execution evidence
+
+- Implementation root: `C:\Projects\MACULA-Extract`; branch: `master`.
+- Starting checkpoint and required sole parent:
+  `4cd957d7158cfbe0ea29a1afa56f09572fc877fa`.
+- Prior Unit 1 root and independent acceptance checkpoints remain intact.
+- Python **3.13.7**; SQLite **3.50.4** (STRICT/JSON available).
+- Unit 1 tests: **26**; Unit 2 tests: **50**; total: **76**.
+- Failures: **0**; errors: **0**; skips: **0**.
+- Every verbose test-result line was checked, not only the runner summary.
+- Unit 1 source verifier and empty in-memory schema verifier: **PASS**.
+- New Python files also passed AST syntax validation with `feature_version=(3, 10)`.
+
+Required commands, executed from the implementation root:
+
+```powershell
+python -B -m scripts.verify_unit1
+python -B -m scripts.source_schema
+python -B -m unittest discover -s tests -p "test_*.py" -v
+git diff
+git diff --cached
+git diff --cached --name-status
+git diff --check
+git diff --cached --check
+```
+
+The complete candidate was reviewed. Both whitespace checks passed; no unstaged
+implementation changes or untracked/generated files remained. The staged path set
+was independently checked against exactly 14 authorized paths, including both
+Unit 2 JSON contracts, DDL, both new scripts, Unit 2 tests, both architecture
+documents, and AGENTS/README/fidelity/phase/test-documentation updates.
+Staged text was compared with the reviewed worktree text, not inferred from `git add`.
+
+Frozen Unit 1 contract, every fixture, verifier, tests, acceptance audit and historical
+MACULA data architecture Spike matched the starting checkpoint in the index and
+worktree. No production importer/exporter/ingestion, populated production database,
+N1904/full NT implementation, XmlPro dependency/copied source, BRW projection,
+Actor/Action/Patient/Event/Result entities, physical mapper or Unit 3 artifacts exist.
+The complete implementation file/directory inventory contained no temporary
+DB/SQLite/WAL/SHM/journal files, `__pycache__`, or unintended `bin`/`obj`.
+
+Protected repositories remained clean with unchanged branches and HEADs:
+- `C:\Works\macula-greek`: `main`,
+  `8423afe47b9e8f24b7772e808af45c7159a6fe7e`.
+- `C:\Projects\bible-research-merged`: `master`,
+  `0e4c9baad299f7149cc71b35bcd5208297d4f8c0`.
+- Matthew SHA-256:
+  `FE1A8FED24DEC268A0D04160EC15BABDBE90105FFFDB915FD041B572C1FC40F4`.
+
+Historical-report hygiene-only change:
+- file:
+  `docs/architecture/XMLPRO-MACULA-PARSER-REUSE-ARCHITECTURE-SPIKE.md`
+- lines:
+  653, 656, 659, 662, 665, 668, 671, 674, 677, 680
+- change:
+  exactly two trailing spaces removed from each line
+- total:
+  20 trailing-space bytes removed
+- semantic/content differences:
+  NONE
+- verification:
+  `old.rstrip() == new.rstrip()` for every changed line
+
+The actual original TEMP report and cleaned archive were compared byte-for-byte:
+only those ten line changes occurred; sizes were 64,392 / 64,372 bytes.
+Original raw SHA-256:
+`01245365D6ACAD070ED5E420D7D73356EA7C7A1C121F55866FB67AF0C8A4F551`.
+Cleaned raw SHA-256:
+`47F91C76D2A87EA981367936A7B415CA545900502FFE2CD11021DD0DC74DC242`.
+They differ; the LF Git blob is verified separately from the raw CRLF report.
+
+### Unit 2 acceptance gate mapping
+
+The test evidence below is from the complete successful suite in
+[test_unit2.py](../../tests/test_unit2.py), not a production XML ingestion claim.
+
+| Criterion | Pre-commit result | Actual evidence / mandatory final gate |
+|---|---|---|
+| AC-U2-01 | PASS | Exact Git root, master, starting HEAD and two-checkpoint Unit 1 history verified. |
+| AC-U2-02 | PASS | All frozen Unit 1 paths matched baseline in index/worktree; independent audit still ACCEPT. |
+| AC-U2-03 | PASS | DDL executes without Python SQL functions; 12 tables with PKs and required FKs. |
+| AC-U2-04 | PASS | Empty bootstrap dumps agree; repeat/unknown/active transaction rejected; SQL failure rolls back. |
+| AC-U2-05 | PASS | Version 1 in user_version and singleton metadata; persistence and version/catalog drift tested. |
+| AC-U2-06 | PASS | Snapshot edition/repository/revision/manifest and scoped file/book provenance represented. |
+| AC-U2-07 | PASS | Exact BLOB/size/hash verified; wrong type/size/hash rejected; source immutability tested. |
+| AC-U2-08 | PASS | Element expanded names, lexical QName/prefix and same-file parent scope tested. |
+| AC-U2-09 | PASS | BINARY namespace/local-name attribute identity; alias duplicates rejected; case retained. |
+| AC-U2-10 | PASS | Missing Notes has no row/NULL; present-empty English has a row/empty string; mismatches rejected. |
+| AC-U2-11 | PASS | Ordered document/element/text/CDATA/comment/PI; duplicate ordinals and text segmentation tested. |
+| AC-U2-12 | PASS | Versioned canonical ASCII JSON expanded-name ordinal paths; malformed/noncanonical paths rejected. |
+| AC-U2-13 | PASS | External snapshot/file/hash/locator key equal across changed synthetic database PKs. |
+| AC-U2-14 | PASS | Only nullable diagnostic line/column; no byte/UTF-16 offsets or physical mapper. |
+| AC-U2-15 | PASS | Manual SQL sentence/Tree/Node/token core validates with real source-element links. |
+| AC-U2-16 | PASS | Ordered generic/typed parent topology validated; wrong parent and cross-file links rejected. |
+| AC-U2-17 | PASS | Head/Start/End/Length are raw nullable TEXT mirrors; absence has no inferred defaults. |
+| AC-U2-18 | PASS | Boundary traversal [6,5,7,8,9] differs from canonical [5,6,7,8,9]. |
+| AC-U2-19 | PASS | Ancestry view and membership include leaf self; incomplete/wrong/cross-Tree membership rejected. |
+| AC-U2-20 | PASS | Live Matthew target 400010020050040 members [5,7,8,9]; raw span 5..8; token 6 excluded. |
+| AC-U2-21 | PASS | ref scripture coordinates and Ref raw referent coexist independently. |
+| AC-U2-22 | PASS | Id/nodeId/xml:id/morphId distinct TEXT fields; XML namespace and repeated cross-snapshot IDs tested. |
+| AC-U2-23 | PASS | FunctionalTag N-GSM and FormalTag N-PRI coexist independently. |
+| AC-U2-24 | PASS | Direct surface, Unicode, NormalizedForm and combining lemma remain distinct; substitution rejected. |
+| AC-U2-25 | PASS | Live MAT 1:16!13, xml:id n40001016013, direct Greek text U+1F41 retained with length 1. |
+| AC-U2-26 | PASS | Exact schema/script inventory and negative entity test: no BRW projection or semantic entities. |
+| AC-U2-27 | PASS | Only schema/locator/verifier production scripts; manual SQL helpers are test-only, no importer/exporter. |
+| AC-U2-28 | PASS | Stdlib-only imports; parser contract rejects XmlPro dependency; no copied source/assembly. |
+| AC-U2-29 | PASS | XmlReader DTD Prohibit/resolver null/no validation, preserved content, explicit XInclude rejection; unsafe profiles rejected. |
+| AC-U2-30 | PASS | Empty schema CLI and all 50 Unit 2 tests passed with no skips. |
+| AC-U2-31 | PASS | Frozen source verifier and all 26 Unit 1 tests passed with no skips. |
+| AC-U2-32 | PASS | Full staged/unstaged review and both diff --check commands passed. |
+| AC-U2-33 | PASS | Independent staged name-status and exact 14-path/content checks; no other files changed. |
+| AC-U2-34 | PASS | MACULA HEAD/branch/status and exact Matthew SHA-256 unchanged. |
+| AC-U2-35 | PASS | Downstream HEAD/branch/status unchanged; pre-existing ignored downstream artifacts preserved. |
+| AC-U2-36 | POST-CHECKPOINT | Immediately verify sole parent, exactly one new commit, reviewed paths, clean index/worktree/untracked/ignored inventory, and protected repositories. |
+
+The unique checkpoint subject is `implement MACULA SQLite source schema contract`.
+Do not amend, rebase or rewrite either prior checkpoint. The full ending SHA and
+AC-U2-36 result must be reported from actual post-commit verification.

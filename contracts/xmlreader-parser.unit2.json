@@ -1,0 +1,40 @@
+{
+  "contract_version": 1,
+  "authoritative_parser": "System.Xml.XmlReader",
+  "production_parser_implemented": false,
+  "source_contract": "macula-sblgnt-matthew.unit1.json",
+  "settings": {
+    "DtdProcessing": "Prohibit",
+    "XmlResolver": null,
+    "ValidationType": "None",
+    "ConformanceLevel": "Document",
+    "CheckCharacters": true,
+    "IgnoreWhitespace": false,
+    "IgnoreComments": false,
+    "IgnoreProcessingInstructions": false
+  },
+  "input": {
+    "original_bytes_required": true,
+    "verify_revision_path_checksum_before_parsing": true,
+    "manifest_identity": "SHA-256 of exact frozen Unit 1 contract bytes; no directory discovery.",
+    "encoding": "Original byte stream and XML encoding semantics; no lossy caller decoding.",
+    "external_acquisition": false,
+    "implicit_xinclude": false,
+    "reject_element_expanded_name": ["http://www.w3.org/2001/XInclude", "include"]
+  },
+  "values": {
+    "names": "Exact namespace URI and local name; preserve observed QName/prefix separately.",
+    "attributes": "Enumerate all attributes, including unknown attributes and namespace declarations.",
+    "application_trim": false,
+    "greek_normalization": false,
+    "text_substitution": false,
+    "html_entity_processing": false,
+    "xml_mandated_normalization": "Preserve parser values; original bytes preserve lexical EOL/entity/quote spelling.",
+    "content_segmentation": "Coalesce adjacent Text/Whitespace/SignificantWhitespace events as text. Preserve each CDATA section, comment and PI node separately. Accumulate value chunks within one reader node; never coalesce across CDATA, child, comment or PI boundaries."
+  },
+  "failure_policy": "Explicit failed verification/build; no repaired XML, dropped fields or partial-success authoritative output.",
+  "resource_limits": "Not frozen in Unit 2. Future parser must declare evidence-backed size, character and depth limits; benchmark limits are not production constants.",
+  "physical_locations": "Optional diagnostic line/column only; no mandatory byte/UTF-16 mapper.",
+  "xmlpro_dependency": false,
+  "semantic_projection": false
+}

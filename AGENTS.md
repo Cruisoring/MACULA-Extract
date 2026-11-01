@@ -12,15 +12,23 @@ This repository is an independent MACULA linguistic source extraction and verifi
 `bible-research-merged` is downstream. Do not modify it from this repository unless a later task explicitly authorizes cross-repository integration.
 
 ## Current authorization
-Only Unit 1 is authorized: freeze the SBLGNT Matthew source contract and acceptance fixtures.
+Unit 1 is IMPLEMENTED / INDEPENDENTLY ACCEPTED. Its contract, fixtures, verifier,
+tests and independent acceptance findings remain frozen.
 
-Unit 1 MUST NOT create:
-- SQLite schema or database
-- importer or exporter
-- full Matthew database ingestion
-- N1904 integration
+The user's separate Unit 2 authorization permits only SQLite source schema,
+empty-database bootstrap/version verification, XmlReader and occurrence-identity
+contracts, temporary schema tests, and directly related documentation.
+
+Unit 2 MUST NOT create:
+- production XML importer or exporter
+- populated production Matthew database or production ingestion
+- full-NT or N1904 work
 - companion-source merges
-- BRW semantic projection
+- BRW integration, semantic projection, localization or UI
+- XmlPro dependency or physical byte/UTF-16 mapper
+
+Phase remains AUTHORIZED. Unit 2 is IMPLEMENTED, not independently accepted by its own tests.
+Unit 3 is not authorized or started. No network acquisition is permitted.
 
 ## Fidelity principles
 1. Raw source is source authority.
@@ -36,3 +44,13 @@ Unit 1 MUST NOT create:
 
 ## Git safety
 Before editing, record branch, HEAD, staged/unstaged/untracked state. Do not destroy pre-existing user work. Only create a Unit checkpoint after all authorized tests and acceptance criteria pass.
+
+## Unit 2 verification boundary
+- SQLite 3.37+ with STRICT and JSON support; Python standard library, no downloads.
+- Use a dedicated main connection with `foreign_keys=ON` and `recursive_triggers=ON`.
+- Bootstrap only an empty, unversioned database; repeated/unknown initialization fails closed.
+- Original source bytes are exact BLOB authority. LF normalization of schema/config text hashes is not source normalization.
+- `validate_store` is a mandatory schema/model consistency gate, not an XML parser or production round-trip certification.
+- Source attributes/content are the presence/value ledger; typed mirrors must agree.
+- Preserve zero-based sibling/traversal orders separately from one-based locator name ordinals and scripture coordinates.
+- Membership is complete descendant-leaf ancestry (including leaf self), never a Start/End interval.

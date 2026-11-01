@@ -23,11 +23,24 @@ The machine-readable authority is [the Unit 1 contract](../../contracts/macula-s
 
 Keep these seven concepts separate: source child/sibling order, tree leaf traversal order, source Start, source End, scripture coordinate, canonical scripture order, and exact node-token membership.
 
-The [boundary fixture](../../fixtures/matthew-1-2-boundary.expected.json) freezes tree order `MAT 1:2!6` before `MAT 1:2!5`. The designated subtree's source span is `5..8`, but ancestry yields scripture members `5,7,8,9`; token `6` is an interior envelope non-member. No membership persistence is implemented here.
+The [boundary fixture](../../fixtures/matthew-1-2-boundary.expected.json) freezes tree order `MAT 1:2!6` before `MAT 1:2!5`. The designated subtree's source span is `5..8`, but ancestry yields scripture members `5,7,8,9`; token `6` is an interior envelope non-member. Unit 1 does not implement persistence; Unit 2's schema represents materialized membership independently of source spans.
 
 The [primary fixture](../../fixtures/matthew-1-1.expected.json) preserves eight token occurrences, missing attributes, and source text/Unicode `Ἀβραάμ.` separately from NormalizedForm `Ἀβραάμ`. No normalization is applied to source text.
 
 ## Semantic non-authorization
 The contract prohibits `S→Actor`, `V→Action`, `V→Event`, `O→Patient`, `P→Identity`, `P→Attribute`, `A0→Actor`, `A1→Patient`, and `A2→Recipient`. These pairs are prohibitions, not executable mappings. No fixture/verifier/test helper applies them.
 
-`ClType=Verbless` is a source fact. Do not invent a copula, implicit verb, Action, or Event. No SQLite schema/database, importer/exporter, annotation/reference parser, companion integration, N1904 work, or BRW projection is authorized by this contract freeze. Unit 2 requires separate authorization.
+`ClType=Verbless` is a source fact. Do not invent a copula, implicit verb, Action, or Event. Unit 1's contract freeze itself authorizes no SQLite work. The user's subsequent, independent Unit 2 authorization permits schema/bootstrap/contracts and temporary schema tests only: no production importer/exporter, annotation/reference parser, companion integration, N1904 work, or BRW projection.
+
+## Unit 2 storage boundary
+
+See [the source-schema contract](../architecture/UNIT-2-SQLITE-SOURCE-SCHEMA-CONTRACT.md).
+Original source bytes retain exact-byte authority; generic XML elements, attributes
+and ordered direct content retain occurrence/value/presence authority. Wide typed
+columns are validated query mirrors, not replacement source facts.
+
+The completed schema/model must pass `validate_store` before being considered
+consistent. FK/CHECK/UNIQUE constraints and append-only source triggers do not
+replace that gate. Every connection must enable foreign keys and recursive triggers;
+the latter prevents SQLite REPLACE from bypassing immutable-row delete triggers.
+These checks do not certify production XML parsing or complete original-file coverage.

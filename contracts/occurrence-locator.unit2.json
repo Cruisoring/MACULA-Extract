@@ -1,0 +1,34 @@
+{
+  "contract_version": 1,
+  "scheme": "macula.xml-expanded-ordinal-path",
+  "scheme_version": 1,
+  "representation": "Canonical ASCII JSON array of [namespace_uri, local_name, same_expanded_name_ordinal] segments.",
+  "serialization": "JSON ensure_ascii=true, separators=(',', ':'), no application Unicode normalization.",
+  "ordinal_base": 1,
+  "ordinal_scope": "Direct element siblings with the identical BINARY namespace URI/local name.",
+  "root_ordinal": 1,
+  "external_identity": [
+    "snapshot edition/repository_uri/revision/manifest_sha256",
+    "source file relative_path/sha256",
+    "locator scheme/version/path"
+  ],
+  "excluded_identity_inputs": [
+    "database_pk",
+    "prefix_alias",
+    "line_column",
+    "byte_utf16_offsets",
+    "nodeId",
+    "xml:id",
+    "morphId",
+    "Start",
+    "End"
+  ],
+  "attribute_identity": "Owner element identity plus BINARY namespace URI/local name; source ordinal is separate evidence.",
+  "content_identity": "Owner element identity, or document identity, plus zero-based canonical direct-content ordinal and kind.",
+  "element_sibling_ordinal_base": 0,
+  "syntax_sibling_ordinal_base": 0,
+  "tree_leaf_ordinal_base": 0,
+  "canonical_ordinal": "Zero-based within each Tree, sorted by chapter/verse/verse-token ordinal with tree-leaf ordinal as occurrence tie-breaker.",
+  "membership": "Complete descendant-leaf closure, including a token leaf's self membership; never source Start/End arithmetic.",
+  "physical_mapper_implemented": false
+}
