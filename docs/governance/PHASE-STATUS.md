@@ -19,12 +19,26 @@ The Phase remains **AUTHORIZED**, not COMPLETE or CLOSED. Unit 1's independent a
 
 ### Unit 2 — SQLite Source Schema & Parser Contract
 
-**Status:** IMPLEMENTED
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED WITH MINOR FINDINGS
 
 The separately authorized schema/contract implementation passed the final pre-commit
-gates recorded below. This is not INDEPENDENTLY ACCEPTED; that requires a separate
-reviewer. Checkpoint parent and final cleanliness are mandatory post-commit gates,
+gates recorded below. Checkpoint parent and final cleanliness are mandatory post-commit gates,
 reported with the actual ending SHA rather than fabricated inside this document.
+
+Independent acceptance audit record:
+[UNIT-2-SQLITE-SOURCE-SCHEMA-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/UNIT-2-SQLITE-SOURCE-SCHEMA-INDEPENDENT-ACCEPTANCE-AUDIT.md).
+
+- Implementation checkpoint: `9c39f832e215023becb366cc8f59af004c43407d`.
+- Independent audit decision: **ACCEPT WITH MINOR FINDINGS**.
+- F-1 through F-4 remain recorded with their original findings and severities;
+  this archival/governance checkpoint does not resolve them.
+
+Unit 2 schema/parser contract independently accepted with minor findings.
+Acceptance does not mean a production importer/parser/exporter exists, and does not
+authorize Unit 3. F-2 remains: model consistency validation does not re-parse original
+bytes and is not production round-trip certification of normalized records against
+original bytes. Real importer/source-to-normalized fidelity verification remains
+future, separately authorized work.
 
 Scope: executable SQLite schema/version, empty-only bootstrap, XmlReader/occurrence
 contracts, temporary schema verification and directly related documentation.

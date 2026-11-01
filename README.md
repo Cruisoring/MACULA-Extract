@@ -7,8 +7,8 @@ MACULA Greek Linguistic Source Store Phase
 
 Unit 1: **IMPLEMENTED / INDEPENDENTLY ACCEPTED**.
 
-Unit 2: **IMPLEMENTED** - SQLite Source Schema & Parser Contract.
-This is not independent acceptance.
+Unit 2: **IMPLEMENTED / INDEPENDENTLY ACCEPTED WITH MINOR FINDINGS** - SQLite Source Schema & Parser Contract.
+Independent decision: **ACCEPT WITH MINOR FINDINGS** ([audit](docs/audits/UNIT-2-SQLITE-SOURCE-SCHEMA-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
 Phase remains **AUTHORIZED**; Unit 3 is not authorized or started.
 
 ## Boundaries

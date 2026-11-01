@@ -27,7 +27,8 @@ Unit 2 MUST NOT create:
 - BRW integration, semantic projection, localization or UI
 - XmlPro dependency or physical byte/UTF-16 mapper
 
-Phase remains AUTHORIZED. Unit 2 is IMPLEMENTED, not independently accepted by its own tests.
+Phase remains AUTHORIZED. Unit 2 is IMPLEMENTED / INDEPENDENTLY ACCEPTED WITH MINOR FINDINGS.
+Independent decision: ACCEPT WITH MINOR FINDINGS; see the [audit](docs/audits/UNIT-2-SQLITE-SOURCE-SCHEMA-INDEPENDENT-ACCEPTANCE-AUDIT.md).
 Unit 3 is not authorized or started. No network acquisition is permitted.
 
 ## Fidelity principles
