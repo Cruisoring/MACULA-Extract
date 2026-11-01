@@ -197,3 +197,44 @@ The ignored database is neither copied nor rebuilt nor committed.
 For Unit 1-4 regression validation, use the documented external Unit 3 read-only
 setup override rather than ordinary discovery. Retain the explicit second-build
 slow-gate skip; neither reuse nor implementation tests are independent acceptance.
+
+## Unit 6
+
+```powershell
+python -B -m unittest tests.test_unit6.Unit6FastTests -v
+python -B -m unittest tests.test_unit4.Unit4FastTests tests.test_unit5.Unit5FastTests tests.test_unit6.Unit6FastTests -v
+```
+
+Synthetic tests manually construct tiny temporary schema-v2 stores. They verify
+frozen composition, exact source identities/facts, explicit not-found/failure
+semantics, leaf/root behavior, nearest-first ancestry, immediate-parent child order
+opposite PK order, named membership scope, discontinuous members `[5,7,8,9]`
+excluding 6, materialized rather than reconstructed membership, duplicate source
+identities, cycles/missing parents, and unchanged SQLite schema/bytes.
+Equivalent stores reallocate all five inherited token surrogate IDs and compare
+all other token facts, node facts, ancestry, children and member identity/order.
+Local PK variance is tested separately; Unit 5 M1 remains unresolved.
+SQLite rejects writes even with `query_only=OFF`; production composition uses one
+owned read-only connection and closes it on success, not-found and failure.
+
+```powershell
+$env:MACULA_UNIT6_INTEGRATION = "1"
+$env:MACULA_UNIT6_DATABASE = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit6.Unit6MatthewIntegrationTests -v
+Remove-Item Env:MACULA_UNIT6_INTEGRATION
+Remove-Item Env:MACULA_UNIT6_DATABASE
+```
+
+The 3 opt-in integration tests otherwise skip explicitly. Fixed expected source
+facts verify `MAT 1:1!3`, nine ancestors, P2CL/Verbless and source root; Matthew
+1:2 composition reaches `400010020050040` with raw S-V-O/5/8/1 facts. Existing
+Unit 5 APIs inspect that higher ancestor's S/V/O children and `[5,7,8,9]`
+membership (6 excluded), also checked against independently read pinned XML.
+Unit 6's `contextual_members` remains its named immediate-parent membership,
+not silently promoted to the clause. Database size/hash/version/catalog must match
+before and after. XML is only a test oracle, never the runtime query backend.
+
+For Unit 1-6 regressions reuse the existing database through the documented external
+Unit 3 read-only setup override, fresh full fidelity validation and retained
+second-build skip. Do not invoke default Unit 3 discovery and inadvertently rebuild
+Matthew. This is implementation validation, not independent acceptance.

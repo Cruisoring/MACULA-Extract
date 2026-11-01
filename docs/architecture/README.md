@@ -19,9 +19,14 @@ only read-only verse/token source queries over an existing schema-v2 Matthew sto
 The separately authorized [Unit 5 syntax navigation contract](UNIT-5-READ-ONLY-SYNTAX-NAVIGATION-CONTRACT.md)
 adds only source-ID lookup, relational children/ancestors and exact stored membership
 through the same read-only boundary, with raw Head and source-oriented node results.
-Phase remains AUTHORIZED. Units 3, 4 and 5 are IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
-No automatic independent acceptance is authorized; see the current
-[Unit 5 implementation status](../governance/PHASE-STATUS.md#unit-5---read-only-syntax-navigation).
+The separately authorized [Unit 6 source evidence composition](UNIT-6-READ-ONLY-SOURCE-EVIDENCE-COMPOSITION.md)
+composes the exact token, linked leaf, relational ancestry, immediate-parent children
+and explicitly named exact membership context without interpreting source facts.
+Unit 6 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
+Phase remains AUTHORIZED. Units 3 and 4 remain IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
+Unit 5 is IMPLEMENTED / INDEPENDENTLY ACCEPTED, decision ACCEPT WITH MINOR FINDINGS;
+M1 remains unresolved. No automatic independent acceptance or Unit 7 is authorized;
+see [current governance](../governance/PHASE-STATUS.md).
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)
  Document the post-Unit-4 read-only SQLite exploration and resulting

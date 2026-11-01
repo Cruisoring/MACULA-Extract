@@ -75,6 +75,16 @@ class NodeResult:
     length_raw: str | None
 
 
+@dataclass(frozen=True)
+class SourceEvidence:
+    token: TokenResult
+    node: NodeResult
+    ancestors: tuple[NodeResult, ...]
+    parent_children: tuple[NodeResult, ...]
+    membership_node: NodeResult
+    contextual_members: tuple[TokenResult, ...]
+
+
 _TOKEN_SQL = """
 SELECT t.token_id, t.book_id, b.source_book_code AS book_code,
        t.chapter, t.verse, t.verse_token_ordinal,
@@ -273,6 +283,13 @@ def get_node(db_path: str | Path, source_node_id: str) -> NodeResult | None:
         return None if sqlite_node_id is None else _project_node(_node_row(db, sqlite_node_id))
 
 
+def _children(db: sqlite3.Connection, sqlite_node_id: int) -> tuple[NodeResult, ...]:
+    return tuple(_project_node(row) for row in db.execute(
+        _NODE_SQL + " WHERE n.parent_node_id = ? ORDER BY n.sibling_ordinal",
+        (sqlite_node_id,),
+    ))
+
+
 def get_children(db_path: str | Path, source_node_id: str) -> tuple[NodeResult, ...] | None:
     """Return direct children in sibling order; None means unknown source node."""
     _source_node_key(source_node_id)
@@ -280,10 +297,7 @@ def get_children(db_path: str | Path, source_node_id: str) -> tuple[NodeResult, 
         sqlite_node_id = _resolve_source_node_id(db, source_node_id)
         if sqlite_node_id is None:
             return None
-        return tuple(_project_node(row) for row in db.execute(
-            _NODE_SQL + " WHERE n.parent_node_id = ? ORDER BY n.sibling_ordinal",
-            (sqlite_node_id,),
-        ))
+        return _children(db, sqlite_node_id)
 
 
 def _ancestors(db: sqlite3.Connection, sqlite_node_id: int) -> tuple[NodeResult, ...]:
@@ -322,6 +336,14 @@ def get_ancestors_by_token(db_path: str | Path, ref: str) -> tuple[NodeResult, .
         return None if token is None else _ancestors(db, token.node_id)
 
 
+def _members(db: sqlite3.Connection, sqlite_node_id: int) -> tuple[TokenResult, ...]:
+    tokens = tuple(TokenResult(**dict(row)) for row in db.execute(_MEMBERS_SQL, (sqlite_node_id,)))
+    coordinates = [(t.book_code, t.chapter, t.verse, t.verse_token_ordinal) for t in tokens]
+    if len(set(coordinates)) != len(coordinates):
+        raise QueryError("ambiguous scripture coordinates within node membership")
+    return tokens
+
+
 def get_members(db_path: str | Path, source_node_id: str) -> tuple[TokenResult, ...] | None:
     """Return exact stored members in scripture order; None if source node unknown."""
     _source_node_key(source_node_id)
@@ -329,8 +351,27 @@ def get_members(db_path: str | Path, source_node_id: str) -> tuple[TokenResult, 
         sqlite_node_id = _resolve_source_node_id(db, source_node_id)
         if sqlite_node_id is None:
             return None
-        tokens = tuple(TokenResult(**dict(row)) for row in db.execute(_MEMBERS_SQL, (sqlite_node_id,)))
-        coordinates = [(t.book_code, t.chapter, t.verse, t.verse_token_ordinal) for t in tokens]
-        if len(set(coordinates)) != len(coordinates):
-            raise QueryError("ambiguous scripture coordinates within node membership")
-        return tokens
+        return _members(db, sqlite_node_id)
+
+
+def get_source_evidence(db_path: str | Path, token_ref: str) -> SourceEvidence | None:
+    """Compose exact token/leaf facts, nearest-first ancestry and parent context."""
+    key = _token_key(token_ref)
+    with _open_syntax_readonly(db_path) as db:
+        token = _get_token(db, token_ref, key)
+        if token is None:
+            return None
+        row = _node_row(db, token.node_id)
+        node = _project_node(row)
+        ancestors = _ancestors(db, token.node_id)
+        parent = row["parent_node_id"]
+        parent_children = () if parent is None else _children(db, parent)
+        for source_node in (node, *ancestors, *parent_children):
+            if _resolve_source_node_id(db, source_node.source_node_id) is None:
+                raise QueryError("linked syntax source identity is outside active Matthew snapshot")
+        membership_node = ancestors[0] if ancestors else node
+        contextual_members = _members(db, token.node_id if parent is None else parent)
+        return SourceEvidence(
+            token=token, node=node, ancestors=ancestors, parent_children=parent_children,
+            membership_node=membership_node, contextual_members=contextual_members,
+        )

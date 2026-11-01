@@ -128,14 +128,31 @@ independently accept Unit 3 or Unit 4 and does not complete or close the Phase.
 
 ### Unit 5 - Read-Only Syntax Navigation
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED
 
 The user separately authorized deterministic syntax navigation under the
 [Unit 5 contract](../architecture/UNIT-5-READ-ONLY-SYNTAX-NAVIGATION-CONTRACT.md).
 Phase remains AUTHORIZED; Units 3 and 4 remain pending independent acceptance.
-No independent acceptance was performed, and no Unit 6 or downstream integration
-is authorized. STOP after the sole Unit 5 implementation checkpoint and its
-post-checkpoint verification.
+The implementation validation below did not itself constitute independent acceptance.
+The subsequent separate acceptance and severity reconciliation supplied by the user
+are recorded here; they do not authorize downstream integration.
+
+#### Independent acceptance reconciliation
+
+- Accepted implementation checkpoint: `842ba45fff04a7e0c492faeb9f4dc60a3ee6c2d5`.
+- Decision: **ACCEPT WITH MINOR FINDINGS**.
+- **BLOCKER: 0; MAJOR: 0; MINOR: 1.**
+- **M1: unresolved (MINOR).** `get_members()` inherits Unit 4 `TokenResult`,
+  exposing `token_id`, `node_id`, `tree_id`, `element_id` and `book_id` alongside
+  source-oriented token identity. Independent surrogate-PK reallocation testing
+  established that these local fields vary across equivalent builds while source
+  identities, linguistic facts, exact membership and canonical ordering remain
+  invariant. No Unit 5 lookup requires a caller-supplied SQLite surrogate PK.
+- This is bounded governance reconciliation, not M1 remediation or another audit.
+  Full Unit 5 audit-document archival is deferred for this personal project;
+  no audit-report path is claimed.
+- Unit 5 acceptance does not retroactively accept Units 3 or 4. Their statuses
+  and all prior accepted decisions/finding severities remain unchanged.
 
 #### Starting state and reviewed path scope
 
@@ -230,6 +247,115 @@ Schema version remains **2**; complete catalog/index inventory is unchanged.
 No UI, translation alignment, database merge, localization runtime, semantic
 projection, new corpus, XmlPro dependency, source mutation or schema migration
 was introduced. This is implementation validation, not independent acceptance.
+
+### Unit 6 - Read-Only Source Evidence Composition
+
+**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+
+The user separately authorized the bounded
+[Unit 6 contract](../architecture/UNIT-6-READ-ONLY-SOURCE-EVIDENCE-COMPOSITION.md),
+recorded before production implementation. Phase remains **AUTHORIZED**.
+Unit 5's supplied independent acceptance is reconciled above, with M1 unresolved.
+Units 3 and 4 remain pending independent acceptance. Unit 6 implementation validation
+is not independent acceptance and does not authorize Unit 7 or downstream work.
+
+#### Starting state and implementation boundary
+
+- Repository: `C:\Projects\MACULA-Extract`; branch: `master`.
+- Actual starting HEAD / required sole implementation parent:
+  `842ba45fff04a7e0c492faeb9f4dc60a3ee6c2d5`.
+- Index, tracked worktree and untracked state were clean; `git diff --check` passed.
+  No historical reset or separate governance-only checkpoint was made.
+- Frozen `SourceEvidence` and `get_source_evidence(db_path, token_ref)` compose
+  Unit 4 exact token lookup, source-facing linked leaf, nearest-first ancestry
+  excluding self, immediate-parent direct children in sibling order, and exact
+  stored membership of the explicitly returned `membership_node`.
+- `membership_node` is the immediate parent or, for a root token, the leaf itself.
+  Root tokens have empty ancestry/parent-child tuples and leaf self-membership.
+  Higher constituents are not silently substituted for this context.
+- Existing Unit 5 children/member logic is narrowly extracted into shared query
+  primitives. Existing public behavior and `TokenResult` fields remain unchanged.
+  Every exposed node result uses the existing fail-closed source-ID resolver.
+- One owned existing syntax read-only connection uses SQLite URI `mode=ro`,
+  `query_only=ON`, FK/recursive triggers ON. Source IDs remain opaque; topology
+  comes from real links and membership only from `node_token_membership`.
+  Unknown exact refs return `None`; schema/access/ambiguity/cycle errors remain
+  explicit `QueryError`. No XML backend, source write, cache or schema change exists.
+
+#### Actual technical validation
+
+Commands executed from the implementation root:
+
+```powershell
+python -B -m scripts.verify_unit1
+python -B -m scripts.source_schema
+python -B -m unittest tests.test_unit1 tests.test_unit2 tests.test_unit4.Unit4FastTests tests.test_unit5.Unit5FastTests -v
+python -B -m unittest tests.test_unit4.Unit4FastTests tests.test_unit5.Unit5FastTests tests.test_unit6 -v
+python -B "C:\Users\cruis\.copilot\session-state\d4752c1a-b7ee-434b-aa08-3fdff754d062\files\validate_unit6_reuse.py"
+```
+
+The disposable external runner selects all six Unit modules together, opts into
+existing Unit 4/5/6 integration, and overrides only Unit 3 class setup to reuse the
+existing store read-only. Fresh complete schema/membership/BYTE/NORMALIZED fidelity
+and logical-digest checks run before its existing assertions. The offline .NET
+bridge is used only for the existing small parser regressions. A guard rejects
+full-Matthew population. No second full import or new dependency is introduced.
+
+- Frozen verifiers: **PASS**. Pre-change fast baseline: **109 PASS**, no skips.
+- First focused run: **49 run**, **45 test methods PASS**, one PK-reallocation test
+  method failed in four subtests, **3 integration skips** (not opted in). The test
+  fixture had left `tree_id` autoallocated; explicit offset tree allocation fixed
+  the fixture and established actual variance in all five inherited local IDs.
+- Final combined run: **162 run**, **161 PASS**, **0 failures/errors**, **1 skip**.
+  Unit 1: **26 PASS**; Unit 2: **56 PASS**; Unit 3: **22 PASS + 1 skip**;
+  Unit 4: **11 fast + 4 integration PASS**; Unit 5: **16 fast + 4 integration PASS**;
+  Unit 6: **19 fast + 3 integration PASS**.
+- Sole final skip: `test_u3_01_two_full_builds_and_logical_digests`, reason
+  `explicit slow gate: set MACULA_UNIT3_SECOND_BUILD=1 for a second full build`.
+  No second-build determinism result is claimed.
+- Changed Python files passed Python 3.10 AST syntax checks. Pylance file checks
+  could not resolve the target repository outside the active editor workspace;
+  no static type-check result is claimed.
+- `MAT 1:1!3`: exact leaf `400010010030010`; nine nearest-first ancestors,
+  N2NP / three Np-Appos / two NPofNP / Np2P / P2CL / source root.
+  CL retains `ClType=Verbless`; the leaf is not duplicated into ancestry.
+  Its named immediate-parent membership is exactly `MAT 1:1!3`.
+- `MAT 1:2!5` reaches ancestor `400010020050040`, raw S-V-O / Start `"5"` /
+  End `"8"` / Head `"1"`. Unit 5 inspection of that ancestor preserves direct
+  S/V/O children and exact **[5,7,8,9]**, explicitly excluding 6. Unit 6's own
+  real-fixture context is immediate parent `400010020050011`, with token 5 only.
+  Synthetic composition directly exercises the discontinuous context as well.
+- All source-level evidence is invariant across equivalent synthetic stores with
+  all five local PKs reallocated. Local variance is asserted separately; M1 is
+  neither hidden nor remediated. SQLite write rejection, even with query_only
+  disabled, and connection closure on success/not-found/failure pass.
+
+Full Matthew evidence: **REUSED PREVIOUS VERIFIED EVIDENCE** with fresh exhaustive
+validation. Counts: 59,891 elements, 767,429 attributes, 179,675 content records,
+1,134 sentences/Trees, 56,488 nodes, 18,329 tokens, 159,391 memberships and 733
+single-character tokens. Logical digest:
+`F2A4A7C42FB3828B46B29DF388D583D497959CBD9B5E65CDAD876F7A85878A72`.
+Full Matthew builds: **0**.
+
+Existing ignored `C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3` before/after:
+**160,968,704 bytes**, SHA-256
+`E52DB7E2ABDB1C2B9B4F93060312587A1363066378B7A0C9B8FB72475C25CE7E`,
+`PRAGMA user_version=2`; complete catalog/index inventory unchanged.
+The database is not a deliverable and is not committed.
+
+Protected repositories remain clean and unchanged:
+`C:\Works\macula-greek` at `8423afe47b9e8f24b7772e808af45c7159a6fe7e`,
+`C:\Projects\bible-research-merged` at `0e4c9baad299f7149cc71b35bcd5208297d4f8c0`.
+Actual pinned Matthew source SHA-256 remains
+`FE1A8FED24DEC268A0D04160EC15BABDBE90105FFFDB915FD041B572C1FC40F4`.
+
+The sole reviewed checkpoint contains only the query module, new Unit 6 test and
+contract, root/test READMEs, architecture index and this bounded governance record.
+Its actual SHA and sole parent are reported after Git creates it, not fabricated
+inside its own commit. No schema, frozen fixtures, historical audits or protected
+repository changes are authorized. M1, full audit archival, semantic projection,
+downstream integration and UI/localization remain deferred. STOP after the Unit 6
+checkpoint; no Unit 6 audit, independent acceptance or Unit 7 is performed.
 
 ## Unit 1 execution evidence
 

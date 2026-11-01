@@ -16,10 +16,13 @@ membership validation instead of a per-row ancestry INSERT trigger.
 
 Unit 3: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - SBLGNT Matthew Source Importer & Fidelity Round-Trip.
 Unit 4: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - Read-Only Matthew Verse / Token Query Slice.
-Unit 5: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - Read-Only Syntax Navigation.
-Separately authorized by the
-[read-only syntax navigation contract](docs/architecture/UNIT-5-READ-ONLY-SYNTAX-NAVIGATION-CONTRACT.md).
-No later Unit or automatic independent acceptance is authorized.
+Unit 5: **IMPLEMENTED / INDEPENDENTLY ACCEPTED** - Read-Only Syntax Navigation.
+Decision: **ACCEPT WITH MINOR FINDINGS**; M1 remains unresolved (inherited token
+DTO exposes build-local surrogate IDs). See [governance reconciliation](docs/governance/PHASE-STATUS.md).
+The user separately authorized the bounded
+[Unit 6 source evidence composition](docs/architecture/UNIT-6-READ-ONLY-SOURCE-EVIDENCE-COMPOSITION.md).
+Unit 6: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
+No Unit 7 or automatic independent acceptance is authorized.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
@@ -33,7 +36,8 @@ No later Unit or automatic independent acceptance is authorized.
   are preserved; this checkpoint does not change them.
 - The separate Unit 4 authorization adds only read-only verse/token queries over an
   existing schema-v2 store. Unit 5's separate authorization adds only read-only
-  syntax navigation, not another full build, migration or downstream integration.
+  syntax navigation. Unit 6 composes these source queries, not another full build,
+  migration, interpretation or downstream integration.
 
 See `AGENTS.md`, `contracts/`, and `docs/governance/`.
 
@@ -152,3 +156,32 @@ python -B -m unittest tests.test_unit5.Unit5FastTests -v
 
 See the unchanged [Unit 5 contract](docs/architecture/UNIT-5-READ-ONLY-SYNTAX-NAVIGATION-CONTRACT.md),
 [test instructions](tests/README.md#unit-5) and [implementation status](docs/governance/PHASE-STATUS.md).
+
+## Unit 6 read-only source evidence composition
+
+```python
+from scripts.source_query import get_source_evidence
+
+evidence = get_source_evidence(database_path, "MAT 1:1!3")
+```
+
+Frozen `SourceEvidence` composes the exact Unit 4 token, its source-facing leaf
+`node`, nearest-parent-first `ancestors` (root last, leaf excluded), and
+`parent_children` in sibling order. `membership_node` explicitly identifies the
+immediate parent whose exact stored members appear in `contextual_members`.
+For a root token, parent collections are empty and membership uses the leaf itself.
+Higher constituents remain accessible through ancestor source IDs and Unit 5 APIs.
+
+The same SQLite-enforced read-only boundary applies. Unknown exact refs return
+`None`; invalid input, schema/access failures, ambiguous source identity and cycles
+raise `QueryError`. No ID decoding, XML runtime, range-based membership or semantics
+is introduced. Token DTOs remain unchanged: M1's five local PK fields are diagnostics,
+not stable identities; source facts remain invariant across equivalent builds.
+
+```powershell
+python -B -m unittest tests.test_unit6.Unit6FastTests -v
+```
+
+See the [Unit 6 contract](docs/architecture/UNIT-6-READ-ONLY-SOURCE-EVIDENCE-COMPOSITION.md),
+[integration instructions](tests/README.md#unit-6) and
+[current governance](docs/governance/PHASE-STATUS.md).
