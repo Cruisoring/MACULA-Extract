@@ -16,8 +16,12 @@ import, byte archive export and independent normalized source fidelity verificat
 No scope beyond pinned SBLGNT Matthew is authorized.
 The separately authorized [Unit 4 query slice](UNIT-4-MATTHEW-QUERY-SLICE.md) adds
 only read-only verse/token source queries over an existing schema-v2 Matthew store.
-Phase remains AUTHORIZED. Units 3 and 4 are IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE;
-Unit 5 is NOT STARTED. No automatic independent acceptance is authorized.
+The separately authorized [Unit 5 syntax navigation contract](UNIT-5-READ-ONLY-SYNTAX-NAVIGATION-CONTRACT.md)
+adds only source-ID lookup, relational children/ancestors and exact stored membership
+through the same read-only boundary, with raw Head and source-oriented node results.
+Phase remains AUTHORIZED. Units 3, 4 and 5 are IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
+No automatic independent acceptance is authorized; see the current
+[Unit 5 implementation status](../governance/PHASE-STATUS.md#unit-5---read-only-syntax-navigation).
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)
  Document the post-Unit-4 read-only SQLite exploration and resulting
@@ -38,7 +42,8 @@ Keep manual SQLite observations distinct from independent acceptance.
 Preserve the boundary between linguistic source facts and later semantic
 interpretation.
 Unit 3 and Unit 4 remain pending independent acceptance.
-Unit 5 remains NOT STARTED.
+At that investigation, Unit 5 remained NOT STARTED; the later separate Unit 5
+authorization does not independently accept that report or Units 3 and 4.
 
 The historical reports retain their original investigation-time statuses and relative
 evidence links, some of which refer to their original session/TEMP location. Their

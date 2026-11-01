@@ -155,3 +155,45 @@ second-build skip, and a guard forbidding full-source population. All 22 selecte
 tests passed; no full build occurred. This is not an independent acceptance.
 Do not use ordinary Unit 3/all-test discovery for a zero-build task: its unchanged
 default setup constructs a complete Matthew database.
+
+## Unit 5
+
+Fast tests use only tiny temporary schema-v2 stores and the existing Unit 2 manual
+SQL fixture helper. No full Matthew database, XML importer, .NET build or network
+is needed:
+
+```powershell
+python -B -m unittest tests.test_unit5.Unit5FastTests -v
+python -B -m unittest tests.test_unit1 tests.test_unit2 tests.test_unit4.Unit4FastTests tests.test_unit5.Unit5FastTests -v
+```
+
+The 16 fast tests cover exact zero/one/multiple source-ID resolution, no surrogate or
+other-ID fallback, opaque parent identities, raw/empty/missing DTO values,
+direct sibling order deliberately opposite PK order, nearest-first ancestry
+excluding self, exact Unit 4 token entry, cycle/dangling-parent errors, exact
+membership `[5,7,8,9]` excluding 6, leaf self-membership, scripture order across
+verses, missing Head, SQLite URI read-only enforcement and unchanged schema.
+Equivalent manual stores explicitly allocate different node and token PKs;
+public node navigation and source-level member facts must remain identical.
+Destructive negative tests operate only on these temporary stores.
+
+Optional full-Matthew integration independently compares navigation with the pinned
+upstream XML as a test oracle, never as the production query backend:
+
+```powershell
+$env:MACULA_UNIT5_INTEGRATION = "1"
+$env:MACULA_UNIT5_DATABASE = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit5.Unit5MatthewIntegrationTests -v
+Remove-Item Env:MACULA_UNIT5_INTEGRATION
+Remove-Item Env:MACULA_UNIT5_DATABASE
+```
+
+The 4 integration tests require the opt-in flag and an already existing database;
+otherwise they skip with reason `opt-in read-only existing full-Matthew integration`.
+They verify `MAT 1:1!3`'s source ancestor chain and Verbless clause, Matthew 1:2
+direct S/V/O children, Head=1, exact membership/excluded 6, root/leaf absence and
+not-found. Byte size, SHA-256 and schema/index inventory must match before/after.
+The ignored database is neither copied nor rebuilt nor committed.
+For Unit 1-4 regression validation, use the documented external Unit 3 read-only
+setup override rather than ordinary discovery. Retain the explicit second-build
+slow-gate skip; neither reuse nor implementation tests are independent acceptance.

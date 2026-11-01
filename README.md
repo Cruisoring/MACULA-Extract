@@ -16,7 +16,10 @@ membership validation instead of a per-row ancestry INSERT trigger.
 
 Unit 3: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - SBLGNT Matthew Source Importer & Fidelity Round-Trip.
 Unit 4: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - Read-Only Matthew Verse / Token Query Slice.
-Unit 5: **NOT STARTED**; no later Unit or automatic independent acceptance is authorized.
+Unit 5: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - Read-Only Syntax Navigation.
+Separately authorized by the
+[read-only syntax navigation contract](docs/architecture/UNIT-5-READ-ONLY-SYNTAX-NAVIGATION-CONTRACT.md).
+No later Unit or automatic independent acceptance is authorized.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
@@ -29,7 +32,8 @@ Unit 5: **NOT STARTED**; no later Unit or automatic independent acceptance is au
   Unit 1, the amended schema-v2 Unit 2 baseline and historical independent audits
   are preserved; this checkpoint does not change them.
 - The separate Unit 4 authorization adds only read-only verse/token queries over an
-  existing schema-v2 store. It does not authorize another build, migration or Unit 5.
+  existing schema-v2 store. Unit 5's separate authorization adds only read-only
+  syntax navigation, not another full build, migration or downstream integration.
 
 See `AGENTS.md`, `contracts/`, and `docs/governance/`.
 
@@ -104,3 +108,47 @@ python -B -m unittest tests.test_unit4.Unit4FastTests -v
 
 See the [Unit 4 query contract](docs/architecture/UNIT-4-MATTHEW-QUERY-SLICE.md)
 for field mappings, read-only behavior and optional existing full-Matthew integration.
+
+## Unit 5 read-only syntax navigation
+
+The same caller-supplied database path and SQLite-enforced read-only boundary apply:
+
+```python
+from scripts.source_query import (
+    get_node, get_children, get_ancestors_by_node, get_ancestors_by_token, get_members,
+)
+
+node = get_node(database_path, "400010020050040")
+children = get_children(database_path, "400010020050040")
+ancestors = get_ancestors_by_token(database_path, "MAT 1:1!3")
+members = get_members(database_path, "400010020050040")
+```
+
+All node-entry APIs accept exact MACULA `Node@nodeId` strings (`source_node_id`),
+not SQLite PKs or decoded ID components. Resolution is scoped to the single active
+Matthew book/snapshot; multiple matching snapshots or source IDs raise `QueryError`.
+Zero matches return `None`, consistently with Unit 4. Invalid input, incompatible
+stores and topology integrity failures also raise `QueryError`, not not-found.
+
+`NodeResult` is frozen and exposes only source identity, actual parent source
+identity, sibling ordinal and nullable raw node mirrors. Missing fields remain
+`None`; present-empty fields remain `""`. No SQLite node/tree/element PK is exposed.
+Children are direct-only immutable tuples ordered by `sibling_ordinal`.
+Both ancestor APIs exclude the starting node/leaf and return nearest parent first,
+root last; known roots have `()` ancestry, distinct from unknown nodes (`None`).
+Cycles fail explicitly.
+
+Members are the exact stored `node_token_membership` set in scripture coordinate
+order, using unchanged Unit 4 `TokenResult` facts. Its PK fields remain build-local
+diagnostics, not persistent node identities. Leaf membership includes self.
+The Matthew 1:2 S-V-O source node retains Start/End `"5"`/`"8"` but returns token
+ordinals `[5,7,8,9]`, explicitly excluding 6. Head remains raw: `"1"` selects child
+`V` from ordered children `S,V,O`; missing Head never defaults to child 0.
+No optional Head/lexical-head API, runtime XML backend, cache or schema change is added.
+
+```powershell
+python -B -m unittest tests.test_unit5.Unit5FastTests -v
+```
+
+See the unchanged [Unit 5 contract](docs/architecture/UNIT-5-READ-ONLY-SYNTAX-NAVIGATION-CONTRACT.md),
+[test instructions](tests/README.md#unit-5) and [implementation status](docs/governance/PHASE-STATUS.md).

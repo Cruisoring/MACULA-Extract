@@ -60,6 +60,21 @@ class VerseResult:
     tokens: tuple[TokenResult, ...]
 
 
+@dataclass(frozen=True)
+class NodeResult:
+    source_node_id: str
+    parent_source_node_id: str | None
+    sibling_ordinal: int
+    id_raw: str | None
+    cat: str | None
+    rule: str | None
+    cl_type: str | None
+    start_raw: str | None
+    end_raw: str | None
+    head_raw: str | None
+    length_raw: str | None
+
+
 _TOKEN_SQL = """
 SELECT t.token_id, t.book_id, b.source_book_code AS book_code,
        t.chapter, t.verse, t.verse_token_ordinal,
@@ -85,6 +100,26 @@ WHERE t.book_id = ? AND t.chapter = ? AND t.verse = ?
   AND t.verse_token_ordinal = ? AND t.ref_raw = ? COLLATE BINARY
 """
 _REF = re.compile(r"([^\s]+) ([1-9][0-9]*):([1-9][0-9]*)!([1-9][0-9]*)")
+_NODE_SQL = """
+SELECT n.node_id, n.tree_id, n.parent_node_id,
+       p.node_id AS resolved_parent_node_id,
+       n.upstream_node_id AS source_node_id,
+       p.upstream_node_id AS parent_source_node_id,
+       n.sibling_ordinal, n.id_raw, n.cat, n.rule, n.cl_type,
+       n.start_raw, n.end_raw, n.head_raw, n.length_raw
+FROM main.syntax_node n
+JOIN main.tree tr ON tr.tree_id = n.tree_id
+JOIN main.sentence s ON s.sentence_id = tr.sentence_id
+JOIN main.book b ON b.book_id = s.book_id
+LEFT JOIN main.syntax_node p
+  ON p.node_id = n.parent_node_id AND p.tree_id = n.tree_id
+"""
+_MEMBERS_SQL = _TOKEN_SQL + """
+JOIN main.node_token_membership m
+  ON m.token_id = t.token_id AND m.tree_id = t.tree_id
+WHERE m.node_id = ?
+ORDER BY b.book_ordinal, t.chapter, t.verse, t.verse_token_ordinal
+"""
 
 
 @contextmanager
@@ -148,8 +183,7 @@ def get_verse(
         return VerseResult(book_code, chapter, verse, tokens)
 
 
-def get_token(db_path: str | Path, ref: str) -> TokenResult | None:
-    """Return the exact source ref occurrence, or None when it does not exist."""
+def _token_key(ref: str) -> tuple[str, int, int, int]:
     match = _REF.fullmatch(ref) if isinstance(ref, str) else None
     if match is None:
         raise QueryError("ref must have exact source coordinate form, e.g. MAT 1:1!3")
@@ -159,11 +193,144 @@ def get_token(db_path: str | Path, ref: str) -> TokenResult | None:
     chapter, verse, ordinal = (int(match[i]) for i in (2, 3, 4))
     for value, label in ((chapter, "chapter"), (verse, "verse"), (ordinal, "token ordinal")):
         _positive_integer(value, label)
+    return book_code, chapter, verse, ordinal
+
+
+def _get_token(
+    db: sqlite3.Connection, ref: str, key: tuple[str, int, int, int],
+) -> TokenResult | None:
+    book_code, chapter, verse, ordinal = key
+    book_id = _book_id(db, book_code)
+    if book_id is None:
+        return None
+    rows = db.execute(_EXACT_SQL, (book_id, chapter, verse, ordinal, ref)).fetchall()
+    if len(rows) > 1:
+        raise QueryError("ambiguous exact token occurrence")
+    return TokenResult(**dict(rows[0])) if rows else None
+
+
+def get_token(db_path: str | Path, ref: str) -> TokenResult | None:
+    """Return the exact source ref occurrence, or None when it does not exist."""
+    key = _token_key(ref)
     with _open_readonly(db_path) as db:
-        book_id = _book_id(db, book_code)
-        if book_id is None:
+        return _get_token(db, ref, key)
+
+
+@contextmanager
+def _open_syntax_readonly(db_path: str | Path) -> Iterator[sqlite3.Connection]:
+    with _open_readonly(db_path) as db:
+        db.execute(_NODE_SQL + " LIMIT 0")
+        db.execute(_MEMBERS_SQL + " LIMIT 0", (None,))
+        yield db
+
+
+def _source_node_key(source_node_id: str) -> None:
+    if not isinstance(source_node_id, str) or not source_node_id:
+        raise QueryError("source_node_id must be a nonempty source string")
+
+
+def _resolve_source_node_id(db: sqlite3.Connection, source_node_id: str) -> int | None:
+    book_id = _book_id(db, "MAT")
+    rows = db.execute(
+        "SELECT n.node_id FROM main.syntax_node n "
+        "JOIN main.tree tr ON tr.tree_id = n.tree_id "
+        "JOIN main.sentence s ON s.sentence_id = tr.sentence_id "
+        "WHERE s.book_id = ? AND n.upstream_node_id = ? COLLATE BINARY",
+        (book_id, source_node_id),
+    ).fetchall()
+    if len(rows) > 1:
+        raise QueryError("ambiguous source_node_id within active Matthew snapshot")
+    return rows[0][0] if rows else None
+
+
+def _node_row(db: sqlite3.Connection, sqlite_node_id: int) -> sqlite3.Row:
+    row = db.execute(_NODE_SQL + " WHERE n.node_id = ?", (sqlite_node_id,)).fetchone()
+    if row is None:
+        raise QueryError("missing linked syntax node")
+    return row
+
+
+def _project_node(row: sqlite3.Row) -> NodeResult:
+    if row["source_node_id"] is None or row["source_node_id"] == "":
+        raise QueryError("linked syntax node has no source_node_id")
+    if row["parent_node_id"] is not None and row["resolved_parent_node_id"] is None:
+        raise QueryError("missing or cross-Tree syntax parent")
+    return NodeResult(
+        source_node_id=row["source_node_id"],
+        parent_source_node_id=row["parent_source_node_id"],
+        sibling_ordinal=row["sibling_ordinal"],
+        id_raw=row["id_raw"], cat=row["cat"], rule=row["rule"], cl_type=row["cl_type"],
+        start_raw=row["start_raw"], end_raw=row["end_raw"],
+        head_raw=row["head_raw"], length_raw=row["length_raw"],
+    )
+
+
+def get_node(db_path: str | Path, source_node_id: str) -> NodeResult | None:
+    """Return exact source node facts, or None for an unknown source identity."""
+    _source_node_key(source_node_id)
+    with _open_syntax_readonly(db_path) as db:
+        sqlite_node_id = _resolve_source_node_id(db, source_node_id)
+        return None if sqlite_node_id is None else _project_node(_node_row(db, sqlite_node_id))
+
+
+def get_children(db_path: str | Path, source_node_id: str) -> tuple[NodeResult, ...] | None:
+    """Return direct children in sibling order; None means unknown source node."""
+    _source_node_key(source_node_id)
+    with _open_syntax_readonly(db_path) as db:
+        sqlite_node_id = _resolve_source_node_id(db, source_node_id)
+        if sqlite_node_id is None:
             return None
-        rows = db.execute(_EXACT_SQL, (book_id, chapter, verse, ordinal, ref)).fetchall()
-        if len(rows) > 1:
-            raise QueryError("ambiguous exact token occurrence")
-        return TokenResult(**dict(rows[0])) if rows else None
+        return tuple(_project_node(row) for row in db.execute(
+            _NODE_SQL + " WHERE n.parent_node_id = ? ORDER BY n.sibling_ordinal",
+            (sqlite_node_id,),
+        ))
+
+
+def _ancestors(db: sqlite3.Connection, sqlite_node_id: int) -> tuple[NodeResult, ...]:
+    row = _node_row(db, sqlite_node_id)
+    _project_node(row)
+    tree_id = row["tree_id"]
+    seen = {sqlite_node_id}
+    ancestors: list[NodeResult] = []
+    while row["parent_node_id"] is not None:
+        parent = row["parent_node_id"]
+        if parent in seen:
+            raise QueryError("cyclic syntax ancestry")
+        seen.add(parent)
+        row = _node_row(db, parent)
+        if row["tree_id"] != tree_id:
+            raise QueryError("cross-Tree syntax ancestry")
+        ancestors.append(_project_node(row))
+    return tuple(ancestors)
+
+
+def get_ancestors_by_node(
+    db_path: str | Path, source_node_id: str,
+) -> tuple[NodeResult, ...] | None:
+    """Return nearest parent first, root last, excluding self; None if unknown."""
+    _source_node_key(source_node_id)
+    with _open_syntax_readonly(db_path) as db:
+        sqlite_node_id = _resolve_source_node_id(db, source_node_id)
+        return None if sqlite_node_id is None else _ancestors(db, sqlite_node_id)
+
+
+def get_ancestors_by_token(db_path: str | Path, ref: str) -> tuple[NodeResult, ...] | None:
+    """Use Unit 4 exact token lookup; nearest parent first, excluding the leaf."""
+    key = _token_key(ref)
+    with _open_syntax_readonly(db_path) as db:
+        token = _get_token(db, ref, key)
+        return None if token is None else _ancestors(db, token.node_id)
+
+
+def get_members(db_path: str | Path, source_node_id: str) -> tuple[TokenResult, ...] | None:
+    """Return exact stored members in scripture order; None if source node unknown."""
+    _source_node_key(source_node_id)
+    with _open_syntax_readonly(db_path) as db:
+        sqlite_node_id = _resolve_source_node_id(db, source_node_id)
+        if sqlite_node_id is None:
+            return None
+        tokens = tuple(TokenResult(**dict(row)) for row in db.execute(_MEMBERS_SQL, (sqlite_node_id,)))
+        coordinates = [(t.book_code, t.chapter, t.verse, t.verse_token_ordinal) for t in tokens]
+        if len(set(coordinates)) != len(coordinates):
+            raise QueryError("ambiguous scripture coordinates within node membership")
+        return tokens

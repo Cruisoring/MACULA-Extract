@@ -78,8 +78,8 @@ the Unit 2 audit decision or make Unit 2 acceptance an importer certification.
 
 Unit 3 is not independently accepted. Phase remains AUTHORIZED, not COMPLETE or CLOSED.
 No other books, N1904/full NT, companions, semantic projection, XmlPro dependency
-or physical range mapper are authorized. The later, separate Unit 4 authorization
-permits only the read-only query slice below; no Unit 5 work is authorized.
+or physical range mapper are authorized. The later, separate Unit 4 and Unit 5
+authorizations permit only the read-only query slices below.
 
 #### Unit 3 implementation checkpoint reconciliation evidence
 
@@ -126,12 +126,110 @@ The ignored local database remains 160,968,704 bytes. Before/after SHA-256:
 Its binary is not a source deliverable. Implementation validation does not
 independently accept Unit 3 or Unit 4 and does not complete or close the Phase.
 
-### Unit 5
+### Unit 5 - Read-Only Syntax Navigation
 
-**Status:** NOT STARTED
+**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
 
-STOP after the Unit 4 implementation checkpoint. No automatic independent
-acceptance or Unit 5 work is authorized.
+The user separately authorized deterministic syntax navigation under the
+[Unit 5 contract](../architecture/UNIT-5-READ-ONLY-SYNTAX-NAVIGATION-CONTRACT.md).
+Phase remains AUTHORIZED; Units 3 and 4 remain pending independent acceptance.
+No independent acceptance was performed, and no Unit 6 or downstream integration
+is authorized. STOP after the sole Unit 5 implementation checkpoint and its
+post-checkpoint verification.
+
+#### Starting state and reviewed path scope
+
+- Root: `C:\Projects\MACULA-Extract`; branch: `master`.
+- Required starting HEAD / sole checkpoint parent:
+  `8d82fa2f318ddee7600cd4007a1207599b336b9c`.
+- Initial index and tracked worktree were clean; `git diff --check` passed.
+- The only untracked file was the authorized Unit 5 contract. Its original bytes
+  are preserved (SHA-256
+  `BDDAF36845270AFB59454A573130FB7CAD8319EE4A07C008E308529B25A563C2`)
+  and included in the reviewed checkpoint.
+- Narrow paths: the existing query module, one new Unit 5 test module, root/test
+  READMEs, architecture index, this governance record and the original contract.
+  Frozen Unit 1-4 contracts, fixtures, schema, importer and audits are unchanged.
+- Required commit subject: `implement read-only syntax navigation`.
+  The actual checkpoint SHA is reported only after creation, not fabricated
+  inside its own candidate diff.
+
+#### Implemented source boundary
+
+`get_node`, `get_children`, `get_ancestors_by_node`, `get_ancestors_by_token`
+and `get_members` share the existing caller-supplied path / SQLite URI `mode=ro`,
+`query_only=ON`, FK/recursive-trigger connection profile.
+Exactly-one source-ID resolution uses BINARY `upstream_node_id` lookup within the
+single active Matthew book/snapshot: zero returns explicit `None`, one resolves
+to an internal SQLite PK, multiple matches raise `QueryError`. Multiple matching
+Matthew snapshots also fail closed. Source ID encoding is never decoded.
+
+Frozen `NodeResult` exposes source IDs, the actual relational parent source ID,
+ordered sibling ordinal and nullable raw mirrors, not SQLite node/tree/element
+identities. Both ancestor APIs exclude the starting node/leaf and order nearest
+parent first, root last; cyclic or missing-parent topology fails explicitly.
+Exact token entry reuses Unit 4's validation/lookup within one read-only connection.
+Members use only the stored membership relation and unchanged Unit 4 token facts,
+ordered by scripture coordinates. Raw Head plus ordered children is sufficient;
+no extra Head/lexical-head API is introduced.
+
+#### Actual validation evidence
+
+Runtime: Python **3.13.7**, SQLite **3.50.4**, locally installed .NET SDK **9.0.310**.
+The .NET bridge was built offline only for existing small Unit 3 parser regressions;
+no dependency acquisition or full Matthew build was performed.
+
+Commands executed from the implementation root:
+
+```powershell
+python -B -m scripts.verify_unit1
+python -B -m scripts.source_schema
+python -B -m unittest tests.test_unit1 tests.test_unit2 tests.test_unit4.Unit4FastTests -v
+python -B -m unittest tests.test_unit5.Unit5FastTests tests.test_unit4.Unit4FastTests -v
+python -B "C:\Users\cruis\.copilot\session-state\14e9ed43-442b-43e9-8b26-dc01e2012772\files\validate_unit5_reuse.py"
+```
+
+The disposable external session fixture overrides only Unit 3 class setup, opens
+the existing database read-only, freshly runs complete schema/source-fidelity
+validation, checks the previously verified logical digest, retains the slow-gate
+skip and forbids full-source population. It selects the existing ignored
+`sblgnt-matthew.sqlite3` and sets the Unit 4/5 integration flags and database-path
+environment variables before loading their test modules. It is not a source
+deliverable. Default Unit 3 discovery still has its unchanged full-build setup.
+
+- Pre-change fast baseline: **93 PASS** (26 Unit 1, 56 Unit 2, 11 Unit 4), no skips.
+- Final focused run: **27 PASS** (16 Unit 5 fast, 11 Unit 4 fast), no skips.
+- Final combined regression/integration run: **140 run**, **139 PASS**, zero
+  failures/errors, **1 documented skip**; all verbose result lines reviewed.
+  Breakdown: Unit 1 **26**, Unit 2 **56**, Unit 3 **22 PASS + 1 skip**,
+  Unit 4 **11 fast + 4 integration**, Unit 5 **16 fast + 4 integration**.
+- Sole skip: `test_u3_01_two_full_builds_and_logical_digests`, exact reason
+  `explicit slow gate: set MACULA_UNIT3_SECOND_BUILD=1 for a second full build`.
+  No second-build determinism result is claimed.
+- Unchanged Unit 1 source verifier and empty schema verifier: **PASS**.
+  Both changed Python files passed Python 3.10 AST syntax validation.
+  Pylance file checks could not find this repository outside the active editor
+  workspace; no static type-check result is claimed.
+- Matthew `MAT 1:1!3`: **9** source ancestors, nearest-first:
+  N2NP, three Np-Appos, two NPofNP, Np2P, P2CL (`ClType=Verbless`), root.
+  Exact source identities agree with independently read pinned XML.
+- Matthew `400010020050040`: Rule S-V-O, Start/End `"5"`/`"8"`,
+  direct children S/V/O in ordinals 0/1/2, raw Head `"1"` selects V.
+  Exact members **[5,7,8,9]**, with **token 6 explicitly excluded**.
+  Leaf self-membership and missing Head also pass.
+- Source-ID ambiguity fails closed, surrogate-PK invariance passes, and
+  temporary-store mutation is rejected even with `query_only` disabled.
+
+Full Matthew evidence: **REUSED PREVIOUS VERIFIED EVIDENCE**, with fresh complete
+BYTE/NORMALIZED/schema/membership validation and matching logical digest
+`F2A4A7C42FB3828B46B29DF388D583D497959CBD9B5E65CDAD876F7A85878A72`.
+There were **0 full Matthew builds**, no copy into Git, and no production SQLite
+deliverable. Existing ignored database before/after: **160,968,704 bytes**, SHA-256
+`E52DB7E2ABDB1C2B9B4F93060312587A1363066378B7A0C9B8FB72475C25CE7E`.
+Schema version remains **2**; complete catalog/index inventory is unchanged.
+No UI, translation alignment, database merge, localization runtime, semantic
+projection, new corpus, XmlPro dependency, source mutation or schema migration
+was introduced. This is implementation validation, not independent acceptance.
 
 ## Unit 1 execution evidence
 
