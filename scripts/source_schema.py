@@ -12,7 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DDL_PATH = PROJECT_ROOT / "schema" / "001-source-store.sql"
 PARSER_PATH = PROJECT_ROOT / "contracts" / "xmlreader-parser.unit2.json"
 LOCATOR_PATH = PROJECT_ROOT / "contracts" / "occurrence-locator.unit2.json"
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 TABLES = {
     "schema_version", "dataset_snapshot", "source_file", "book", "xml_element",
     "xml_attribute", "xml_content", "sentence", "tree", "syntax_node", "token",

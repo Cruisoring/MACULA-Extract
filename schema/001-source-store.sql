@@ -3,7 +3,7 @@ PRAGMA recursive_triggers = ON;
 
 CREATE TABLE schema_version (
     singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
-    version INTEGER NOT NULL CHECK (version = 1),
+    version INTEGER NOT NULL CHECK (version = 2),
     ddl_sha256 TEXT COLLATE BINARY NOT NULL,
     parser_contract_sha256 TEXT COLLATE BINARY NOT NULL,
     locator_contract_sha256 TEXT COLLATE BINARY NOT NULL
@@ -242,14 +242,6 @@ WITH RECURSIVE ancestors(node_id, token_id, tree_id, parent_node_id) AS (
     FROM ancestors a JOIN syntax_node n ON n.node_id = a.parent_node_id AND n.tree_id = a.tree_id
 )
 SELECT node_id, token_id, tree_id FROM ancestors;
-
-CREATE TRIGGER membership_ancestry BEFORE INSERT ON node_token_membership BEGIN
-    SELECT RAISE(ABORT, 'membership requires an actual descendant leaf')
-    WHERE NOT EXISTS (
-        SELECT 1 FROM expected_node_token_membership
-        WHERE node_id = NEW.node_id AND token_id = NEW.token_id AND tree_id = NEW.tree_id
-    );
-END;
 
 CREATE TRIGGER membership_no_update BEFORE UPDATE ON node_token_membership BEGIN
     SELECT RAISE(ABORT, 'rebuild membership by delete and ancestry-derived insert');

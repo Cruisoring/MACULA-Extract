@@ -2,7 +2,7 @@
 
 ## Scope and evidence
 
-This contract freezes an executable SQLite representation for the SBLGNT Matthew
+This contract defines an executable SQLite representation for the SBLGNT Matthew
 vertical slice. It does not implement production XML parsing, importer/exporter,
 ingestion, BRW projection, localization, or physical range mapping.
 
@@ -19,10 +19,11 @@ Spike's broader suggested one-book importer/exporter implementation unit.
 
 ## Version and bootstrap
 
-- [DDL](../../schema/001-source-store.sql): schema version **1**.
+- [DDL](../../schema/001-source-store.sql): schema version **2**, Unit 2 Amendment 1.
+  The filename remains the bootstrap DDL path, not a production migration sequence.
 - [Bootstrap/validator](../../scripts/source_schema.py): `bootstrap(connection)`,
   `validate_store(connection)` and a memory-only verification CLI.
-- `PRAGMA user_version=1` plus a singleton `schema_version` row identify the version.
+- `PRAGMA user_version=2` plus a singleton `schema_version` row identify the version.
   The row also records DDL, parser-contract and locator-contract SHA-256 values.
 - Code/config hashes use UTF-8 text with LF line endings, preserving every other
   character. This avoids Git `core.autocrlf` differences becoming different schema
@@ -33,6 +34,8 @@ Spike's broader suggested one-book importer/exporter implementation unit.
   it is not an idempotent ingestion API or a general migration framework.
 - DDL and version insertion run in one transaction. SQL failure rolls it back.
   Bootstrap does not mutate or repair an unknown database.
+- Version 1 databases are not accepted as version 2 and are not migrated in place.
+  Rebuild from the fixed published source into a fresh version 2 database.
 - SQLite 3.37+ with STRICT and JSON support. Actual validation runtime:
   Python 3.13.7, SQLite 3.50.4. No network dependency.
 - Every source-schema connection must enable `foreign_keys=ON` and
@@ -66,7 +69,9 @@ lemma/word-sense registry is introduced.
 
 All source and typed-mirror rows reject UPDATE/DELETE. Rebuild into a fresh schema
 or append a separately scoped snapshot, rather than overwrite accepted facts.
-Membership alone permits deletion/recomputation; INSERT requires real ancestry.
+Membership alone permits deletion/recomputation. INSERT retains PK and same-Tree
+FK enforcement, but no per-row semantic ancestry trigger. Rows can be transiently
+semantically invalid during a build; mandatory post-load validation rejects them.
 Published source stores should additionally use read-only connection/file boundaries.
 Schema catalog validation detects removed/altered tables, views, indexes or triggers.
 
@@ -96,6 +101,90 @@ It reports explicit failures; no silent defaults or repaired-source success.
 This validator does **not** parse original BLOBs or certify that every original XML
 event was persisted. Archive-only records can exist before parsing. Future importer
 coverage and independent XML/normalized round-trip checks remain required.
+
+## Unit 2 Amendment 1
+
+Original Unit 2 schema version 1 was independently accepted with minor findings.
+The [original independent audit](../audits/UNIT-2-SQLITE-SOURCE-SCHEMA-INDEPENDENT-ACCEPTANCE-AUDIT.md)
+is historical evidence and remains unchanged; it does not certify this amendment.
+
+Amendment 1 removes the pathological `membership_ancestry` BEFORE INSERT trigger
+without any replacement per-row ancestry trigger. The original trigger reran a
+global recursive ancestry computation for every membership row. Version 2 retains
+the membership table, PK, reverse index, same-Tree foreign keys, expected ancestry
+view, and all unrelated immutability protections.
+
+Exact membership remains actual XML ancestry-derived descendant closure, including
+leaf self-membership and discontinuous sets. Start/End, ranges and scripture
+envelopes never supply membership.
+
+Before any successful authoritative import may commit, `validate_store` must prove
+both set differences empty:
+
+```sql
+SELECT node_id, token_id, tree_id FROM node_token_membership
+EXCEPT
+SELECT node_id, token_id, tree_id FROM expected_node_token_membership;
+
+SELECT node_id, token_id, tree_id FROM expected_node_token_membership
+EXCEPT
+SELECT node_id, token_id, tree_id FROM node_token_membership;
+```
+
+Extra same-Tree non-ancestor or sibling membership may pass INSERT, but must fail
+final validation. Missing ancestor/leaf-self membership and an injected Matthew
+1:2 token 6 must also fail. Cross-Tree membership remains directly rejected by
+composite foreign keys. Equal counts are not sufficient evidence of equal sets.
+
+The production build owns one `BEGIN IMMEDIATE` transaction for loading and all
+completion gates. Full store validation, complete membership equality and Unit 3
+independent source-versus-DB fidelity must succeed before COMMIT/publication;
+any failure rolls back and must not publish a partial successful store.
+
+The source is a fixed published MACULA artifact. The importer preserves its
+linguistic analysis rather than rejudging or repairing it. XML-to-SQLite mapping
+correctness remains this project's responsibility; post-load topology and set
+validation enforce that boundary.
+
+The amended DDL has a new SHA-256 identity, schema metadata and user_version 2.
+Parser and locator contracts remain unchanged. The existing uncommitted Unit 3
+importer contract synchronizes only its schema_version to 2 and is not part of
+the Unit 2 amendment checkpoint. Other Unit 3 work remains preserved.
+
+### Amendment validation evidence
+
+Unit 1 regression: 26 tests PASS. Amended Unit 2 regression: 56 tests PASS.
+The combined focused run executed 82 tests with no failures or errors.
+Negative cases cover extra non-ancestor/sibling rows, missing ancestor/leaf-self
+rows, equal-count wrong sets, Matthew 1:2 token 6 injection, cross-Tree FK rejection,
+and rollback after post-load membership validation failure.
+
+Before/after SQL catalog comparison found only the removed `membership_ancestry`
+trigger and the schema-version CHECK changing from 1 to 2. All other catalog
+objects are identical. Version 2 DDL SHA-256 (LF text identity):
+`57692AC583E90831F2F3279776CCB98FE5541E0DC16C78C333997B7CECCB1503`.
+
+Each scale ran once with the current Unit 3 implementation and full integrity/
+source-fidelity gates. Timings are observed seconds, not new millisecond contracts.
+Scale totals include offline bridge compilation; their DB reconstruction is reused
+for digest generation, matching the preceding diagnostic scope.
+
+| Sentences | Membership rows | Generation | Insertion | Final membership validation | Total |
+|---|---:|---:|---:|---:|---:|
+| 1 | 71 | 0.000044 | 0.000354 | 0.000828 | 6.175 |
+| 10 | 3,470 | 0.001759 | 0.020593 | 0.017413 | 6.753 |
+| 50 | 11,890 | 0.005656 | 0.072799 | 0.068875 | 10.039 |
+| 100 | 18,347 | 0.008293 | 0.112402 | 0.171949 | 12.511 |
+| Full Matthew, 1,134 | 159,391 | 0.081334 | 1.124624 | 1.431885 | 73.319 |
+
+Exactly one full production-style build completed under a 600-second supervising
+process timeout: 68.517 seconds for the production builder, 73.319 including the
+bridge. It used the original production validation/digest flow without reconstruction
+caching and published only after its successful commit. Complete independent BYTE
+and NORMALIZED source comparisons passed: 59,891 elements, 767,429 attributes,
+179,675 content records, 1,134 sentences/Trees, 56,488 nodes, 18,329 tokens,
+159,391 memberships and 733 single-character tokens. The production database is
+outside Git. A second full build was not started.
 
 ## Occurrence identity
 

@@ -150,8 +150,10 @@ class SchemaFixture:
 
     def model(self, text: str = "\u1f08\u03b2\u03c1\u03b1\u03ac\u03bc.",
               extras: dict[str, str] | None = None, node_overrides: dict[str, object] | None = None,
-              token_overrides: dict[str, object] | None = None, archive_number: int = 1) -> dict[str, int]:
-        root_attributes = {"Cat": "S", "Head": "0", "nodeId": "root:0001", "Length": "1"}
+              token_overrides: dict[str, object] | None = None, archive_number: int = 1,
+              sibling_text: str | None = None) -> dict[str, int]:
+        root_attributes = {"Cat": "S", "Head": "0", "nodeId": "root:0001",
+                           "Length": "1" if sibling_text is None else "2"}
         clause_attributes = {"Cat": "CL", "Rule": "P2CL", "ClType": "Verbless", "Start": "0", "End": "0"}
         attributes = {
             "Id": "leaf.001", "Cat": "noun", "nodeId": "00000001", "xml:id": "n00000001",
@@ -160,15 +162,21 @@ class SchemaFixture:
         }
         attributes.update(extras or {})
         leaf_xml = tag("Node", attributes, escape(text))
-        raw = tag("Sentences", {}, tag("Sentence", {"ref": "MAT 1:1!1-1:1!1"},
+        sentence_ref = "MAT 1:1!1-1:1!1" if sibling_text is None else "MAT 1:1!1-1:1!2"
+        sibling_attributes = {
+            "Cat": "noun", "nodeId": "00000002", "xml:id": "n00000002",
+            "morphId": "00000002", "ref": "MAT 1:1!2",
+        }
+        sibling_xml = "" if sibling_text is None else tag("Node", sibling_attributes, escape(sibling_text))
+        raw = tag("Sentences", {}, tag("Sentence", {"ref": sentence_ref},
               tag("Trees", {}, tag("Tree", {}, tag("Node", root_attributes,
-                  tag("Node", clause_attributes, leaf_xml)))))).encode("utf-8")
+                  tag("Node", clause_attributes, leaf_xml) + sibling_xml))))).encode("utf-8")
         file_id, book_id = self.archive(raw, archive_number)
         document = self.element(file_id, None, "Sentences")
         sentence_element = self.element(file_id, document, "Sentence")
-        self.attribute(sentence_element, "ref", "MAT 1:1!1-1:1!1")
+        self.attribute(sentence_element, "ref", sentence_ref)
         sentence = self.insert("sentence", {"file_id": file_id, "book_id": book_id, "element_id": sentence_element,
-                                          "ordinal": 0, "ref_raw": "MAT 1:1!1-1:1!1"})
+                                          "ordinal": 0, "ref_raw": sentence_ref})
         wrapper = self.element(file_id, sentence_element, "Trees")
         tree_element = self.element(file_id, wrapper, "Tree")
         tree = self.insert("tree", {"sentence_id": sentence, "element_id": tree_element, "ordinal": 0})
@@ -183,9 +191,18 @@ class SchemaFixture:
         self.content(file_id, leaf, "text", text)
         leaf_node = self.node(tree, leaf, clause_node, 0, attributes)
         token = self.token(tree, book_id, leaf_node, text, attributes, overrides=token_overrides)
+        identities = {"file": file_id, "book": book_id, "document": document, "sentence": sentence, "tree": tree,
+                      "root": root_node, "clause": clause_node, "leaf": leaf, "leaf_node": leaf_node, "token": token}
+        if sibling_text is not None:
+            sibling_element = self.element(file_id, root_element, "Node")
+            self.attributes(sibling_element, sibling_attributes)
+            self.content(file_id, sibling_element, "text", sibling_text)
+            sibling_node = self.node(tree, sibling_element, root_node, 1, sibling_attributes)
+            sibling_token = self.token(tree, book_id, sibling_node, sibling_text, sibling_attributes,
+                                       traversal=1, canonical=1, word=2)
+            identities.update({"sibling_node": sibling_node, "sibling_token": sibling_token})
         self.memberships()
-        return {"file": file_id, "book": book_id, "document": document, "sentence": sentence, "tree": tree,
-                "root": root_node, "clause": clause_node, "leaf": leaf, "leaf_node": leaf_node, "token": token}
+        return identities
 
 
 class Unit2Tests(unittest.TestCase):
@@ -203,7 +220,8 @@ class Unit2Tests(unittest.TestCase):
     def test_empty_bootstrap_version_tables_and_foreign_keys(self) -> None:
         schema.validate_store(self.db)
         self.assertEqual(self.db.execute("PRAGMA foreign_keys").fetchone(), (1,))
-        self.assertEqual(self.db.execute("PRAGMA user_version").fetchone(), (1,))
+        self.assertEqual(self.db.execute("PRAGMA user_version").fetchone(), (2,))
+        self.assertEqual(self.db.execute("SELECT version FROM schema_version").fetchone(), (2,))
         actual = {r[0] for r in self.db.execute("SELECT name FROM sqlite_schema WHERE type='table'")}
         self.assertEqual(actual, schema.TABLES)
         for table in actual:
@@ -274,12 +292,12 @@ class Unit2Tests(unittest.TestCase):
                 db.execute("PRAGMA foreign_keys=ON")
                 db.execute("PRAGMA recursive_triggers=ON")
                 schema.validate_store(db)
-                self.assertEqual(db.execute("PRAGMA user_version").fetchone(), (1,))
+                self.assertEqual(db.execute("PRAGMA user_version").fetchone(), (2,))
             finally:
                 db.close()
 
     def test_schema_identity_drift_rejected(self) -> None:
-        self.db.execute("PRAGMA user_version=2")
+        self.db.execute("PRAGMA user_version=1")
         with self.assertRaisesRegex(schema.SchemaError, "version mismatch"):
             schema.validate_store(self.db)
 
@@ -566,8 +584,12 @@ class Unit2Tests(unittest.TestCase):
         self.assertEqual(self.db.execute("SELECT start_raw,end_raw FROM syntax_node WHERE node_id=?",
                                         (target_node,)).fetchone(), ("5", "8"))
         self.assertEqual(self.db.execute("SELECT start_raw FROM syntax_node WHERE node_id=?", (first_node,)).fetchone(), ("4",))
-        with self.assertRaisesRegex(sqlite3.IntegrityError, "actual descendant"):
-            self.db.execute("INSERT INTO node_token_membership VALUES(?,?,?)", (target_node, first_token, tree))
+        self.db.execute("INSERT INTO node_token_membership VALUES(?,?,?)", (target_node, first_token, tree))
+        with self.assertRaisesRegex(schema.SchemaError, "incomplete/incorrect ancestry membership"):
+            schema.validate_store(self.db)
+        self.db.execute("DELETE FROM node_token_membership WHERE node_id=? AND token_id=?",
+                        (target_node, first_token))
+        schema.validate_store(self.db)
 
     def test_bootstrap_logical_identity_is_deterministic(self) -> None:
         other = sqlite3.connect(":memory:")
@@ -590,7 +612,7 @@ class Unit2Tests(unittest.TestCase):
     def test_membership_cross_tree_foreign_keys_rejected(self) -> None:
         first = self.fixture.model()
         second = SchemaFixture(self.db, 100).model(archive_number=2)
-        with self.assertRaises(sqlite3.IntegrityError):
+        with self.assertRaisesRegex(sqlite3.IntegrityError, "FOREIGN KEY"):
             self.db.execute("INSERT INTO node_token_membership VALUES(?,?,?)",
                             (first["root"], second["token"], first["tree"]))
 
@@ -644,16 +666,75 @@ class Unit2Tests(unittest.TestCase):
         with self.assertRaisesRegex(schema.SchemaError, "coordinates differ"):
             schema.validate_store(self.db)
 
-    def test_membership_missing_row_and_wrong_ancestry_rejected(self) -> None:
+    def test_membership_missing_ancestor_rejected_post_load(self) -> None:
         ids = self.fixture.model()
         self.db.execute("DELETE FROM node_token_membership WHERE node_id=?", (ids["clause"],))
         with self.assertRaisesRegex(schema.SchemaError, "incomplete/incorrect"):
             schema.validate_store(self.db)
-        with self.assertRaisesRegex(sqlite3.IntegrityError, "descendant leaf"):
+        with self.assertRaisesRegex(sqlite3.IntegrityError, "FOREIGN KEY"):
             self.db.execute("INSERT INTO node_token_membership VALUES(9999,?,?)", (ids["token"], ids["tree"]))
         self.db.execute("INSERT INTO node_token_membership SELECT * FROM expected_node_token_membership WHERE node_id=?",
                         (ids["clause"],))
         schema.validate_store(self.db)
+
+    def test_membership_insert_has_no_per_row_ancestry_trigger(self) -> None:
+        self.assertEqual(self.db.execute(
+            "SELECT name FROM sqlite_schema WHERE type='trigger' AND name='membership_ancestry'",
+        ).fetchall(), [])
+        triggers = self.db.execute(
+            "SELECT name,sql FROM sqlite_schema WHERE type='trigger' AND tbl_name='node_token_membership'",
+        ).fetchall()
+        self.assertEqual([name for name, _ in triggers], ["membership_no_update"])
+        self.assertNotIn("INSERT", triggers[0][1])
+        self.assertEqual(self.db.execute(
+            "SELECT name FROM sqlite_schema WHERE type='index' AND name='membership_token'",
+        ).fetchall(), [("membership_token",)])
+
+    def test_membership_extra_same_tree_nonancestor_rejected_post_load(self) -> None:
+        ids = self.fixture.model(sibling_text="\u03b2")
+        schema.validate_store(self.db)
+        self.db.execute("INSERT INTO node_token_membership VALUES(?,?,?)",
+                        (ids["leaf_node"], ids["sibling_token"], ids["tree"]))
+        with self.assertRaisesRegex(schema.SchemaError, "incomplete/incorrect ancestry membership"):
+            schema.validate_store(self.db)
+
+    def test_membership_extra_sibling_subtree_rejected_post_load(self) -> None:
+        ids = self.fixture.model(sibling_text="\u03b2")
+        schema.validate_store(self.db)
+        self.db.execute("INSERT INTO node_token_membership VALUES(?,?,?)",
+                        (ids["clause"], ids["sibling_token"], ids["tree"]))
+        with self.assertRaisesRegex(schema.SchemaError, "incomplete/incorrect ancestry membership"):
+            schema.validate_store(self.db)
+
+    def test_membership_missing_leaf_self_rejected_post_load(self) -> None:
+        ids = self.fixture.model()
+        self.db.execute("DELETE FROM node_token_membership WHERE node_id=? AND token_id=?",
+                        (ids["leaf_node"], ids["token"]))
+        with self.assertRaisesRegex(schema.SchemaError, "incomplete/incorrect ancestry membership"):
+            schema.validate_store(self.db)
+
+    def test_membership_equal_counts_do_not_hide_wrong_set(self) -> None:
+        ids = self.fixture.model(sibling_text="\u03b2")
+        before = self.db.execute("SELECT count(*) FROM node_token_membership").fetchone()
+        self.db.execute("DELETE FROM node_token_membership WHERE node_id=? AND token_id=?",
+                        (ids["clause"], ids["token"]))
+        self.db.execute("INSERT INTO node_token_membership VALUES(?,?,?)",
+                        (ids["clause"], ids["sibling_token"], ids["tree"]))
+        self.assertEqual(self.db.execute("SELECT count(*) FROM node_token_membership").fetchone(), before)
+        with self.assertRaisesRegex(schema.SchemaError, "incomplete/incorrect ancestry membership"):
+            schema.validate_store(self.db)
+
+    def test_membership_validation_failure_rolls_back_transaction(self) -> None:
+        self.db.execute("BEGIN IMMEDIATE")
+        ids = self.fixture.model(sibling_text="\u03b2")
+        self.db.execute("INSERT INTO node_token_membership VALUES(?,?,?)",
+                        (ids["clause"], ids["sibling_token"], ids["tree"]))
+        with self.assertRaisesRegex(schema.SchemaError, "incomplete/incorrect ancestry membership"):
+            schema.validate_store(self.db)
+        self.db.rollback()
+        self.assertFalse(self.db.in_transaction)
+        self.assertEqual(self.db.execute("SELECT count(*) FROM source_file").fetchone(), (0,))
+        self.assertEqual(self.db.execute("SELECT count(*) FROM node_token_membership").fetchone(), (0,))
 
     def test_no_physical_mapper_or_semantic_entities(self) -> None:
         fields = {r[1] for r in self.db.execute("PRAGMA table_info(xml_element)")}
