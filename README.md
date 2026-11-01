@@ -15,7 +15,8 @@ Unit 2 Amendment 1: **IMPLEMENTED** - schema version 2 uses post-load complete-s
 membership validation instead of a per-row ancestry INSERT trigger.
 
 Unit 3: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - SBLGNT Matthew Source Importer & Fidelity Round-Trip.
-Unit 4: **NOT STARTED**; no later Unit is authorized.
+Unit 4: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - Read-Only Matthew Verse / Token Query Slice.
+Unit 5: **NOT STARTED**; no later Unit or automatic independent acceptance is authorized.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
@@ -27,6 +28,8 @@ Unit 4: **NOT STARTED**; no later Unit is authorized.
 - The later, separate Unit 3 authorization permits the exact pinned Matthew pipeline only.
   Unit 1, the amended schema-v2 Unit 2 baseline and historical independent audits
   are preserved; this checkpoint does not change them.
+- The separate Unit 4 authorization adds only read-only verse/token queries over an
+  existing schema-v2 store. It does not authorize another build, migration or Unit 5.
 
 See `AGENTS.md`, `contracts/`, and `docs/governance/`.
 
@@ -77,3 +80,27 @@ Remove generated outputs when finished; no production database binary is a Git d
 See the [Unit 3 contract](docs/architecture/UNIT-3-SBLGNT-MATTHEW-SOURCE-FIDELITY-PIPELINE.md).
 Default Unit 3 discovery shares one full Matthew build across the class. The
 second-build determinism test remains an explicit slow gate; see [test instructions](tests/README.md).
+
+## Unit 4 read-only source queries
+
+The caller supplies an existing database path; no importer, network or .NET build
+is run by these APIs:
+
+```python
+from scripts.source_query import get_token, get_verse
+
+verse = get_verse(database_path, "MAT", 1, 1)
+token = get_token(database_path, "MAT 1:1!3")
+```
+
+Results are immutable typed source facts. Missing verses/exact tokens return `None`;
+invalid input, incompatible identity/schema and SQLite failures raise `QueryError`.
+Verse tokens use canonical scripture order. Source text is not normalized or substituted.
+Generated SQLite stays local and ignored; do not commit it or rebuild it for query tests.
+
+```powershell
+python -B -m unittest tests.test_unit4.Unit4FastTests -v
+```
+
+See the [Unit 4 query contract](docs/architecture/UNIT-4-MATTHEW-QUERY-SLICE.md)
+for field mappings, read-only behavior and optional existing full-Matthew integration.

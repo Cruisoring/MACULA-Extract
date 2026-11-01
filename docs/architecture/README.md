@@ -14,8 +14,10 @@ Those artifacts did not authorize production ingestion. The later, separately au
 [Unit 3 Matthew pipeline](UNIT-3-SBLGNT-MATTHEW-SOURCE-FIDELITY-PIPELINE.md) adds actual XmlReader
 import, byte archive export and independent normalized source fidelity verification.
 No scope beyond pinned SBLGNT Matthew is authorized.
-Phase remains AUTHORIZED. Unit 3 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE;
-Unit 4 is NOT STARTED.
+The separately authorized [Unit 4 query slice](UNIT-4-MATTHEW-QUERY-SLICE.md) adds
+only read-only verse/token source queries over an existing schema-v2 Matthew store.
+Phase remains AUTHORIZED. Units 3 and 4 are IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE;
+Unit 5 is NOT STARTED. No automatic independent acceptance is authorized.
 
 The historical reports retain their original investigation-time statuses and relative
 evidence links, some of which refer to their original session/TEMP location. Their

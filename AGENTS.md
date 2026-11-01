@@ -38,9 +38,11 @@ transactional post-load complete-set validation. Original Unit 2 was independent
 accepted with minor findings; its historical audit is unchanged.
 Unit 3 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE. No network acquisition is permitted.
 Unit 1 and the amended Unit 2 technical baseline, plus both historical audits, remain frozen.
-Unit 4 is NOT STARTED.
+The user separately authorized Unit 4's read-only Matthew verse/token query slice.
+Unit 4 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
 No other book, N1904/full-NT ingestion, companion merge, XmlPro dependency, physical
-range mapper or semantic projection is authorized. No later Unit is authorized or started.
+range mapper or semantic projection is authorized. Unit 5 is NOT STARTED;
+no later Unit or automatic independent acceptance is authorized.
 See the [Unit 3 pipeline contract](docs/architecture/UNIT-3-SBLGNT-MATTHEW-SOURCE-FIDELITY-PIPELINE.md).
 
 ## Fidelity principles
@@ -78,3 +80,14 @@ Before editing, record branch, HEAD, staged/unstaged/untracked state. Do not des
 - Publish without overwriting; consumers use read-only/query-only connections with both PRAGMAs ON.
 - Do not commit generated production database binaries. Keep all tests/builds temporary and clean up.
 - Preserve historical F-1 through F-4; Unit 3's source-fidelity control does not erase F-2.
+
+## Unit 4 query boundary
+- Only `get_verse` and `get_token`; caller supplies the existing schema-v2 database path.
+- Use SQLite URI `mode=ro`, `query_only=ON` and the existing consumer PRAGMA profile.
+- Check version/contract identity and required query columns before lookup; errors are not not-found.
+- Order verse tokens by stored scripture coordinates, never tree/row/Start order.
+- Preserve raw mirrors, absence versus empty, and surface versus normalized; do not derive semantics.
+- Keep local SQLite ignored and byte-for-byte unchanged; no migration or full Matthew rebuild.
+- Fast tests use temporary minimal stores. Full-Matthew integration is opt-in and read-only.
+- Default Unit 3 discovery builds Matthew; do not run it for a zero-build query task without
+  an external read-only reuse fixture. See the [Unit 4 contract](docs/architecture/UNIT-4-MATTHEW-QUERY-SLICE.md).

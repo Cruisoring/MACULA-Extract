@@ -78,7 +78,8 @@ the Unit 2 audit decision or make Unit 2 acceptance an importer certification.
 
 Unit 3 is not independently accepted. Phase remains AUTHORIZED, not COMPLETE or CLOSED.
 No other books, N1904/full NT, companions, semantic projection, XmlPro dependency
-or physical range mapper are authorized. No subsequent Unit is authorized or started.
+or physical range mapper are authorized. The later, separate Unit 4 authorization
+permits only the read-only query slice below; no Unit 5 work is authorized.
 
 #### Unit 3 implementation checkpoint reconciliation evidence
 
@@ -99,11 +100,38 @@ Actual byte export, normalized XML serialization/reparse, F-2 tamper rejection,
 test 19 surrogate-PK invariance and Matthew 1:2 membership `[5,7,8,9]` excluding
 token 6 all passed. This evidence is implementation validation, not independent acceptance.
 
-### Unit 4
+### Unit 4 - Read-Only Matthew Verse / Token Query Slice
+
+**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+
+The user separately authorized only `get_verse` and exact `get_token` over the
+existing schema-v2 store, with caller-supplied paths and SQLite-enforced read-only
+access. See the [Unit 4 query contract](../architecture/UNIT-4-MATTHEW-QUERY-SLICE.md).
+Required checkpoint parent: `cc745c692a134cbdaef8c8d177c61e595b0ae31e`.
+
+Pre-commit validation: unchanged Unit 1 verifier PASS; 26 Unit 1 and 56 Unit 2
+tests PASS; 22 Unit 3 non-second-build regressions PASS through an external
+read-only reuse fixture with fresh complete source-fidelity validation (the
+second-build gate remains skipped); 11 Unit 4 fast and 4 existing full-Matthew
+integration tests PASS. No full Matthew build was executed.
+
+Matthew 1:1 returns exactly 8 scripture-ordered tokens with punctuation-preserving
+surface distinct from normalized text. Matthew 1:2 returns token 5 before token 6;
+exact Jesus-token morphology and explicit not-found behavior pass. Temporary-store
+INSERT/UPDATE/DELETE attempts are rejected even with `query_only` disabled, proving
+URI read-only enforcement. Schema and indexes are unchanged.
+
+The ignored local database remains 160,968,704 bytes. Before/after SHA-256:
+`E52DB7E2ABDB1C2B9B4F93060312587A1363066378B7A0C9B8FB72475C25CE7E`.
+Its binary is not a source deliverable. Implementation validation does not
+independently accept Unit 3 or Unit 4 and does not complete or close the Phase.
+
+### Unit 5
 
 **Status:** NOT STARTED
 
-No Unit 4 authorization is implied by this implementation checkpoint.
+STOP after the Unit 4 implementation checkpoint. No automatic independent
+acceptance or Unit 5 work is authorized.
 
 ## Unit 1 execution evidence
 

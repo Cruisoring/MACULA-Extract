@@ -115,3 +115,43 @@ independent original-source fidelity validator to FAIL. It does not weaken the
 production build or published-consumer profile.
 All connections close before temporary directories are removed; no DB/WAL/SHM/cache
 or .NET bin/obj output should remain.
+
+## Unit 4
+
+Fast tests do not open or require the full-Matthew local artifact:
+
+```powershell
+python -B -m unittest tests.test_unit4.Unit4FastTests -v
+```
+
+The 11 fast tests bootstrap tiny temporary schema-v2 fixtures using the existing
+Unit 2 SQL fixture helper. They cover scripture versus traversal/row order, shared
+verse/token models, raw morphology/identity/text/tag/gloss distinctions, absence
+versus empty, exact/case-sensitive lookup, invalid arguments, not-found, missing/
+incompatible stores, ambiguous snapshots, existing index use and no ancestry query.
+INSERT/UPDATE/DELETE are attempted only on temporary fixtures and rejected by SQLite
+both with and without `query_only`, independently proving URI `mode=ro`.
+
+Optional full-Matthew integration uses only an already existing file:
+
+```powershell
+$env:MACULA_UNIT4_INTEGRATION = "1"
+$env:MACULA_UNIT4_DATABASE = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit4.Unit4MatthewIntegrationTests -v
+Remove-Item Env:MACULA_UNIT4_INTEGRATION
+Remove-Item Env:MACULA_UNIT4_DATABASE
+```
+
+Without the opt-in flag or an existing database, the 4 integration tests skip.
+They verify all Matthew 1:1 refs/surfaces, lemmas, punctuation versus normalized,
+Matthew 1:2 canonical order against reversed traversal, exact `MAT 1:1!3`
+morphology, and not-found behavior. They never call an importer or attempt writes.
+The production query API does not contain this local path.
+
+For Unit 4's zero-full-build validation, Unit 3 was run with an external in-memory
+class-setup override reusing the existing read-only database, fresh complete
+schema/source-fidelity validation, temporary small parser regressions, the retained
+second-build skip, and a guard forbidding full-source population. All 22 selected
+tests passed; no full build occurred. This is not an independent acceptance.
+Do not use ordinary Unit 3/all-test discovery for a zero-build task: its unchanged
+default setup constructs a complete Matthew database.
