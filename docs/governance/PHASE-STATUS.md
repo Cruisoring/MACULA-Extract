@@ -19,7 +19,7 @@ The Phase remains **AUTHORIZED**, not COMPLETE or CLOSED. Unit 1's independent a
 
 ### Unit 2 — SQLite Source Schema & Parser Contract
 
-**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED WITH MINOR FINDINGS
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED
 
 The separately authorized schema/contract implementation passed the final pre-commit
 gates recorded below. Checkpoint parent and final cleanliness are mandatory post-commit gates,
@@ -45,9 +45,65 @@ contracts, temporary schema verification and directly related documentation.
 Production parser/importer/exporter, ingestion, integration and interpretation remain excluded.
 See [Unit 2 schema contract](../architecture/UNIT-2-SQLITE-SOURCE-SCHEMA-CONTRACT.md).
 
-### Unit 3
+### Unit 2 Amendment 1 - Schema Version 2
 
-**Status:** NOT STARTED / NOT AUTHORIZED.
+**Status:** IMPLEMENTED
+
+Checkpoint: `087865e3d822c7baa1f9d7e5313d46b5168bc670`.
+The amendment removes `membership_ancestry` without a replacement per-row ancestry
+trigger. PK/FK/unique constraints, reverse index, expected ancestry derivation and
+unrelated immutability protections remain. Both membership set differences must be
+empty before a successful authoritative build commits.
+The original Unit 2 independent acceptance with minor findings and audit remain
+historical evidence; they do not independently accept this amendment.
+The amended schema-v2 technical baseline is frozen for this Unit 3 checkpoint.
+
+### Unit 3 - SBLGNT Matthew Source Importer & Fidelity Round-Trip
+
+**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+
+The user issued a separate formal Unit 3 implementation authorization after the
+Unit 2 independent-acceptance archival checkpoint
+`02b8d788dd3b7bf50b59a76eeda2632182b710f9`.
+It permits only the fixed SBLGNT nodes Matthew source, actual System.Xml.XmlReader
+importer, populated temporary SQLite builds, exact BLOB archive export, DB-only
+normalized reconstruction and independent original-source fidelity comparison.
+
+See the [Unit 3 pipeline contract](../architecture/UNIT-3-SBLGNT-MATTHEW-SOURCE-FIDELITY-PIPELINE.md).
+Unit 1, the amended schema-v2 Unit 2 technical baseline, historical architecture
+reports and both audits remain frozen.
+F-1 through F-4 retain their original findings and severities. Unit 3 adds independent
+source fidelity verification at the F-2 boundary; it does not retroactively change
+the Unit 2 audit decision or make Unit 2 acceptance an importer certification.
+
+Unit 3 is not independently accepted. Phase remains AUTHORIZED, not COMPLETE or CLOSED.
+No other books, N1904/full NT, companions, semantic projection, XmlPro dependency
+or physical range mapper are authorized. No subsequent Unit is authorized or started.
+
+#### Unit 3 implementation checkpoint reconciliation evidence
+
+Required parent: `087865e3d822c7baa1f9d7e5313d46b5168bc670`.
+The unchanged Unit 1 verifier passed, followed by 26 Unit 1 tests and 56 amended
+Unit 2 tests. All 22 Unit 3 tests not requiring a second full build passed with
+zero failures/errors; the retained second-build determinism test was explicitly
+skipped. A mock-only organization check confirmed one builder call in default
+class setup; it did not create a database.
+
+Full Matthew evidence: **REUSED PREVIOUS VERIFIED EVIDENCE**. Reconciliation created
+zero additional full Matthew DBs and preserved the external verified DB byte-for-byte.
+A fresh complete read-only schema/membership/source-fidelity validation reproduced
+the previous logical digest and independent counts: 59,891 elements, 767,429
+attributes, 179,675 content records, 1,134 sentences/Trees, 56,488 nodes, 18,329
+tokens, 159,391 memberships and 733 single-character Greek tokens.
+Actual byte export, normalized XML serialization/reparse, F-2 tamper rejection,
+test 19 surrogate-PK invariance and Matthew 1:2 membership `[5,7,8,9]` excluding
+token 6 all passed. This evidence is implementation validation, not independent acceptance.
+
+### Unit 4
+
+**Status:** NOT STARTED
+
+No Unit 4 authorization is implied by this implementation checkpoint.
 
 ## Unit 1 execution evidence
 
@@ -107,7 +163,7 @@ Boundary: tree/Start order `[6,5]`, exact ancestry membership `[5,7,8,9]`, inter
 
 Post-checkpoint verification must confirm one root commit without parents, the same authorized path set, and clean worktree/index/untracked state. The checkpoint hash is reported with the execution result, not fabricated inside its own commit.
 
-## Unit 2 final execution evidence
+## Unit 2 final execution evidence (original schema version 1 checkpoint)
 
 - Implementation root: `C:\Projects\MACULA-Extract`; branch: `master`.
 - Starting checkpoint and required sole parent:

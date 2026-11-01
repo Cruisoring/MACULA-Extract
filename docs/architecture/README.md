@@ -8,7 +8,14 @@ Historical investigations remain evidence, not retrospective implementation spec
 Unit 1 freezes source identity and fixtures. The separately authorized
 [Unit 2 source-schema contract](UNIT-2-SQLITE-SOURCE-SCHEMA-CONTRACT.md) freezes the executable
 SQLite representation, bootstrap/version policy and parser/locator boundaries.
-Production importer/exporter, ingestion and Unit 3 remain unauthorized.
+Implemented Unit 2 Amendment 1 establishes schema version 2 with transactional
+post-load complete membership validation instead of the per-row ancestry trigger.
+Those artifacts did not authorize production ingestion. The later, separately authorized
+[Unit 3 Matthew pipeline](UNIT-3-SBLGNT-MATTHEW-SOURCE-FIDELITY-PIPELINE.md) adds actual XmlReader
+import, byte archive export and independent normalized source fidelity verification.
+No scope beyond pinned SBLGNT Matthew is authorized.
+Phase remains AUTHORIZED. Unit 3 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE;
+Unit 4 is NOT STARTED.
 
 The historical reports retain their original investigation-time statuses and relative
 evidence links, some of which refer to their original session/TEMP location. Their

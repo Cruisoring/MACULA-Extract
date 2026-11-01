@@ -1,0 +1,30 @@
+{
+  "contract_version": 1,
+  "unit": 3,
+  "source_contract": "macula-sblgnt-matthew.unit1.json",
+  "schema_version": 2,
+  "production_parser": "System.Xml.XmlReader",
+  "target_framework": "net9.0",
+  "reader_protocol_version": 1,
+  "logical_digest_version": "macula.source-logical.v1",
+  "settings": {
+    "DtdProcessing": "Prohibit",
+    "XmlResolver": null,
+    "ValidationType": "None",
+    "ConformanceLevel": "Document",
+    "CheckCharacters": true,
+    "IgnoreWhitespace": false,
+    "IgnoreComments": false,
+    "IgnoreProcessingInstructions": false
+  },
+  "source_scope": "Only the exact pinned SBLGNT nodes Matthew file",
+  "external_acquisition": false,
+  "xinclude": false,
+  "xmlpro_dependency": false,
+  "independent_reference_parser": "Python standard-library Expat",
+  "consumer_connection": "mode=ro, query_only=ON, foreign_keys=ON, recursive_triggers=ON",
+  "byte_channel": "Original-byte BLOB archive export",
+  "normalized_channel": "DB-only ordered XML reconstruction and independently parsed source/core equality",
+  "publication": "Validate an isolated candidate, close it, then create a no-overwrite same-volume hard link",
+  "production_database_in_git": false
+}

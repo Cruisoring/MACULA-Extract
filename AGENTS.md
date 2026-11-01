@@ -27,9 +27,21 @@ Unit 2 MUST NOT create:
 - BRW integration, semantic projection, localization or UI
 - XmlPro dependency or physical byte/UTF-16 mapper
 
-Phase remains AUTHORIZED. Unit 2 is IMPLEMENTED / INDEPENDENTLY ACCEPTED WITH MINOR FINDINGS.
+Phase remains AUTHORIZED. Unit 2 is IMPLEMENTED / INDEPENDENTLY ACCEPTED.
 Independent decision: ACCEPT WITH MINOR FINDINGS; see the [audit](docs/audits/UNIT-2-SQLITE-SOURCE-SCHEMA-INDEPENDENT-ACCEPTANCE-AUDIT.md).
-Unit 3 is not authorized or started. No network acquisition is permitted.
+The user subsequently issued a separate Unit 3 authorization for the pinned SBLGNT
+Matthew XmlReader importer, populated temporary SQLite builds, exact archived-byte
+export, DB-only reconstruction and independent source fidelity verification.
+Unit 2 Amendment 1 is IMPLEMENTED at `087865e3d822c7baa1f9d7e5313d46b5168bc670`:
+schema version 2 removes the per-row membership ancestry INSERT trigger and retains
+transactional post-load complete-set validation. Original Unit 2 was independently
+accepted with minor findings; its historical audit is unchanged.
+Unit 3 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE. No network acquisition is permitted.
+Unit 1 and the amended Unit 2 technical baseline, plus both historical audits, remain frozen.
+Unit 4 is NOT STARTED.
+No other book, N1904/full-NT ingestion, companion merge, XmlPro dependency, physical
+range mapper or semantic projection is authorized. No later Unit is authorized or started.
+See the [Unit 3 pipeline contract](docs/architecture/UNIT-3-SBLGNT-MATTHEW-SOURCE-FIDELITY-PIPELINE.md).
 
 ## Fidelity principles
 1. Raw source is source authority.
@@ -55,3 +67,14 @@ Before editing, record branch, HEAD, staged/unstaged/untracked state. Do not des
 - Source attributes/content are the presence/value ledger; typed mirrors must agree.
 - Preserve zero-based sibling/traversal orders separately from one-based locator name ordinals and scripture coordinates.
 - Membership is complete descendant-leaf ancestry (including leaf self), never a Start/End interval.
+
+## Unit 3 verification boundary
+- The production parser must actually run System.Xml.XmlReader with the explicit safe profile.
+- The public importer accepts no input path; it rechecks the frozen source root/revision/path/hash.
+- Build .NET offline with cleared package sources; keep build outputs outside this repository.
+- Publication requires the schema-v2 Unit 2 consistency validator, including both
+  directions of complete ancestry membership equality, plus independent Expat
+  source-versus-DB XML/core equality. Do not treat BLOB equality as normalized certification.
+- Publish without overwriting; consumers use read-only/query-only connections with both PRAGMAs ON.
+- Do not commit generated production database binaries. Keep all tests/builds temporary and clean up.
+- Preserve historical F-1 through F-4; Unit 3's source-fidelity control does not erase F-2.
