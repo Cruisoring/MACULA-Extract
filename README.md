@@ -22,7 +22,10 @@ DTO exposes build-local surrogate IDs). See [governance reconciliation](docs/gov
 The user separately authorized the bounded
 [Unit 6 source evidence composition](docs/architecture/UNIT-6-READ-ONLY-SOURCE-EVIDENCE-COMPOSITION.md).
 Unit 6: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
-No Unit 7 or automatic independent acceptance is authorized.
+The user separately authorized the bounded
+[Unit 7 structural candidate boundary](docs/architecture/UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md).
+Unit 7: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
+No Unit 8 or automatic independent acceptance is authorized.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
@@ -37,7 +40,9 @@ No Unit 7 or automatic independent acceptance is authorized.
 - The separate Unit 4 authorization adds only read-only verse/token queries over an
   existing schema-v2 store. Unit 5's separate authorization adds only read-only
   syntax navigation. Unit 6 composes these source queries, not another full build,
-  migration, interpretation or downstream integration.
+  migration, interpretation or downstream integration. Separately authorized
+  Unit 7 derives only in-memory Apposition structural candidates, not evaluated
+  interpretations or semantic entities.
 
 See `AGENTS.md`, `contracts/`, and `docs/governance/`.
 
@@ -185,3 +190,31 @@ python -B -m unittest tests.test_unit6.Unit6FastTests -v
 See the [Unit 6 contract](docs/architecture/UNIT-6-READ-ONLY-SOURCE-EVIDENCE-COMPOSITION.md),
 [integration instructions](tests/README.md#unit-6) and
 [current governance](docs/governance/PHASE-STATUS.md).
+
+## Unit 7 derived structural candidates
+
+```python
+from scripts.structural_candidates import derive_structural_candidates
+
+candidates = derive_structural_candidates(database_path, "MAT 1:1!3")
+```
+
+Only exact source `Rule="Np-Appos"` on the selected linked node and its ancestors
+produces a candidate, nearest match first and rootward thereafter. Unknown exact
+tokens return `None`; valid tokens without matching ancestry return `()`.
+Source/database/ambiguity/navigation failures raise `QueryError`, not empty output.
+
+Frozen candidates expose source-snapshot provenance, exact ordered token-ref scope,
+anchor/child source evidence, ordered direct-child payload, explicit derivation
+`source-np-appos` / `1` and status `candidate` only. SHA-256 identity uses a documented
+canonical UTF-8 protocol without SQLite PKs, local paths, time or random values.
+Apposition is structural, not an assertion of ontological identity. No confidence,
+evaluation, copula, semantic role, persistence or source/schema mutation is added.
+Unit 5 M1 remains unresolved; Unit 6 remains pending independent acceptance.
+
+```powershell
+python -B -m unittest tests.test_unit7.Unit7FastTests -v
+```
+
+See the [Unit 7 contract](docs/architecture/UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md#41-authorized-initial-implementation)
+and [test instructions](tests/README.md#unit-7).

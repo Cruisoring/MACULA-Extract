@@ -25,7 +25,13 @@ and explicitly named exact membership context without interpreting source facts.
 Unit 6 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
 Phase remains AUTHORIZED. Units 3 and 4 remain IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
 Unit 5 is IMPLEMENTED / INDEPENDENTLY ACCEPTED, decision ACCEPT WITH MINOR FINDINGS;
-M1 remains unresolved. No automatic independent acceptance or Unit 7 is authorized;
+M1 remains unresolved. The separately authorized
+[Unit 7 structural candidate boundary](UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md)
+adds only in-memory, versioned Apposition candidates over explicit Np-Appos ancestry.
+Source facts/composition remain in the query module; derived DTOs, snapshot-bound
+SHA-256 identity and derivation live in a separate structural candidate module.
+Unit 7 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE. No evaluation, persistence,
+semantic roles, automatic independent acceptance or Unit 8 is authorized;
 see [current governance](../governance/PHASE-STATUS.md).
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)

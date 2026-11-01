@@ -357,6 +357,84 @@ repository changes are authorized. M1, full audit archival, semantic projection,
 downstream integration and UI/localization remain deferred. STOP after the Unit 6
 checkpoint; no Unit 6 audit, independent acceptance or Unit 7 is performed.
 
+### Unit 7 - Derived Structural Candidate Boundary
+
+**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+
+The user separately authorized the bounded initial implementation of the preserved
+[Unit 7 contract](../architecture/UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md).
+Phase remains **AUTHORIZED**. Unit 5 remains independently accepted, decision
+**ACCEPT WITH MINOR FINDINGS**, with **M1 unresolved**. Units 3, 4 and 6 remain
+pending independent acceptance; no implementation test is an independent audit.
+
+#### Starting state and implementation scope
+
+- Actual branch/starting HEAD: `master`,
+  `b7cc92e6e42979a64919edd173ff886591552344`, the required sole checkpoint parent.
+- Tracked worktree/index clean; only the user-created Unit 7 contract was untracked.
+  Original raw SHA-256:
+  `96FF803BAA32C2B8B4C2E4CA60AB1D86F01CE74BA0E4A7E121C4A3E61E110988`.
+  Sections 1-39 and all 40 acceptance criteria are preserved. Reconciliation updates
+  status, labels the former draft status as design history, and appends the separately
+  authorized executable API/DTO/identity/ordering/error boundary.
+- One new production module, `scripts/structural_candidates.py`, consumes unchanged
+  Unit 6 SourceEvidence and existing read-only source navigation/member primitives.
+  Only exact Np-Appos on self/nearest-first ancestry produces Apposition candidates.
+  Frozen results carry explicit source-facing evidence, exact scope, linked source
+  snapshot/file provenance, versioned canonical UTF-8/SHA-256 identity and candidate-only
+  status. No local SQLite PK participates in candidate logical identity.
+- Unknown exact refs return `None`; valid no-match refs return `()`; source/DB/schema/
+  ambiguity/cycle/missing-evidence failures remain explicit `QueryError`.
+- Authorized paths are only that production module, Unit 7 tests, the preserved
+  contract, root/test READMEs, architecture index and this status record.
+  Source schema/importer/query modules, frozen fixtures/contracts and audits are unchanged.
+
+#### Technical validation
+
+- Pre-change Unit 1/2/4/5/6 fast baseline: **128 PASS**, no failures/errors/skips.
+- Unit 1 source verifier and empty schema verifier: **PASS**.
+- Focused final Unit 7 run: **19 PASS** (16 fast + 3 existing-Matthew integration),
+  no failures/errors/skips. Python 3.10 AST compatibility: **PASS** for both new Python
+  files. Pylance cannot resolve this repository outside the active editor workspace;
+  no editor static type-check result is claimed.
+- Final guarded combined Unit 1-7 regression: **181 run, 180 PASS, 0 failures,
+  0 errors, 1 skip**. Breakdown: Unit 1 **26**; Unit 2 **56**; Unit 3 **22 PASS +
+  1 skip**; Unit 4 **15**; Unit 5 **20**; Unit 6 **22**; Unit 7 **19**.
+  Sole skip: `test_u3_01_two_full_builds_and_logical_digests`, exact reason
+  `explicit slow gate: set MACULA_UNIT3_SECOND_BUILD=1 for a second full build`.
+- Full Matthew evidence: **REUSED PREVIOUS VERIFIED EVIDENCE** with fresh exhaustive
+  BYTE/NORMALIZED/schema/membership validation and matching logical digest
+  `F2A4A7C42FB3828B46B29DF388D583D497959CBD9B5E65CDAD876F7A85878A72`.
+  The external disposable runner overrides only Unit 3 setup, uses the offline
+  bridge for small parser regressions, and guards against full-Matthew population.
+  Full Matthew builds: **0**; no second-build determinism result is claimed.
+- `MAT 1:1!3`: exactly three Apposition anchors, nearest-first:
+  `400010010030020`, `400010010030040`, `400010010030060`; ordered members are
+  respectively `[3,4]`, `[3,4,5,6]`, `[3,4,5,6,7,8]`. Direct children are fixed
+  source-topology expectations. CL/P2CL/Verbless and eight noun leaves remain
+  unchanged; no verb/copula or semantic entity is fabricated.
+- Boundary `400010020050040` retains exact members **[5,7,8,9]**, excluding 6.
+  No S-V-O candidate is generated. Span mutations cannot change scope/identity.
+- Equivalent synthetic stores reverse node/token PK order and reallocate all five
+  inherited local IDs plus snapshot/file IDs. Entire candidate results/IDs remain
+  equal. Source revision/manifest and controlled evidence/scope/version changes
+  change identity. Separate processes/hash seeds/database locations remain equal.
+- Read-only write rejection (including with query_only OFF), connection closure,
+  traced read-only SQL, unchanged catalog/version/bytes and forbidden XML runtime
+  gates pass. No candidate persistence or source-schema change occurs.
+
+Existing ignored `C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3` before/after:
+**160,968,704 bytes**, SHA-256
+`E52DB7E2ABDB1C2B9B4F93060312587A1363066378B7A0C9B8FB72475C25CE7E`,
+`PRAGMA user_version=2`; catalog/index inventory unchanged. It is not a deliverable.
+Protected repositories/source retain their recorded Unit 6 revisions and checksum.
+
+The actual reviewed checkpoint SHA/parent and final cleanliness are verified and
+reported after commit creation, not fabricated within its own diff. Unit 7 independent
+acceptance, Unit 6 independent acceptance, M1 remediation, full audit archival,
+candidate persistence/evaluation, other candidate kinds, semantic roles/entities,
+Bible Research integration, UI/localization and Unit 8 remain deferred.
+
 ## Unit 1 execution evidence
 
 - Implementation repository: `C:\Projects\MACULA-Extract` (hyphenated).

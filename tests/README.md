@@ -238,3 +238,43 @@ For Unit 1-6 regressions reuse the existing database through the documented exte
 Unit 3 read-only setup override, fresh full fidelity validation and retained
 second-build skip. Do not invoke default Unit 3 discovery and inadvertently rebuild
 Matthew. This is implementation validation, not independent acceptance.
+
+## Unit 7
+
+```powershell
+python -B -m unittest tests.test_unit7.Unit7FastTests -v
+```
+
+The 16 fast tests manually construct validated tiny schema-v2 stores. They verify
+explicit Np-Appos-only self/nearest-first ancestry discovery, unrelated-node exclusion,
+frozen typed candidate-only DTOs, ordered direct children/evidence, canonical exact
+membership including discontinuities, Start/End independence, missing evidence,
+unknown versus empty versus error, source ambiguity/cycles, snapshot provenance,
+canonical identity bytes and SHA-256. Equivalent stores reverse node/token PK order
+and reallocate all five inherited local IDs, plus snapshot/file IDs. Entire candidate
+DTO equality must hold; inherited TokenResult variance remains explicit (M1 unresolved).
+Controlled identity changes and separate processes/hash seeds/database locations
+test versioning and reproducibility. Temporary read-only write attempts, SQL tracing,
+connection closure, unchanged bytes/catalog/version and forbidden runtime XML prove
+no source mutation or candidate persistence.
+
+```powershell
+$env:MACULA_UNIT7_INTEGRATION = "1"
+$env:MACULA_UNIT7_DATABASE = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit7 -v
+Remove-Item Env:MACULA_UNIT7_INTEGRATION
+Remove-Item Env:MACULA_UNIT7_DATABASE
+```
+
+The 3 integration tests otherwise skip explicitly using the existing opt-in convention.
+Fixed Matthew 1:1 expectations assert all three Np-Appos anchors, their ordered direct
+children, exact token refs and repeatable identities. The clause remains Verbless,
+with eight noun leaves and no invented verb/copula or semantic entity. The Unit 7
+scope helper tests Matthew 1:2 node `400010020050040` membership `[5,7,8,9]`,
+excluding 6, without deriving an S-V-O candidate. Size/hash/version/catalog must match.
+
+For combined Unit 1-7 regressions, use the same external Unit 3 read-only class-setup
+override, fresh exhaustive BYTE/NORMALIZED/schema/membership validation and logical
+digest check, with a guard forbidding full Matthew population. Keep the existing
+second-build slow-gate skip. Do not invoke default Unit 3 discovery for this zero-build
+task. Implementation validation does not independently accept Units 3, 4, 6 or 7.
