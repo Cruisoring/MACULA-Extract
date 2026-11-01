@@ -19,6 +19,27 @@ only read-only verse/token source queries over an existing schema-v2 Matthew sto
 Phase remains AUTHORIZED. Units 3 and 4 are IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE;
 Unit 5 is NOT STARTED. No automatic independent acceptance is authorized.
 
+ [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)
+ Document the post-Unit-4 read-only SQLite exploration and resulting
+product-readiness conclusions.
+Manual inspection confirms that the relational source store directly
+supports token facts, syntax ancestry, ordered child navigation, exact
+constituent membership, source Head navigation, and lexical-head
+resolution without reconstructing a second authoritative syntax model.
+Record Matthew 1:1 constituent and ancestor observations together with
+the Matthew 1:2 S-V-O navigation example and its exact discontinuous
+membership.
+Adopt the resulting product direction:
+SQLite source store
+→ thin read-only navigation
+→ localization
+→ presentation
+Keep manual SQLite observations distinct from independent acceptance.
+Preserve the boundary between linguistic source facts and later semantic
+interpretation.
+Unit 3 and Unit 4 remain pending independent acceptance.
+Unit 5 remains NOT STARTED.
+
 The historical reports retain their original investigation-time statuses and relative
 evidence links, some of which refer to their original session/TEMP location. Their
 historical conclusions are not rewritten to describe Unit 2. The parser report was
