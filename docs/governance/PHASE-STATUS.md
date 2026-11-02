@@ -856,6 +856,25 @@ No production remediation, semantic projection, BRW integration or next Unit is 
 Unit 5 M1, Unit 7 audit M1, Unit 8 audit M-1 and Unit 9 audit M-1 remain unresolved and
 distinct. Unit 11 is NOT AUTHORIZED. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
+### Unit 11 - Read-Only Structural Interpretation Discovery & History Query Boundary
+
+**Status:** CONTRACT FROZEN / IMPLEMENTATION NOT AUTHORIZED
+
+The [contract](../architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
+is frozen as a design contract only, starting from clean `master` at
+`d6d44d6262a849a1408235c756ff79809842e0d2` (Unit 10 independent acceptance, ACCEPT).
+It freezes the navigation path scripture selector, persisted candidate discovery,
+`candidate_id`, then complete persisted evaluation/history query; `candidate_id` is not the
+only entry point. Discovery uses exact validated member-token scope (parsed integer
+coordinates), never Start/End, min/max, envelopes, lexical ranges, PK/rowid or insertion order.
+Matthew 1:2 token 6 is a mandatory negative case: `MAT 1:2`, `!5`, `!7`, `!8`, `!9` discover
+the S-V-O candidate and `MAT 1:2!6` does not. Unsuperseded means graph leaf only; no
+current/canonical/consensus/ranking/semantic projection.
+No Unit 11 production module, tests, schema or Unit 10 change exists or is authorized;
+no independent acceptance, BRW integration, Unit 12 or remediation of Unit 5 M1, Unit 7 audit M1,
+Unit 8 audit M-1 or Unit 9 audit M-1. The freeze checkpoint's actual SHA is verified from
+Git after commit, not recorded in its own diff. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
 ## Unit 1 execution evidence
 
 - Implementation repository: `C:\Projects\MACULA-Extract` (hyphenated).

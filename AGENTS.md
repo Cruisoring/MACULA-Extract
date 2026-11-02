@@ -29,7 +29,8 @@ checkpoints and are not rewritten by later governance.
 | Unit 8 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; in-memory boundary only; no persistence ([audit](docs/audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
 | Unit 8 Amendment 1 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS (separate decision, same audit); `human-structural-adequacy/1` also evaluates Unit 9 S-V-O candidates; in-memory only |
 | Unit 9 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 9 audit M-1 unresolved**; I-1..I-5 informational, not remediated ([audit](docs/audits/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); in-memory S-V-O clause candidates; evaluable via Unit 8 Amendment 1 |
-| Unit 10 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT; 0 BLOCKER/MAJOR/MINOR, I-1..I-6 informational, not remediated ([audit](docs/audits/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); separate append-only [persistence boundary](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md); Unit 11 NOT AUTHORIZED |
+| Unit 10 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT; 0 BLOCKER/MAJOR/MINOR, I-1..I-6 informational, not remediated ([audit](docs/audits/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); separate append-only [persistence boundary](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md); Unit 11 implementation NOT AUTHORIZED |
+| Unit 11 | CONTRACT FROZEN / IMPLEMENTATION NOT AUTHORIZED | Design-only [discovery and history query contract](docs/architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md); no module, tests, acceptance or Unit 12 |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -176,7 +177,17 @@ source schema, historical contracts/audits or existing findings. No BRW/semantic
 or independent acceptance is authorized. Unit 10 was independently accepted separately
 (ACCEPT, see the [audit](docs/audits/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-INDEPENDENT-ACCEPTANCE-AUDIT.md));
 that acceptance does not authorize BRW, semantic projection or Unit 11, and does not
-resolve Unit 5 M1, Unit 7 audit M1 or Unit 9 audit M-1. Unit 11 is NOT AUTHORIZED.
+resolve Unit 5 M1, Unit 7 audit M1 or Unit 9 audit M-1. Unit 11 implementation is NOT AUTHORIZED.
+
+## Unit 11 contract-freeze boundary
+The [Unit 11 contract](docs/architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
+is **CONTRACT FROZEN / IMPLEMENTATION NOT AUTHORIZED** (design only). Do NOT create
+`scripts/projection_query.py` or `tests/test_unit11.py`, change the Unit 10 schema/store,
+perform semantic projection, BRW integration, independent acceptance or Unit 12 without
+separate explicit authorization. Frozen rules: discovery is by exact validated member-token
+scope (never min/max, Start/End, envelopes, lexical/PK/rowid ranges); Matthew 1:2 token 6 is
+not a member of the S-V-O candidate; unsuperseded means graph leaf only, never current/canonical.
+Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Fidelity principles
 1. Raw source is source authority.

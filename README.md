@@ -62,7 +62,7 @@ Its dedicated contract checkpoint is `d690209f7dce140b61d0056446cec370afce2edd`.
 This narrowly
 supersedes historical persistence prohibitions, not prior derivation/evaluation semantics.
 No source-schema change, semantic projection or BRW integration.
-Unit 11 is NOT AUTHORIZED; existing findings remain open; Phase remains AUTHORIZED.
+Unit 11 implementation is NOT AUTHORIZED (see below); existing findings remain open; Phase remains AUTHORIZED.
 
 ```python
 from scripts.projection_store import (
@@ -90,6 +90,16 @@ Loads return existing canonical frozen DTOs, not replacement derivations/judgmen
 The evaluation-list frozenset is deliberately unordered.
 See [tests](tests/README.md#unit-10-separate-persistence) and
 [implementation evidence](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md#13-implementation-validation).
+
+## Unit 11 discovery and history query contract
+
+**CONTRACT FROZEN / IMPLEMENTATION NOT AUTHORIZED.**
+The [Unit 11 contract](docs/architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
+is a design freeze only: a scripture selector discovers persisted candidates by exact
+member-token scope (Matthew 1:2 token 6 is excluded), yielding `candidate_id` and then the
+complete read-only evaluation/supersession history. No module, tests, schema change,
+independent acceptance, semantic projection, BRW integration or Unit 12 is authorized;
+existing findings remain open; Phase remains AUTHORIZED.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.

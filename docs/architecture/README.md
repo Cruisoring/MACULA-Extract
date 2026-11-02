@@ -12,7 +12,13 @@ The [store module](../../scripts/projection_store.py) and independently versione
 Both write paths require source-grounded verification on separate read-only source
 connections; loads never regenerate human evaluations. See the contract's appended
 implementation validation and [tests](../../tests/README.md#unit-10-separate-persistence).
-Historical stop lines below retain their checkpoint meaning. Unit 11 is NOT AUTHORIZED.
+Historical stop lines below retain their checkpoint meaning. Unit 11 implementation is NOT AUTHORIZED.
+
+The [Unit 11 discovery and history query contract](UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
+is **CONTRACT FROZEN / IMPLEMENTATION NOT AUTHORIZED** (design only). It defines read-only discovery
+of persisted candidates from a scripture selector by exact member-token scope, then candidate-centered
+evaluation/supersession history, with no current-truth semantics. No module, tests, schema change,
+independent acceptance or Unit 12 is authorized.
 
 Historical investigations remain evidence, not retrospective implementation specifications:
 
