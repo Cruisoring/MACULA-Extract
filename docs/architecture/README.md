@@ -30,7 +30,8 @@ M1 remains unresolved. The separately authorized
 adds only in-memory, versioned Apposition candidates over explicit Np-Appos ancestry.
 Source facts/composition remain in the query module; derived DTOs, snapshot-bound
 SHA-256 identity and derivation live in a separate structural candidate module.
-Unit 7 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE. No evaluation, persistence,
+Unit 7 is IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS, see
+[audit](../audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)). No evaluation, persistence,
 semantic roles, automatic independent acceptance or Unit 8 is authorized;
 see [current governance](../governance/PHASE-STATUS.md).
 

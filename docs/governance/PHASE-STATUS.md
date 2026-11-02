@@ -359,7 +359,23 @@ checkpoint; no Unit 6 audit, independent acceptance or Unit 7 is performed.
 
 ### Unit 7 - Derived Structural Candidate Boundary
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED
+
+Independent acceptance audit record:
+[UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md).
+
+- Audited implementation checkpoint: `9331d8a4bee4d20cb96f07752e45f578b0d31f39`.
+- Independent audit decision: **ACCEPT WITH MINOR FINDINGS** (no BLOCKER, no MAJOR).
+- **M1 (Unit 7 audit)** remains unresolved: the pre-implementation Unit 7 contract was
+  untracked, so its original bytes cannot be independently reconstructed from Git;
+  sections 1-39 integrity is corroborated but not independently provable.
+  This is distinct from Unit 5 M1.
+- I1-I6 are informational and recorded in the audit; none is remediated here.
+
+This acceptance covers only the Apposition-only, in-memory, read-only derived structural
+candidate boundary. It does not accept Units 3, 4 or 6, does not resolve Unit 5 M1, and
+does not authorize candidate persistence, evaluation, other candidate kinds, semantic
+roles, Bible Research integration or Unit 8. Phase remains **AUTHORIZED**.
 
 The user separately authorized the bounded initial implementation of the preserved
 [Unit 7 contract](../architecture/UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md).
@@ -431,7 +447,8 @@ Protected repositories/source retain their recorded Unit 6 revisions and checksu
 
 The actual reviewed checkpoint SHA/parent and final cleanliness are verified and
 reported after commit creation, not fabricated within its own diff. Unit 7 independent
-acceptance, Unit 6 independent acceptance, M1 remediation, full audit archival,
+acceptance has since been recorded above (audit checkpoint reported after its commit).
+Unit 6 independent acceptance, M1 remediation, full audit archival,
 candidate persistence/evaluation, other candidate kinds, semantic roles/entities,
 Bible Research integration, UI/localization and Unit 8 remain deferred.
 

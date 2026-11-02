@@ -24,7 +24,9 @@ The user separately authorized the bounded
 Unit 6: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
 The user separately authorized the bounded
 [Unit 7 structural candidate boundary](docs/architecture/UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md).
-Unit 7: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
+Unit 7: **IMPLEMENTED / INDEPENDENTLY ACCEPTED**.
+Independent decision: **ACCEPT WITH MINOR FINDINGS** ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
+Units 3, 4 and 6 remain pending; Unit 5 M1 remains unresolved.
 No Unit 8 or automatic independent acceptance is authorized.
 
 ## Boundaries
