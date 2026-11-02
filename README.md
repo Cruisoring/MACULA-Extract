@@ -14,19 +14,23 @@ Phase remains **AUTHORIZED**.
 Unit 2 Amendment 1: **IMPLEMENTED** - schema version 2 uses post-load complete-set
 membership validation instead of a per-row ancestry INSERT trigger.
 
-Unit 3: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - SBLGNT Matthew Source Importer & Fidelity Round-Trip.
-Unit 4: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** - Read-Only Matthew Verse / Token Query Slice.
+Unit 3: **IMPLEMENTED / INDEPENDENTLY ACCEPTED** - SBLGNT Matthew Source Importer & Fidelity Round-Trip.
+Decision: **ACCEPT** ([audit](docs/audits/HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
+Unit 4: **IMPLEMENTED / INDEPENDENTLY ACCEPTED** - Read-Only Matthew Verse / Token Query Slice.
+Decision: **ACCEPT** ([audit](docs/audits/HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
 Unit 5: **IMPLEMENTED / INDEPENDENTLY ACCEPTED** - Read-Only Syntax Navigation.
 Decision: **ACCEPT WITH MINOR FINDINGS**; M1 remains unresolved (inherited token
 DTO exposes build-local surrogate IDs). See [governance reconciliation](docs/governance/PHASE-STATUS.md).
 The user separately authorized the bounded
 [Unit 6 source evidence composition](docs/architecture/UNIT-6-READ-ONLY-SOURCE-EVIDENCE-COMPOSITION.md).
-Unit 6: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
+Unit 6: **IMPLEMENTED / INDEPENDENTLY ACCEPTED**.
+Decision: **ACCEPT** ([audit](docs/audits/HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
 The user separately authorized the bounded
 [Unit 7 structural candidate boundary](docs/architecture/UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md).
 Unit 7: **IMPLEMENTED / INDEPENDENTLY ACCEPTED**.
 Independent decision: **ACCEPT WITH MINOR FINDINGS** ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
-Units 3, 4 and 6 remain pending; Unit 5 M1 remains unresolved.
+Units 3, 4 and 6 are independently accepted (ACCEPT). Unit 2 Amendment 1 remains
+`IMPLEMENTED` only; Unit 5 M1 and the Unit 7 M1 remain unresolved. Phase remains **AUTHORIZED**.
 No Unit 8 or automatic independent acceptance is authorized.
 
 ## Boundaries
@@ -212,7 +216,7 @@ anchor/child source evidence, ordered direct-child payload, explicit derivation
 canonical UTF-8 protocol without SQLite PKs, local paths, time or random values.
 Apposition is structural, not an assertion of ontological identity. No confidence,
 evaluation, copula, semantic role, persistence or source/schema mutation is added.
-Unit 5 M1 remains unresolved; Unit 6 remains pending independent acceptance.
+Unit 5 M1 remains unresolved; Unit 6 is independently accepted (ACCEPT).
 
 ```powershell
 python -B -m unittest tests.test_unit7.Unit7FastTests -v

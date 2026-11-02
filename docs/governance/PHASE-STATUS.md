@@ -60,7 +60,19 @@ The amended schema-v2 technical baseline is frozen for this Unit 3 checkpoint.
 
 ### Unit 3 - SBLGNT Matthew Source Importer & Fidelity Round-Trip
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED
+
+Independent acceptance audit record:
+[HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md)
+(commit `716f2e44435f2a39e2599e860656812174dc4aa2`).
+
+- Audited implementation checkpoint: `cc745c692a134cbdaef8c8d177c61e595b0ae31e`.
+- Independent audit decision: **ACCEPT** (BLOCKER 0, MAJOR 0, MINOR 0, INFORMATIONAL 4).
+- This acceptance covers Unit 3 only. It does not accept Unit 2 Amendment 1, which
+  remains `IMPLEMENTED`; Unit 3 was judged on the observable fidelity of its output.
+- The text below is the historical implementation-checkpoint record and is preserved
+  unchanged; its statements that Unit 3 is "not independently accepted" were true at
+  that checkpoint and are superseded by this status.
 
 The user issued a separate formal Unit 3 implementation authorization after the
 Unit 2 independent-acceptance archival checkpoint
@@ -102,7 +114,19 @@ token 6 all passed. This evidence is implementation validation, not independent 
 
 ### Unit 4 - Read-Only Matthew Verse / Token Query Slice
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED
+
+Independent acceptance audit record:
+[HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md)
+(commit `716f2e44435f2a39e2599e860656812174dc4aa2`).
+
+- Audited implementation checkpoint: `76bdcf5b47fa660390180fdbf430400d3f2d3024`.
+- Independent audit decision: **ACCEPT** (BLOCKER 0, MAJOR 0, MINOR 0, INFORMATIONAL 2).
+- Local surrogate IDs in `TokenResult` are specified by the Unit 4 contract; the later
+  concern is Unit 5 M1, which is unchanged and unresolved.
+- The text below is the historical implementation-checkpoint record and is preserved
+  unchanged; its statements that Units 3 and 4 are not independently accepted were true
+  at that checkpoint and are superseded by this status.
 
 The user separately authorized only `get_verse` and exact `get_token` over the
 existing schema-v2 store, with caller-supplied paths and SQLite-enforced read-only
@@ -250,7 +274,18 @@ was introduced. This is implementation validation, not independent acceptance.
 
 ### Unit 6 - Read-Only Source Evidence Composition
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED
+
+Independent acceptance audit record:
+[HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md)
+(commit `716f2e44435f2a39e2599e860656812174dc4aa2`).
+
+- Audited implementation checkpoint: `b7cc92e6e42979a64919edd173ff886591552344`.
+- Independent audit decision: **ACCEPT** (BLOCKER 0, MAJOR 0, MINOR 0, INFORMATIONAL 4).
+- Unit 5 M1 (inherited `TokenResult` local PKs) is unchanged and remains unresolved.
+- The text below is the historical implementation-checkpoint record and is preserved
+  unchanged; its statements that Units 3, 4 and 6 are pending were true at that
+  checkpoint and are superseded by this status.
 
 The user separately authorized the bounded
 [Unit 6 contract](../architecture/UNIT-6-READ-ONLY-SOURCE-EVIDENCE-COMPOSITION.md),
@@ -371,6 +406,9 @@ Independent acceptance audit record:
   sections 1-39 integrity is corroborated but not independently provable.
   This is distinct from Unit 5 M1.
 - I1-I6 are informational and recorded in the audit; none is remediated here.
+- Subsequent reconciliation: Units 3, 4 and 6 were later independently accepted by a
+  separate audit (see their sections). That does not alter this Unit 7 decision, M1 or
+  I1-I6, and Unit 7 was not re-audited.
 
 This acceptance covers only the Apposition-only, in-memory, read-only derived structural
 candidate boundary. It does not accept Units 3, 4 or 6, does not resolve Unit 5 M1, and

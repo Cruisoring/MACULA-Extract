@@ -22,8 +22,10 @@ through the same read-only boundary, with raw Head and source-oriented node resu
 The separately authorized [Unit 6 source evidence composition](UNIT-6-READ-ONLY-SOURCE-EVIDENCE-COMPOSITION.md)
 composes the exact token, linked leaf, relational ancestry, immediate-parent children
 and explicitly named exact membership context without interpreting source facts.
-Unit 6 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
-Phase remains AUTHORIZED. Units 3 and 4 remain IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
+Unit 6 is IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT, see
+[audit](../audits/HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
+Phase remains AUTHORIZED. Units 3 and 4 are IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT,
+same audit); Unit 2 Amendment 1 remains IMPLEMENTED only.
 Unit 5 is IMPLEMENTED / INDEPENDENTLY ACCEPTED, decision ACCEPT WITH MINOR FINDINGS;
 M1 remains unresolved. The separately authorized
 [Unit 7 structural candidate boundary](UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md)
@@ -53,7 +55,8 @@ SQLite source store
 Keep manual SQLite observations distinct from independent acceptance.
 Preserve the boundary between linguistic source facts and later semantic
 interpretation.
-Unit 3 and Unit 4 remain pending independent acceptance.
+Unit 3 and Unit 4 remained pending independent acceptance at that investigation
+(both were later independently accepted; see the historical Units 3, 4 and 6 audit).
 At that investigation, Unit 5 remained NOT STARTED; the later separate Unit 5
 authorization does not independently accept that report or Units 3 and 4.
 
