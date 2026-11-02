@@ -241,6 +241,10 @@ Matthew. This is implementation validation, not independent acceptance.
 
 ## Unit 7
 
+The commands/evidence below describe the historical Unit 7 checkpoint. Unit 9
+intentionally supersedes four no-S-V-O tests without editing this frozen test file;
+use the filtered regression instructions in the Unit 9 section for current runs.
+
 ```powershell
 python -B -m unittest tests.test_unit7.Unit7FastTests -v
 ```
@@ -280,6 +284,10 @@ second-build slow-gate skip. Do not invoke default Unit 3 discovery for this zer
 task. Implementation validation does not independently accept Units 3, 4, 6 or 7.
 
 ## Unit 8
+
+The commands/evidence below describe the historical Unit 8 checkpoint. Unit 9
+supersedes two no-S-V-O tests without editing Unit 8's tests or registry.
+Current filtered regression instructions and replacement coverage appear below.
 
 ```powershell
 python -B -m unittest tests.test_unit8.Unit8FastTests
@@ -329,11 +337,12 @@ remain in-memory only, with no persistence, semantic roles, confidence, BRW,
 source-schema changes or Unit 9. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
 Unit 8 is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**; Phase remains AUTHORIZED.
 
-## Unit 9 design/fixture freeze
+## Historical Unit 9 design/fixture freeze
 
-Unit 9 is **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**.
-Production implementation is **NOT YET PERFORMED**; no `tests/test_unit9.py` or
-Unit 9 implementation tests exist.
+At the freeze checkpoint Unit 9 was **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**.
+Production implementation was **NOT YET PERFORMED**; no `tests/test_unit9.py` or
+Unit 9 implementation tests existed then. The following subsection supersedes
+that status, without changing frozen expected data.
 
 The [expected fixture](../fixtures/matthew-1-2-svo-candidate.expected.json) was
 frozen only after separate raw-XML and read-only direct-SQLite oracles agreed on
@@ -365,3 +374,129 @@ preserved. Future production tests must compare against this independent frozen
 expectation rather than generate it through their own candidate implementation.
 Unit 8 remains pending independent acceptance. No Unit 8 amendment, persistence,
 semantic projection, BRW integration or Unit 10. Phase remains AUTHORIZED.
+
+## Unit 9 production implementation
+
+Unit 9 is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**. Fast tests use only
+temporary synthetic stores; the real-Matthew tests are opt-in and never rebuild it.
+
+```powershell
+python -B -m unittest tests.test_unit9.Unit9FastTests -v
+$env:MACULA_UNIT9_INTEGRATION = "1"
+$env:MACULA_UNIT9_DATABASE = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit9 -v
+Remove-Item Env:MACULA_UNIT9_INTEGRATION
+Remove-Item Env:MACULA_UNIT9_DATABASE
+```
+
+There are **39 fast + 3 integration tests**. Without opt-in/existing DB the latter
+three skip; do not report skips as passes. Production is compared to the committed
+independently frozen fixture, never used to regenerate expected values.
+Coverage includes U9-01..U9-30, malformed source/store states, PK/path/hash-seed
+invariance, canonical numeric order, mixed nearest-first ancestry, immutable DTOs,
+exact identity bytes, read-only rejection/closure, all real member lookups, unchanged
+Matthew 1:1 Apposition IDs, unchanged Unit 8 Apposition evaluation and explicit
+new-clause/forged-envelope rejection.
+
+### Frozen historical assertions intentionally superseded
+
+These six unchanged tests contain an obsolete expectation that S-V-O derivation
+returns `()`. Filter them explicitly, not silently and not as claimed passes:
+
+| Unit/class | Skipped test | Replacement coverage in Unit 9 |
+|---|---|---|
+| 7 Fast | `test_valid_no_match_is_empty_unknown_is_none_invalid_is_error` | U9-24/25/26/30 |
+| 7 Fast | `test_semantic_annotations_categories_ellipsis_and_head_do_not_create_candidates` | semantic-annotation invariance, U9-27 |
+| 7 Fast | `test_exact_discontinuous_scope_and_span_mutation` | U9-05/11/19/27 |
+| 7 Integration | `test_matthew_1_2_discontinuous_scope_without_svo_candidate` | complete frozen DTO/all-lookups integration |
+| 8 Fast | `test_matthew_1_2_envelope_cannot_introduce_token_six` | `test_unit8_envelope_forgery_remains_rejected` |
+| 8 Integration | `test_actual_matthew_1_1_apposition_and_preservation` | all three Unit 9 integration tests |
+
+The Unit 8 forged candidate still fails V1 identity verification; after reidentifying
+it, V2 now reports a source-grounded echo mismatch rather than candidate-not-found,
+because an actual clause candidate exists at that anchor. Both are explicit errors,
+not evaluation authorization. Unit 8 code/registry/tests/contract remain untouched.
+
+For reproducible current Unit 4-9 regression, enable all existing integration flags
+and apply only these explicit skips in memory:
+
+```powershell
+4..9 | ForEach-Object {
+    Set-Item "Env:MACULA_UNIT$($_)_INTEGRATION" "1"
+    Set-Item "Env:MACULA_UNIT$($_)_DATABASE" "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+}
+@'
+import importlib, unittest
+modules = [importlib.import_module(f"tests.test_unit{n}") for n in range(4, 10)]
+obsolete = {
+    "test_valid_no_match_is_empty_unknown_is_none_invalid_is_error",
+    "test_semantic_annotations_categories_ellipsis_and_head_do_not_create_candidates",
+    "test_exact_discontinuous_scope_and_span_mutation",
+    "test_matthew_1_2_discontinuous_scope_without_svo_candidate",
+    "test_matthew_1_2_envelope_cannot_introduce_token_six",
+    "test_actual_matthew_1_1_apposition_and_preservation",
+}
+def filtered(suite):
+    for test in suite:
+        if isinstance(test, unittest.TestSuite):
+            yield from filtered(test)
+        else:
+            if test._testMethodName in obsolete:
+                cls = type(test)
+                name = test._testMethodName
+                setattr(cls, name, unittest.skip(
+                    "frozen no-S-V-O expectation superseded by Unit 9; replacement in test_unit9"
+                )(getattr(cls, name)))
+            yield test
+suite = unittest.TestSuite(filtered(unittest.TestSuite(
+    unittest.defaultTestLoader.loadTestsFromModule(module) for module in modules
+)))
+result = unittest.TextTestRunner(verbosity=2).run(suite)
+raise SystemExit(not result.wasSuccessful())
+'@ | python -B -
+4..9 | ForEach-Object {
+    Remove-Item "Env:MACULA_UNIT$($_)_INTEGRATION"
+    Remove-Item "Env:MACULA_UNIT$($_)_DATABASE"
+}
+```
+
+Unit 1/2 may be added normally. Unit 3 must use the existing external read-only
+setup override, fresh full fidelity verification and a full-source-population
+guard. Never use default Unit 3 discovery here or enable its second-build gate.
+
+Actual final validation:
+
+| Unit | Passed | Skipped | Failures/errors |
+|---|---:|---:|---:|
+| 1 | 26 | 0 | 0 |
+| 2 | 56 | 0 | 0 |
+| 3 (initial guarded run) | 22 | 1 | 0 |
+| 4 | 15 | 0 | 0 |
+| 5 | 20 | 0 | 0 |
+| 6 | 22 | 0 | 0 |
+| 7 | 15 | 4 | 0 |
+| 8 | 49 | 2 | 0 |
+| 9 | 42 | 0 | 0 |
+
+The seventh skip is exactly Unit 3
+`test_u3_01_two_full_builds_and_logical_digests`, reason:
+`explicit slow gate: set MACULA_UNIT3_SECOND_BUILD=1 for a second full build`.
+All six other skips are enumerated above. Every available Unit 4/5/6/7/9 integration
+test except the one obsolete Unit 7 assertion executed read-only; Unit 8's obsolete
+integration test was skipped and its valid evaluation assertions executed in Unit 9.
+
+The initial guarded run executed **272 tests: 265 passed, 2 failures, 0 errors,
+5 skips**; the two failures exposed the additional frozen Unit 8 no-S-V-O assertions.
+After adding replacement coverage, the final follow-up executed **251 tests:
+245 passed, 0 failures/errors, 6 skips**, including all 42 Unit 9 tests.
+Unit 3's already successful 22 tests were not repeated. The table therefore records
+**267 passes and 7 skips across two stages**, not a single 274-test run.
+Intermediate synthetic-fixture/diagnostic assertions were corrected and rerun.
+Both required source/schema verifiers and Python 3.10 syntax/current compilation
+passed. No type-check pass is claimed for Pylance's out-of-workspace files.
+
+Existing DB bytes/version/all 75 measured catalog entries, the frozen fixture,
+complete pre-change Apposition DTOs, Matthew source SHA and both protected
+repositories were preserved. No full Matthew population or second build occurred.
+This is implementation validation only; Unit 8 remains pending independent acceptance,
+Unit 9 is pending independent acceptance, and the Phase remains AUTHORIZED.

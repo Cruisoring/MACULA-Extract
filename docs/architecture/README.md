@@ -52,14 +52,20 @@ or Unit 9 production is authorized by that implementation checkpoint.
 Unit 5 M1 and Unit 7 audit M1 remain unresolved.
 Phase remains AUTHORIZED; see [current governance](../governance/PHASE-STATUS.md).
 
-The separately authorized [Unit 9 S-V-O component freeze](UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
-is **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**; production implementation is
-**NOT YET PERFORMED**. Independent raw XML and read-only SQLite agree on exact
+The separately authorized [Unit 9 S-V-O production implementation](UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#28-authorized-production-implementation)
+is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**. Its preceding independent
+raw XML and read-only SQLite freeze established exact
 S=`MAT 1:2!5`, V=`MAT 1:2!7`, O=`MAT 1:2!8,!9`; token 6 is excluded.
 The [source-facing fixture](../../fixtures/matthew-1-2-svo-candidate.expected.json)
 freezes the expected canonical candidate identity after membership agreement.
-Eight disposable-store controls passed; they do not prove production Unit 9
-behavior. Unit 8 is unchanged and remains pending independent acceptance.
+Production now matches the complete unchanged fixture and frozen identity.
+Parallel frozen clause DTOs preserve existing Apposition callers and IDs.
+Generic exact membership retrieval and clause-specific topology/partition checks
+live in the existing structural candidate module, over the owned read-only query
+boundary. 39 Unit 9 fast and 3 real-Matthew integration tests passed; the two-stage
+regression validated 267 tests, with 7 explicit skips (see test instructions).
+Unit 8 is unchanged and remains pending independent acceptance, with no clause
+evaluation support. This is implementation validation, not independent acceptance.
 No Unit 8 amendment, persistence, semantic projection, BRW integration or Unit 10.
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)

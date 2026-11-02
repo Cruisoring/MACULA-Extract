@@ -537,11 +537,15 @@ AC-U8-34 are preserved unchanged.
   Unit 7 audit M1 remain unresolved; no informational finding is treated as fixed.
 - Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
-### Unit 9 - S-V-O Clause Component Membership Freeze
+### Unit 9 - S-V-O Clause Structural Candidate
 
-**Status:** DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED
+**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
 
-**Production implementation:** NOT YET PERFORMED
+**Production implementation:** implemented under separate authorization from
+`22595753477d6ed36317bb685347d77ed1c0a567`.
+
+The freeze-only evidence below is historical; the subsequent implementation
+subsection is the current production/lifecycle record.
 
 The user separately authorized the bounded design/fixture freeze from `master` at
 `5bfd1d4b979aa0f4f42f101eeddf72118b46912a`, not Unit 9 production implementation.
@@ -590,6 +594,63 @@ Unit 8 remains **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**, with no contrac
 implementation or registry amendment. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
 Unit 9 production was not started. No persistence, semantic projection, BRW
 integration or Unit 10. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
+#### Unit 9 authorized production implementation
+
+Starting root `C:\Projects\MACULA-Extract`, branch `master`, HEAD
+`22595753477d6ed36317bb685347d77ed1c0a567`; tracked/index/untracked state clean.
+The user separately authorized the frozen second structural family, not acceptance.
+The [contract implementation evidence](../architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#28-authorized-production-implementation)
+preserves the design sections and AC-U9-01 through AC-U9-26.
+
+- Production: `scripts/structural_candidates.py`; tests: `tests/test_unit9.py`.
+  Existing `derive_structural_candidates` returns Apposition or parallel frozen
+  clause DTOs; Apposition's original DTO and identity encoding are preserved.
+- Exact Rule `S-V-O`, direct Cats S/V/O at ordinals 0/1/2 and raw Head `1`
+  gate a stored exact-membership partition. Invalid identities, topology, Head,
+  membership, coordinates or snapshot context raise `QueryError`.
+- Real Matthew: complete production DTO equals the independently frozen fixture;
+  all four member lookups share
+  `sha256:129c397055985ed0156e320bc543d551be0cf8d3ecfa192e60914540646ff087`.
+  Scope `!5,!7,!8,!9`, S=`!5`, V=`!7`, O=`!8,!9`; `!6` is excluded.
+- Unit 9: **39 fast + 3 read-only integration PASS**, 0 failures/errors/skips
+  in the final regression. PK/path/hash-seed invariance, numeric token ordering,
+  raw-span independence, malformed-store rejection and read-only write rejection
+  pass. Complete pre-change Matthew 1:1 Apposition DTOs/IDs remain equal.
+- Two-stage regression: guarded initial Units 1-9 run executed 272 tests:
+  265 passed, 2 failed on frozen Unit 8 no-S-V-O expectations, 5 skipped.
+  Final follow-up reran Units 1/2/4-9: **251 tests, 245 passed, 0 failures/errors,
+  6 explicitly skipped**. Unit 3's already successful **22 passed + 1 second-build
+  skip** was not needlessly rerun. Across final per-unit evidence: **267 passed,
+  7 skipped**, not a claimed single 274-test execution.
+- The six frozen Unit 7/8 no-S-V-O tests remain unchanged; their supported
+  assertions are covered by Unit 9 replacements. Every skip is enumerated in
+  [test instructions](../../tests/README.md#unit-9-production-implementation).
+  Unit 8's unchanged evaluator still rejects new clause DTOs and forged envelopes;
+  existing Apposition evaluations still verify offline and with source re-derivation.
+- `python -B -m scripts.verify_unit1` and `python -B -m scripts.source_schema` PASS.
+  Python 3.10 syntax parsing/current-runtime compilation PASS. Pylance could not
+  syntax-check files outside its active workspace; no Pylance type-check pass is claimed.
+- Existing Matthew was reused read-only; fresh complete BYTE/NORMALIZED/schema/
+  membership fidelity passed with logical digest
+  `F2A4A7C42FB3828B46B29DF388D583D497959CBD9B5E65CDAD876F7A85878A72`.
+  The external guard recorded zero full-source population attempts. No full
+  Matthew build or second-build gate ran.
+- Before/after DB: 160,968,704 bytes, SHA-256
+  `E52DB7E2ABDB1C2B9B4F93060312587A1363066378B7A0C9B8FB72475C25CE7E`,
+  `user_version=2`, all 75 measured catalog/index/trigger entries equal.
+  Frozen fixture SHA remains
+  `6986B8A03465A4AD05533D12A714CE87CADE9ABD760555D4586F1758EEF9764C`.
+  Source XML and protected repositories remain unchanged.
+- One implementation checkpoint has sole parent
+  `22595753477d6ed36317bb685347d77ed1c0a567`; actual resulting SHA, parent and
+  cleanliness are verified after Git creates it, not fabricated or amended here.
+
+**UNIT 9 INDEPENDENT ACCEPTANCE WAS NOT PERFORMED.**
+Unit 8 remains **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**, unchanged.
+No Unit 8 registry amendment, persistence, semantic projection, BRW integration
+or Unit 10. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
+Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Unit 1 execution evidence
 

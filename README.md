@@ -37,12 +37,13 @@ is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** at its
 [in-memory implementation boundary](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation).
 No persistence or automatic independent acceptance is authorized.
 
-Unit 9: **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**.
+Unit 9: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
 The separately authorized [S-V-O design and freeze](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
 and [expected fixture](fixtures/matthew-1-2-svo-candidate.expected.json) freeze
 Matthew 1:2's independently verified S/V/O memberships and expected identity.
-Production implementation is **NOT YET PERFORMED**. Unit 8's status and closed
-registry are unchanged; Phase remains **AUTHORIZED**.
+The [production implementation](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#28-authorized-production-implementation)
+matches that unchanged fixture. Unit 8's status and closed registry are unchanged;
+Phase remains **AUTHORIZED**.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
@@ -216,8 +217,9 @@ from scripts.structural_candidates import derive_structural_candidates
 candidates = derive_structural_candidates(database_path, "MAT 1:1!3")
 ```
 
-Only exact source `Rule="Np-Appos"` on the selected linked node and its ancestors
-produces a candidate, nearest match first and rootward thereafter. Unknown exact
+Exact source `Rule="Np-Appos"` on the selected linked node and its ancestors
+produces an Apposition candidate, nearest match first and rootward thereafter.
+Unit 9 additionally supports the bounded S-V-O family described below. Unknown exact
 tokens return `None`; valid tokens without matching ancestry return `()`.
 Source/database/ambiguity/navigation failures raise `QueryError`, not empty output.
 
@@ -230,11 +232,45 @@ evaluation, copula, semantic role, persistence or source/schema mutation is adde
 Unit 5 M1 remains unresolved; Unit 6 is independently accepted (ACCEPT).
 
 ```powershell
-python -B -m unittest tests.test_unit7.Unit7FastTests -v
+python -B -m unittest tests.test_unit9.Unit9FastTests -v
 ```
 
 See the [Unit 7 contract](docs/architecture/UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md#41-authorized-initial-implementation)
 and [test instructions](tests/README.md#unit-7).
+
+## Unit 9 S-V-O clause structural candidates
+
+The same `derive_structural_candidates(database_path, token_ref)` API returns a
+tuple containing existing Apposition `StructuralCandidate` objects and/or frozen
+`ClauseStructureCandidate` objects. Unknown exact refs return `None`; known refs
+without a supported match return `()`. Errors remain `QueryError`.
+
+The new family is `clause-structure / source-rule-s-v-o / 1`, status `candidate`.
+Eligibility requires exact `Rule=S-V-O`, three direct S/V/O children in sibling
+ordinals 0/1/2, raw `Head="1"` selecting V, and nonempty, unique, pairwise-disjoint
+component memberships whose union exactly equals the anchor membership.
+Membership uses stored `node_token_membership` and canonical scripture coordinates,
+never Start/End arithmetic or decoded node IDs. Invalid topology, provenance,
+Head, coordinates or partitions fail explicitly; legitimate structural nonmatches
+produce no clause candidate.
+
+`ClauseStructurePayload` preserves anchor, Rule, raw Head and ordered
+`ClauseComponent` tuples (source ID/Cat/ordinal, structural component label and
+exact member refs). Evidence is anchor, subject child, verbal child, object child.
+The existing canonical identity protocol includes all these source-facing fields.
+Nearest-first ordering is unchanged; exact mutually exclusive source Rules allow
+at most one supported kind at any anchor, so no secondary kind sort is needed.
+
+Matthew 1:2 anchor `400010020050040` yields S=`!5`, V=`!7`, O=`!8,!9`,
+scope=`!5,!7,!8,!9`, excluding `!6`, and the independently frozen identity:
+`sha256:129c397055985ed0156e320bc543d551be0cf8d3ecfa192e60914540646ff087`.
+All four exact member lookups return the same candidate. Matthew 1:1 remains
+Verbless with eight noun leaves, no verb leaves and unchanged Apposition IDs.
+
+No semantic role, confidence, persistence, source-schema change or BRW integration
+is introduced. Unit 8 still rejects this new candidate type; no registry amendment
+or independent acceptance was performed. See [Unit 9 tests](tests/README.md#unit-9-production-implementation),
+including explicit treatment of frozen pre-Unit-9 no-S-V-O assertions.
 
 ## Unit 8 evaluated structural interpretations
 

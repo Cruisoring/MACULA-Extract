@@ -27,7 +27,7 @@ checkpoints and are not rewritten by later governance.
 | Unit 6 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT (same audit as Units 3 and 4) |
 | Unit 7 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 7 audit M1 unresolved**; I1-I6 informational, not remediated ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
 | Unit 8 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | Separately authorized in-memory boundary only; no persistence; no independent acceptance audit exists |
-| Unit 9 | DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED | Production implementation NOT YET PERFORMED; independently frozen S/V/O memberships and expected identity only |
+| Unit 9 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | In-memory S-V-O clause candidates; frozen fixture matched; no Unit 8 registry amendment |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -89,12 +89,12 @@ Implemented invariants (details in the contract):
 - Persistence is not part of the current Unit 8 design/implementation boundary.
 - Unit 5 M1 and Unit 7 audit M1 remain unresolved; Phase remains AUTHORIZED.
 
-## Unit 9 design/fixture freeze and stop boundary
+## Historical Unit 9 design/fixture freeze
 The separately authorized [Unit 9 freeze](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
 adds only a design contract and
 [source-facing expected fixture](fixtures/matthew-1-2-svo-candidate.expected.json).
-Status: **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**.
-Production implementation: **NOT YET PERFORMED**.
+Freeze-checkpoint status was **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**.
+Production implementation was **NOT YET PERFORMED** at that checkpoint.
 Raw XML and independent read-only SQLite agree on Matthew 1:2 anchor exact scope
 `!5,!7,!8,!9`, S=`!5`, V=`!7`, O=`!8,!9`; token 6 is excluded everywhere.
 The expected candidate identity was independently computed only after membership
@@ -104,6 +104,30 @@ amend Unit 8's contract/registry, add persistence, semantic roles/projection, BR
 integration or Unit 10 without separate authorization.
 Unit 8 remains IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
 Unit 5 M1 and Unit 7 audit M1 remain unresolved; Phase remains AUTHORIZED.
+
+## Unit 9 implementation and stop boundary
+Unit 9 is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**, separately authorized
+from clean `master` at `22595753477d6ed36317bb685347d77ed1c0a567`.
+This supersedes the historical Unit 9 production stop above only for the frozen
+S-V-O implementation. [Contract section 28](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#28-authorized-production-implementation)
+records implementation evidence; no frozen design criterion was weakened.
+`derive_structural_candidates` now returns existing `StructuralCandidate`
+Apposition DTOs or parallel frozen `ClauseStructureCandidate` DTOs. The latter
+contains `ClauseStructurePayload` with ordered `ClauseComponent` tuples.
+Only exact Rule/Cats/ordinals/Head and a nonempty, disjoint exact membership
+partition qualify; source/store contradictions raise `QueryError`.
+Matthew 1:2 naturally matches the frozen candidate ID and excludes token 6.
+Existing Apposition DTO content and identities are unchanged.
+Unit 9 tests: 39 fast + 3 read-only integration PASS. Combined regression evidence:
+267 passed, 7 explicitly skipped across two stages (not a single 274-test run).
+Six frozen Unit 7/8 tests contain obsolete no-S-V-O expectations; their still-valid
+assertions have Unit 9 replacement coverage. The seventh skip is Unit 3's disabled
+second-build gate. Do not edit the frozen Unit 7/8 tests to hide this distinction.
+Unit 8 remains **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** with its original
+Apposition-only registry. New clause DTOs remain unsupported for evaluation.
+No independent Unit 9 acceptance, persistence, semantic projection, BRW integration
+or Unit 10 is authorized. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
+Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Fidelity principles
 1. Raw source is source authority.
