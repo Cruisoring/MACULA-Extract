@@ -15,11 +15,14 @@ implementation validation and [tests](../../tests/README.md#unit-10-separate-per
 Historical stop lines below retain their checkpoint meaning.
 
 The [Unit 11 discovery and history query contract](UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
-is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** (frozen design, then separately authorized
+is **IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS;
+[audit](../audits/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-INDEPENDENT-ACCEPTANCE-AUDIT.md))**
+(frozen design, then separately authorized
 [implementation](../../scripts/projection_query.py) and [tests](../../tests/README.md#unit-11-discovery-and-history-queries)).
 It provides read-only discovery of persisted candidates from a scripture selector by exact member-token
-scope, then candidate-centered evaluation/supersession history, with no current-truth semantics. No schema
-change, independent acceptance or Unit 12 is authorized.
+scope, then candidate-centered evaluation/supersession history, with no current-truth semantics. The audit's
+unresolved MINOR M-1 is a wrong exception type on 4300+-digit selector strings. No schema
+change or Unit 12 is authorized.
 
 Historical investigations remain evidence, not retrospective implementation specifications:
 

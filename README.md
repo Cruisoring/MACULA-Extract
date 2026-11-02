@@ -93,7 +93,8 @@ See [tests](tests/README.md#unit-10-separate-persistence) and
 
 ## Unit 11 discovery and history queries
 
-**IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.**
+**IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS;
+[audit](docs/audits/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-INDEPENDENT-ACCEPTANCE-AUDIT.md)).**
 The frozen [Unit 11 contract](docs/architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
 is implemented by [projection_query.py](scripts/projection_query.py): a scripture selector discovers
 persisted candidates by exact member-token scope (Matthew 1:2 token 6 is excluded), yielding
@@ -112,9 +113,10 @@ histories = get_structural_interpretation_histories_for_selector(
 
 The module opens the Unit 10 store read-only, validates every persisted record, never writes,
 never needs the source database and defines no current/latest/winner evaluation: unsuperseded
-means graph leaf only. See [tests](tests/README.md#unit-11-discovery-and-history-queries). No
-independent acceptance, schema change, semantic projection, BRW integration or Unit 12 is
-authorized; existing findings remain open; Phase remains AUTHORIZED.
+means graph leaf only. See [tests](tests/README.md#unit-11-discovery-and-history-queries). Known
+unresolved Unit 11 audit M-1: string-form verse/token selectors above 4300 digits raise `ValueError`
+instead of `ProjectionQueryError` (fail-closed). No schema change, semantic projection, BRW integration
+or Unit 12 is authorized; existing findings remain open; Phase remains AUTHORIZED.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.

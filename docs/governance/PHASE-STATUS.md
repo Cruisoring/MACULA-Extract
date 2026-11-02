@@ -858,7 +858,8 @@ distinct. Unit 11 is NOT AUTHORIZED. Phase remains **AUTHORIZED**, not COMPLETE 
 
 ### Unit 11 - Read-Only Structural Interpretation Discovery & History Query Boundary
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS; see
+[Unit 11 independent acceptance](#unit-11-independent-acceptance))
 
 The [contract](../architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
 was frozen as a design contract at checkpoint `38e0d89f01a8dc4fd9ad83a967a2e2f56da06351`
@@ -883,13 +884,30 @@ Validation: 32 fast tests and 1 opt-in read-only real-Matthew integration test p
 81 tests OK (4 explicit skips); Units 1, 2 and 4-11 376 tests OK (25 explicit opt-in integration
 skips); both required verifiers exit 0. Unit 3 discovery was not run, the second-build gate stayed
 disabled and full Matthew builds performed: 0. The source database and protected repositories
-were verified unchanged. This is implementation validation, NOT independent acceptance; no
-independent Unit 11 acceptance audit exists. The implementation checkpoint's actual SHA is
+were verified unchanged. This implementation validation was not itself independent acceptance;
+independent acceptance followed separately (below). The implementation checkpoint's actual SHA is
 verified from Git after commit, not recorded in its own diff.
 
-No independent acceptance, schema change, semantic projection, BRW integration, Unit 12 or
-remediation of Unit 5 M1, Unit 7 audit M1, Unit 8 audit M-1 or Unit 9 audit M-1 is authorized.
-Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+#### Unit 11 independent acceptance
+
+Independent acceptance audit of implementation checkpoint
+`deb83908b45738f1c7252d60b9fbaefda372719d` (freeze `38e0d89f01a8dc4fd9ad83a967a2e2f56da06351`);
+starting HEAD `deb8390`, clean. Full report:
+[audit](../audits/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-INDEPENDENT-ACCEPTANCE-AUDIT.md).
+
+| Item | Result |
+|---|---|
+| Decision | **ACCEPT WITH MINOR FINDINGS** |
+| Findings | 0 BLOCKER, 0 MAJOR, **1 MINOR (Unit 11 audit M-1, unresolved)**; informational I-1..I-5, not remediated |
+| AC-U11-01..37 | 37 PASS, 0 FAIL, 0 SUPERSEDED |
+| Unit 11 audit M-1 | verse/token string selectors with more than 4300 digits raise `ValueError` instead of `ProjectionQueryError` (fail-closed, no data returned) |
+| Independent evidence | raw-XML oracle, independent identity wire (52 real candidate ids and the frozen S-V-O id reproduced), logical model over 7 scenarios, PK/insertion/path invariance over 4 stores x 263 calls, 47 tamper classes x 15 APIs plus 710 JSON-leaf fuzz mutations (0 successes), authorizer/read-only and connection-lifetime tracing, source-independence trace, Matthew 1:1 Verbless and semantic/scoring firewalls |
+| Regression | Units 1, 2 and 4-11: 376 ran, OK, 25 explicit opt-in skips; Units 10+11 81 OK; Unit 11 opt-in real-Matthew integration test run read-only and OK; both verifiers exit 0; full Matthew builds 0 |
+| Source preservation | SHA-256 `E52DB7E2...25CE7E`, size and mtime unchanged; protected repositories unchanged and clean |
+
+Unit 11 audit M-1 is distinct from Unit 5 M1, Unit 7 audit M1, Unit 8 audit M-1 and Unit 9 audit M-1,
+all of which remain unresolved. No remediation, schema change, semantic projection, BRW integration
+or next Unit is authorized. Unit 12 is NOT AUTHORIZED. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Unit 1 execution evidence
 
