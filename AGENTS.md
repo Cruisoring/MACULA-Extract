@@ -11,39 +11,73 @@ This repository is an independent MACULA linguistic source extraction and verifi
 ### Downstream consumer
 `bible-research-merged` is downstream. Do not modify it from this repository unless a later task explicitly authorizes cross-repository integration.
 
-## Current authorization
-Unit 1 is IMPLEMENTED / INDEPENDENTLY ACCEPTED. Its contract, fixtures, verifier,
-tests and independent acceptance findings remain frozen.
+## Current Governance Status
+This is a summary ledger. [docs/governance/PHASE-STATUS.md](docs/governance/PHASE-STATUS.md)
+is the authoritative lifecycle record; historical audits are evidence about their own
+checkpoints and are not rewritten by later governance.
 
-The user's separate Unit 2 authorization permits only SQLite source schema,
-empty-database bootstrap/version verification, XmlReader and occurrence-identity
-contracts, temporary schema tests, and directly related documentation.
+| Unit | Current status | Decision / note |
+|---|---|---|
+| Unit 1 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT; contract, fixtures, verifier, tests and findings frozen |
+| Unit 2 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS (existing findings unchanged; [audit](docs/audits/UNIT-2-SQLITE-SOURCE-SCHEMA-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
+| Unit 2 Amendment 1 | IMPLEMENTED | Not separately independently accepted; schema version 2 (`087865e3d822c7baa1f9d7e5313d46b5168bc670`) |
+| Unit 3 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT ([audit](docs/audits/HISTORICAL-UNITS-3-4-6-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
+| Unit 4 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT (same audit) |
+| Unit 5 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 5 M1 unresolved** |
+| Unit 6 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT (same audit as Units 3 and 4) |
+| Unit 7 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 7 audit M1 unresolved**; I1-I6 informational, not remediated ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
+| Unit 8 | CONTRACT DRAFT / NOT IMPLEMENTED | Design-only; **implementation NOT AUTHORIZED**; no independent acceptance audit exists |
+| Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
-Unit 2 MUST NOT create:
-- production XML importer or exporter
-- populated production Matthew database or production ingestion
-- full-NT or N1904 work
-- companion-source merges
+Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
+remediate either without separate explicit authorization. Acceptance of Units 3, 4 and 6
+is not independent acceptance of Unit 2 Amendment 1.
+
+## Authorization boundary
+Each Unit is authorized only by a separate explicit user instruction; the Phase being
+AUTHORIZED, a Unit being accepted, or a contract existing does not authorize the next Unit.
+Standing prohibitions unless a later user task explicitly authorizes them:
+- other books, N1904/full-NT ingestion, or companion-source merges
+- XmlPro dependency or physical byte/UTF-16 range mapper
+- network acquisition
 - BRW integration, semantic projection, localization or UI
-- XmlPro dependency or physical byte/UTF-16 mapper
+- automatic independent acceptance of any Unit
 
-Phase remains AUTHORIZED. Unit 2 is IMPLEMENTED / INDEPENDENTLY ACCEPTED.
-Independent decision: ACCEPT WITH MINOR FINDINGS; see the [audit](docs/audits/UNIT-2-SQLITE-SOURCE-SCHEMA-INDEPENDENT-ACCEPTANCE-AUDIT.md).
-The user subsequently issued a separate Unit 3 authorization for the pinned SBLGNT
-Matthew XmlReader importer, populated temporary SQLite builds, exact archived-byte
-export, DB-only reconstruction and independent source fidelity verification.
-Unit 2 Amendment 1 is IMPLEMENTED at `087865e3d822c7baa1f9d7e5313d46b5168bc670`:
-schema version 2 removes the per-row membership ancestry INSERT trigger and retains
-transactional post-load complete-set validation. Original Unit 2 was independently
-accepted with minor findings; its historical audit is unchanged.
-Unit 3 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE. No network acquisition is permitted.
-Unit 1 and the amended Unit 2 technical baseline, plus both historical audits, remain frozen.
-The user separately authorized Unit 4's read-only Matthew verse/token query slice.
-Unit 4 is IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
-No other book, N1904/full-NT ingestion, companion merge, XmlPro dependency, physical
-range mapper or semantic projection is authorized. Unit 5 is NOT STARTED;
-no later Unit or automatic independent acceptance is authorized.
+Unit 1 and the amended Unit 2 technical baseline, plus their historical audits, remain frozen.
 See the [Unit 3 pipeline contract](docs/architecture/UNIT-3-SBLGNT-MATTHEW-SOURCE-FIDELITY-PIPELINE.md).
+
+Historical scope notes (superseded by later separate authorizations, kept for context):
+Unit 2 originally permitted only the SQLite source schema, empty-database bootstrap/version
+verification, XmlReader and occurrence-identity contracts and temporary schema tests; Unit 3
+later added the pinned SBLGNT Matthew XmlReader importer, exact archived-byte export, DB-only
+reconstruction and independent source-fidelity verification; Unit 4 added read-only
+verse/token queries; Units 5-7 added read-only syntax navigation, source evidence
+composition and in-memory Apposition structural candidates. Unit 2 Amendment 1 removed the
+per-row membership ancestry INSERT trigger and retains transactional post-load
+complete-set validation.
+
+## Unit 8 stop boundary
+Unit 8 currently has a **design-only** contract:
+[UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md).
+**Unit 8 implementation is NOT AUTHORIZED.** Do not infer authorization from the contract's
+existence, the acceptance of Units 1-7, the Phase being AUTHORIZED, a request to inspect
+Unit 8, or a request to reconcile governance. Without separate explicit user authorization, do NOT:
+- create `scripts/evaluated_interpretations.py` or Unit 8 tests
+- implement `EvaluatedStructuralInterpretation`
+- create evaluation persistence or a projection database
+- modify the source schema
+- integrate Bible Research / BRW
+- implement semantic roles or create Actor/Action/Patient/Event/Result/Identity/Property entities
+- begin Unit 9
+
+Design invariants (details in the contract):
+- Source fact, Unit 7 `StructuralCandidate` and Unit 8 evaluated interpretation are distinct
+  epistemic object classes; do not collapse them.
+- Evaluating a candidate must not mutate source facts or the candidate.
+- The authoritative source store stays read-only to downstream interpretation.
+- No synthetic confidence, probability or scoring.
+- No semantic-role or theological interpretation.
+- Persistence is not part of the current Unit 8 design/implementation boundary.
 
 ## Fidelity principles
 1. Raw source is source authority.
