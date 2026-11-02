@@ -53,13 +53,41 @@ candidates can also be evaluated in memory; Phase remains **AUTHORIZED**.
 
 ## Unit 10 separate persistence boundary
 
-**CONTRACT FROZEN / IMPLEMENTATION NOT STARTED.**
+**IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.**
 The separately authorized [Unit 10 contract](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md)
 freezes a physically separate append-only candidate/human-evaluation store.
-Implementation may begin only after its dedicated contract checkpoint. This narrowly
+Its dedicated contract checkpoint is `d690209f7dce140b61d0056446cec370afce2edd`.
+This narrowly
 supersedes historical persistence prohibitions, not prior derivation/evaluation semantics.
 No source-schema change, semantic projection, BRW integration or independent acceptance.
 Unit 11 is NOT AUTHORIZED; existing findings remain open; Phase remains AUTHORIZED.
+
+```python
+from scripts.projection_store import (
+    initialize_projection_store, store_candidate, get_candidate,
+    store_evaluation, get_evaluation, list_evaluations_for_candidate,
+    verify_projection_store,
+)
+
+initialize_projection_store(projection_path)  # nonexistent path, never the source DB
+store_candidate(projection_path, candidate, source_db_path=database_path)
+store_evaluation(projection_path, record, source_db_path=database_path)
+loaded = get_evaluation(projection_path, record.evaluation_id)
+verify_projection_store(projection_path)  # offline V1/history
+verify_projection_store(projection_path, database_path)  # also source V2
+```
+
+The [new module](scripts/projection_store.py) uses a separate
+[STRICT schema](schema/001-projection-store.sql), application identity and version 1.
+Source version 2 is unchanged. Writes require current candidate V1/public V2 and
+evaluation V1/history/V2; the source remains read-only on separate connections.
+Identical duplicates succeed without mutation; conflicts fail with `QueryError`.
+Human notes, citations, labels, event keys and supersession edges are lossless;
+predecessors and opposing judgments coexist without a global current/latest record.
+Loads return existing canonical frozen DTOs, not replacement derivations/judgments.
+The evaluation-list frozenset is deliberately unordered.
+See [tests](tests/README.md#unit-10-separate-persistence) and
+[implementation evidence](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md#13-implementation-validation).
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.

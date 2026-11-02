@@ -590,3 +590,45 @@ assertions were replaced by current regressions:
 The guarded Unit 3 read-only reuse fixture may replace expensive full-build setup,
 but the current runner must not remove active test methods. The `obsolete` filter
 sets recorded above are historical and must not be applied at the current HEAD.
+
+## Unit 10 separate persistence
+
+The [frozen contract](../docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md)
+precedes all production implementation in checkpoint
+`d690209f7dce140b61d0056446cec370afce2edd`.
+The [new tests](test_unit10.py) use standard-library unittest/SQLite only, with disposable
+databases outside the repository. No production Matthew build, source migration,
+network acquisition or third-party dependency is needed.
+
+```powershell
+python -B -m unittest tests.test_unit10.Unit10FastTests -v
+
+# Freshly validate the existing source before real-Matthew persistence tests.
+python -B -m scripts.source_fidelity --database "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+$env:MACULA_UNIT10_INTEGRATION = "1"
+$env:MACULA_MATTHEW_DB = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit10 -v
+Remove-Item Env:MACULA_UNIT10_INTEGRATION
+Remove-Item Env:MACULA_MATTHEW_DB
+```
+
+Actual result: **45 fast + 3 opt-in integration PASS**, no failures/errors/skips
+when opted in. Default module discovery skips the three integration tests explicitly.
+Coverage includes separate STRICT schema/version/bootstrap, immutable triggers including
+REPLACE with recursive triggers OFF, exact candidate/evaluation round-trips,
+stale/reidentified forgery and corruption, missing/cross/self supersession, forks,
+global event reuse, snapshot preservation, unregistered derivation versions, changed
+source PK/insertion order and projection candidate/evaluation row allocation, separate
+read/write profiles, handle closure/rollback, cross-process reload and forbidden fields.
+Frozen real-Matthew literal identities are independently recomputed, not taken from the
+persistence encoder. Matthew 1:1 stays Verbless/Apposition; Matthew 1:2 exact scope and
+components exclude !6.
+
+Combined validation: 366 unfiltered tests, **365 passed / 1 skipped**, no failures/errors.
+Earlier Units 1-9: 318 tests, 317 passed / 1 skipped. The only skip is Unit 3's disabled
+second-full-build gate. The external guarded runner reused a byte-identical private
+copy with fresh complete schema/Expat fidelity, prohibited population above 1 MB,
+and still executed offline XmlReader on synthetic Unit 3 inputs.
+**Full Matthew builds performed: 0.** No obsolete-test filters or prior-test edits.
+Source bytes/catalog/version/logical fidelity and protected repository Git states
+were checked before/after. This is implementation validation, NOT independent acceptance.

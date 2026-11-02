@@ -29,7 +29,7 @@ checkpoints and are not rewritten by later governance.
 | Unit 8 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; in-memory boundary only; no persistence ([audit](docs/audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
 | Unit 8 Amendment 1 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS (separate decision, same audit); `human-structural-adequacy/1` also evaluates Unit 9 S-V-O candidates; in-memory only |
 | Unit 9 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 9 audit M-1 unresolved**; I-1..I-5 informational, not remediated ([audit](docs/audits/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); in-memory S-V-O clause candidates; evaluable via Unit 8 Amendment 1 |
-| Unit 10 | CONTRACT FROZEN / IMPLEMENTATION NOT STARTED | Separately authorized [persistence boundary](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md); implementation only after dedicated contract checkpoint |
+| Unit 10 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | Separate append-only [persistence boundary](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md); no acceptance or Unit 11 |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -166,7 +166,11 @@ unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 ## Unit 10 separate persistence authorization
 The [Unit 10 contract](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md)
 supersedes earlier persistence stop lines only for its physically separate, append-only
-candidate/human-evaluation store. At the contract freeze, implementation has not started.
+candidate/human-evaluation store. Contract freeze checkpoint:
+`d690209f7dce140b61d0056446cec370afce2edd`; implementation follows as its sole child.
+`scripts/projection_store.py` and `schema/001-projection-store.sql` own an independent
+store protocol/version. Writes require V1 + source V2; load never re-derives or re-evaluates.
+Only existing Apposition/S-V-O candidates and registered human evaluations are persisted.
 Follow its exact API/path/validation boundary; do not modify older production semantics,
 source schema, historical contracts/audits or existing findings. No BRW/semantic projection
 or independent acceptance is authorized. Unit 11 is NOT AUTHORIZED.

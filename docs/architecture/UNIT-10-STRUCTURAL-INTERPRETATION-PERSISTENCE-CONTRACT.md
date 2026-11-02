@@ -315,3 +315,145 @@ UI/localization, AI evaluator, deterministic-policy registration or Unit 11.
 Implementation completion must say **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
 Phase remains AUTHORIZED, not COMPLETE or CLOSED. Independent acceptance needs a
 new separate task. Append implementation evidence below only after the freeze.
+
+## 13. Implementation validation
+
+**IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.** This is implementer evidence,
+not an independent acceptance audit. Sections 1-12 are preserved from freeze commit
+`d690209f7dce140b61d0056446cec370afce2edd`, whose sole parent is the exact starting
+checkpoint `efb0311da039da3c5bf7f2b0704ed2722ac5fbfb`.
+The implementation checkpoint's sole parent must be that freeze; actual SHA,
+parent and clean status are checked and reported after Git creates it.
+No amend/rebase/squash, third checkpoint, push or protected-repository mutation.
+
+### 13.1 Delivered boundary
+
+New [production module](../../scripts/projection_store.py),
+[independent DDL](../../schema/001-projection-store.sql) and
+[Unit 10 tests](../../tests/test_unit10.py). All seven APIs in section 4 are
+implemented with the frozen signatures/return shapes. Only canonical existing
+Unit 7/8/9 DTOs are loaded. The current two-kind registry and all earlier production
+files remain unchanged.
+
+Store identity is application_id 1297428784, user_version 1, independent protocol
+`macula.structural-interpretation-store.v1`; all three tables are STRICT.
+The exact catalog and normalized DDL hash are checked on every open. Initialization
+is exclusive and transactional; appends use BEGIN IMMEDIATE, DELETE journal and
+synchronous FULL with FK/recursive triggers ON. Source connections remain mode=ro
+and query_only ON. No connection issues ATTACH.
+
+Candidate/evaluation lossless round-trips and reload identity recomputation pass,
+including all three Apposition records and the real S-V-O candidate. Human text
+preserves whitespace, CR/LF, combining marks, non-BMP text, language tag case,
+label/event strings, citation order and supersession. Independent real-vector
+hashes match all three literals in section 9. A separate Python process reloads
+and verifies the same persisted evaluation without any source derivation.
+
+Idempotent duplicates leave the projection file byte-identical. Same-ID stale
+content, reidentified source forgery and corrupted stored content fail closed,
+without overwriting. Superseded records, opposing judgments and forks remain
+queryable/verifiable; missing/cross-candidate/cross-evaluator/self/malformed edges
+and conflicting event reuse fail. No global current/latest is created.
+
+Two schema-validated logically equal source stores use offset/reversed node/token
+PKs, reassigned snapshot/book/file/tree/element keys and reversed INSERT sequences;
+projection insertion order is reversed too. Both candidate and evaluation rowids
+actually differ while all returned logical DTOs, candidate/evaluation identities
+and persisted logical content remain equal. No rowid escapes into a DTO.
+
+### 13.2 Commands and exact counts
+
+Executed successfully:
+
+- `python -B -m unittest tests.test_unit10` with integration opt-in:
+  **48 run, 48 passed: 45 fast + 3 real-Matthew integration; 0 skipped**.
+- External guarded whole-suite discovery, with all integration flags enabled:
+  **366 run, 365 passed, 0 failures, 0 errors, 1 skipped**.
+  Earlier Units 1-9 contribute 318 tests, 317 passed / 1 skipped.
+- Per-module counts: Unit 1 26, Unit 2 56, Unit 3 23, Unit 4 15, Unit 5 20,
+  Unit 6 22, Unit 7 19, Unit 8 51, Amendment 1 44, Unit 9 42, Unit 10 48.
+- The sole skip is
+  `test_unit3.Unit3Tests.test_u3_01_two_full_builds_and_logical_digests`:
+  the explicitly disabled second-build gate. No obsolete-test filters.
+- Unit 3's setup used a byte-identical private temporary source copy, freshly
+  verified by complete schema/Expat fidelity; a >1 MB population guard recorded
+  **0 full-population attempts**. The real offline System.Xml.XmlReader ran on
+  synthetic regression inputs (18 synthetic population calls).
+- `python -B -m scripts.verify_unit1` PASS.
+- `python -B -m scripts.source_schema` PASS (source schema version 2).
+- `python -B -m scripts.source_fidelity --database ...` PASS before use; complete
+  fresh read-only fidelity after regressions also PASS, same counts/digest as section 11.
+- Python 3.10 syntax parsing/current-runtime in-memory compilation PASS for both
+  new Python files. Editor problems reported no errors in either.
+- Contract documentation checks: 30 unique sequential criteria, local links resolve,
+  frozen prefix unchanged, exact staged paths and `git diff --check` PASS.
+
+**Full Matthew builds performed: 0.** All projection/reduced/copy database files
+and offline .NET outputs were temporary and cleaned; no runtime DB binary is committed.
+
+### 13.3 AC-to-evidence matrix
+
+Test numbers below identify the correspondingly prefixed methods in
+[test_unit10.py](../../tests/test_unit10.py). There are **30 PASS / 0 FAIL**;
+post-commit safety evidence is verified after commit, not assumed from pre-commit tests.
+
+| AC | Result | Concrete evidence |
+|---|---|---|
+| AC-U10-01 | PASS | 01, 04, 30; independent application/protocol/version, STRICT tables, no old source path changed |
+| AC-U10-02 | PASS | 02-03, 41; existing empty/unknown/source bytes preserved; failed bootstrap removed and retriable |
+| AC-U10-03 | PASS | 05-06, 44-45; higher version, identity/catalog/trigger/index/hash/journal drift rejected |
+| AC-U10-04 | PASS | 07, 46, 48; four real candidates and both DTO families compare every field |
+| AC-U10-05 | PASS | 08, 37, 40, 47-48; all dispositions, exact UTF-8 note/label/event/language, cross-process reload |
+| AC-U10-06 | PASS | 16-17, 19; stale-ID V1 and reidentified-envelope V2 rejection, source mandatory |
+| AC-U10-07 | PASS | 17-19, 21-26; public V1/history/V2, closed registry and no bypass flags |
+| AC-U10-08 | PASS | 10, 46; duplicate candidate/evaluation idempotent and file byte-identical |
+| AC-U10-09 | PASS | 11-12, 26; conflicting stored same-ID content fails and is not overwritten |
+| AC-U10-10 | PASS | 13; metadata/candidate/evaluation UPDATE/DELETE/REPLACE rejected with recursive OFF |
+| AC-U10-11 | PASS | 07-08, 46-48; independent ordered-array recompute and frozen candidate/human/supersession literal hashes |
+| AC-U10-12 | PASS | 07, 17, 39, 46; exact arrays/components/evidence survive without range expansion |
+| AC-U10-13 | PASS | 20-24, 26, 47; predecessor preservation, invalid edges/content rejected, forks coexist |
+| AC-U10-14 | PASS | 24-25; opposing dispositions coexist, stored label/event reuse rejected across candidates |
+| AC-U10-15 | PASS | 27; two source revisions coexist offline, old evaluation preserved, wrong snapshot V2 fails |
+| AC-U10-16 | PASS | 28; independent version-2 wire produces distinct ID, current registry rejects its storage |
+| AC-U10-17 | PASS | 29; shifted source PKs/reversed INSERTs, different projection candidate/evaluation rowids, equal logical records |
+| AC-U10-18 | PASS | 04, 30-31, 43; read-only preflight, URI/query_only source enforcement, no ATTACH, hardlink rejection |
+| AC-U10-19 | PASS | 39, 48; real Verbless clause, eight nonverb leaves, three unchanged Apposition IDs/evaluations |
+| AC-U10-20 | PASS | 17, 39, 46-47; real scope !5,!7,!8,!9, exact S/V/O, no !6; reidentified envelope rejected |
+| AC-U10-21 | PASS | 09, 34, 38-39, 48; closed fields, no semantic/source-identity fabrication, unchanged canonical DTOs |
+| AC-U10-22 | PASS | 24, 32, 38; no ranking/theology/confidence fields, no regenerated judgment or latest API |
+| AC-U10-23 | PASS | 14-15, 18, 33-36, 44; malformed IDs, wrong primitives/literals, unknown/missing/duplicate fields, JSON/protocol errors |
+| AC-U10-24 | PASS | 32, 40; LOAD/offline VERIFY succeed with derive/evaluate blocked; explicit V2 invokes derivation |
+| AC-U10-25 | PASS | 03, 41-43; captured handles all closed on success/errors; injected post-candidate failure rolls back |
+| AC-U10-26 | PASS | Full before/after preservation and freshly repeated schema/Expat fidelity, section 13.4 |
+| AC-U10-27 | PASS | Unfiltered 366-test guarded run: current prior 318 tests, 317 pass / sole slow-gate skip |
+| AC-U10-28 | PASS | Freeze five paths / implementation nine paths, sole-parent chain, Git-retrievable contract, final clean-tree gate |
+| AC-U10-29 | PASS | Before/after protected branch/HEAD/status identical; guarded full-population attempts 0, builds 0 |
+| AC-U10-30 | PASS | Existing audits/production unchanged; no remediation, acceptance, BRW or Unit 11; explicit stop |
+
+### 13.4 Preservation and findings
+
+Actual final source DB equals the measured section 11 baseline on all:
+160,968,704 bytes; SHA-256
+`e52db7e2abdb1c2b9b4f93060312587a1363066378b7a0c9b8fb72475c25ce7e`;
+user_version 2; exact catalog/index/trigger digests and 38 indexes/23 triggers.
+Fresh complete ancestry/schema and independent Expat byte/normalized fidelity PASS,
+same logical digest `F2A4A7C42FB3828B46B29DF388D583D497959CBD9B5E65CDAD876F7A85878A72`.
+
+Protected repositories before/after are unchanged:
+upstream main at `8423afe47b9e8f24b7772e808af45c7159a6fe7e`, clean;
+downstream master at `0e4c9baad299f7149cc71b35bcd5208297d4f8c0`, clean.
+The pre-existing ignored source DB is preserved, not deleted or committed.
+
+No new unresolved Unit 10 defect was observed. Initial validation caught two
+Unit 10 test-fixture errors (a mock argument named `uri` collided with SQLite's
+keyword; a reopened disposable snapshot connection lacked verification PRAGMAs).
+Both were corrected solely in the new test file and rerun successfully.
+No older Unit was modified to make tests pass.
+
+Honest limits remain those frozen above: file owners can replace DDL/bytes;
+content hashes are not authentication; SQLite guarantees depend on OS/hardware;
+V2 inherits accepted immutable-source/query assumptions; the internal shared V1
+dependency is explicit. No scalability/distributed durability claim is made.
+Unit 5 M1, Unit 7 audit M1, Unit 8 findings and Unit 9 M-1 retain original status and
+severity. Unit 10 is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
+Unit 11 is **NOT AUTHORIZED**. Phase is AUTHORIZED, not COMPLETE or CLOSED. STOP.

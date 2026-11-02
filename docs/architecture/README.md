@@ -1,9 +1,15 @@
 # Architecture Notes
 
 The separately authorized [Unit 10 persistence contract](UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md)
-is **CONTRACT FROZEN / IMPLEMENTATION NOT STARTED** at its dedicated checkpoint.
+is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**, following dedicated freeze
+`d690209f7dce140b61d0056446cec370afce2edd`.
 It authorizes only a separate append-only derived/evaluation store after that checkpoint,
 not source writes, new structural/evaluation semantics, BRW or independent acceptance.
+The [store module](../../scripts/projection_store.py) and independently versioned
+[schema](../../schema/001-projection-store.sql) preserve the existing DTOs/identities.
+Both write paths require source-grounded verification on separate read-only source
+connections; loads never regenerate human evaluations. See the contract's appended
+implementation validation and [tests](../../tests/README.md#unit-10-separate-persistence).
 Historical stop lines below retain their checkpoint meaning. Unit 11 is NOT AUTHORIZED.
 
 Historical investigations remain evidence, not retrospective implementation specifications:

@@ -796,15 +796,41 @@ which remain unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ### Unit 10 - Separate Structural Interpretation Persistence Boundary
 
-**Status:** CONTRACT FROZEN / IMPLEMENTATION NOT STARTED
+**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
 
 Separately authorized from clean `master` at
 `efb0311da039da3c5bf7f2b0704ed2722ac5fbfb`.
 The [contract](../architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md)
 freezes exact paths, APIs, representation, validation gates, literal vectors and
 AC-U10-01..30 before production implementation in a dedicated checkpoint.
+Contract freeze: `d690209f7dce140b61d0056446cec370afce2edd`, sole parent the starting HEAD,
+exactly the five authorized documentation paths, clean and independently retrievable.
 Only a physically separate append-only derived/evaluation store is authorized.
-The following implementation checkpoint must have the contract checkpoint as sole parent.
+The implementation checkpoint has the contract checkpoint as sole parent; its actual
+SHA and clean final status are verified after commit, not fabricated in its own diff.
+
+Implementation paths are exactly the contract's nine-path set. New production:
+`scripts/projection_store.py`, `schema/001-projection-store.sql`; new tests:
+`tests/test_unit10.py`. Existing canonical DTOs/registries/derivation and evaluation
+semantics are unchanged. Strict closed JSON, exact catalog/hash/version validation,
+append-only SQL guards, transactional history, candidate V1 + public V2 and evaluation
+V1/history + V2 preserve logical identity independently of SQLite PKs.
+
+Validation: 30/30 AC-U10 PASS; 45 fast + 3 real-Matthew integration tests PASS.
+Unfiltered guarded combined run: 366 tests, 365 passed, 0 failures/errors, 1 skip
+(Unit 3 disabled second-build gate); prior Units 1-9 account for 318 tests, 317 passed,
+1 skip. No obsolete filters; full Matthew builds performed: 0. Unit 3 reused a
+byte-identical private temporary DB with fresh full fidelity and guarded population;
+its real offline XmlReader synthetic regressions still executed. Both required
+verifiers and Python 3.10 syntax/current-runtime compilation pass.
+Candidate/evaluation exact round-trips, independent literal identities, idempotence,
+same-ID conflicts, supersession, global event integrity, two source stores with changed
+PK/insertion order and changed candidate/evaluation storage row allocation, Verbless
+and exact Matthew 1:2 token-6 firewalls all pass.
+The original source size/SHA/version/catalog/indexes/triggers and full source fidelity
+remain unchanged; protected upstream/downstream Git states remain unchanged and clean.
+Full details and AC-to-test mapping are in the contract's appended implementation evidence.
+
 No prior findings or accepted semantics are remediated; no independent acceptance,
 semantic projection, BRW integration or Unit 11. Phase remains AUTHORIZED.
 
