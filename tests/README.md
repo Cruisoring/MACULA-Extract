@@ -328,3 +328,40 @@ The [Unit 8 API/DTOs and frozen vector](../docs/architecture/UNIT-8-EVALUATED-ST
 remain in-memory only, with no persistence, semantic roles, confidence, BRW,
 source-schema changes or Unit 9. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
 Unit 8 is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**; Phase remains AUTHORIZED.
+
+## Unit 9 design/fixture freeze
+
+Unit 9 is **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**.
+Production implementation is **NOT YET PERFORMED**; no `tests/test_unit9.py` or
+Unit 9 implementation tests exist.
+
+The [expected fixture](../fixtures/matthew-1-2-svo-candidate.expected.json) was
+frozen only after separate raw-XML and read-only direct-SQLite oracles agreed on
+Matthew 1:2 anchor `400010020050040`, Rule `S-V-O`, raw Head `1`,
+source-ordered S/V/O children and all four exact membership tuples:
+S=`("MAT 1:2!5",)`, V=`("MAT 1:2!7",)`, O=`("MAT 1:2!8", "MAT 1:2!9")`,
+anchor=`("MAT 1:2!5", "MAT 1:2!7", "MAT 1:2!8", "MAT 1:2!9")`.
+Token 6 is excluded. No production helper computed the expected memberships or ID.
+The [freeze evidence](../docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
+records the final fixture SHA-256, canonical expected candidate identity and M1-M8.
+
+**8 independent disposable-store controls PASS, 0 failures/skips**: raw-span
+invariance, envelope exclusion, deleted/external/overlapping/unassigned memberships,
+all local-PK reallocation, reversed node/token PK and insertion ordering, and a
+numeric-versus-lexical `!8,!9,!10` ordering probe. These prove audit-only logical
+input invariance, not production candidate-ID behavior.
+
+Proportionate existing regression actually run:
+
+```powershell
+python -B -m scripts.verify_unit1
+```
+
+Result: **PASS**, exit 0. Unit 7/8 suites were not rerun because no production,
+existing tests, accepted fixtures or Unit 8 registry interactions changed.
+No Matthew rebuild, Unit 3 discovery or second-build gate ran.
+The source DB's bytes/version/catalog/counts and protected repositories are
+preserved. Future production tests must compare against this independent frozen
+expectation rather than generate it through their own candidate implementation.
+Unit 8 remains pending independent acceptance. No Unit 8 amendment, persistence,
+semantic projection, BRW integration or Unit 10. Phase remains AUTHORIZED.

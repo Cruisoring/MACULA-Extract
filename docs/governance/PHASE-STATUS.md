@@ -537,6 +537,60 @@ AC-U8-34 are preserved unchanged.
   Unit 7 audit M1 remain unresolved; no informational finding is treated as fixed.
 - Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
+### Unit 9 - S-V-O Clause Component Membership Freeze
+
+**Status:** DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED
+
+**Production implementation:** NOT YET PERFORMED
+
+The user separately authorized the bounded design/fixture freeze from `master` at
+`5bfd1d4b979aa0f4f42f101eeddf72118b46912a`, not Unit 9 production implementation.
+The sole starting untracked file was the user-created
+[Unit 9 contract](../architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md).
+Its exact original bytes were preserved outside the repository before editing,
+SHA-256 `EB61C1A305EDFA8DD6B2383BB5317B07E29489178F8278B85D1B43C00162F94C`.
+
+The [freeze evidence](../architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
+records independent raw-XML and read-only direct-SQLite oracles. Both confirm:
+
+- anchor `400010020050040`, Rule `S-V-O`, raw Head `1`;
+- direct S/V/O children `400010020050012`, `400010020070012`,
+  `400010020080021`, in sibling ordinals 0/1/2;
+- S=`("MAT 1:2!5",)`, V=`("MAT 1:2!7",)`,
+  O=`("MAT 1:2!8", "MAT 1:2!9")`;
+- exact anchor scope `("MAT 1:2!5", "MAT 1:2!7", "MAT 1:2!8", "MAT 1:2!9")`;
+  disjoint nonempty components form an exact partition, excluding token 6 everywhere.
+
+The [expected fixture](../../fixtures/matthew-1-2-svo-candidate.expected.json)
+contains no surrogate PK, DB path or timestamp. Its final LF/UTF-8 byte SHA-256 is
+`6986B8A03465A4AD05533D12A714CE87CADE9ABD760555D4586F1758EEF9764C`.
+Only after membership freeze, an independent canonical encoder computed:
+`sha256:129c397055985ed0156e320bc543d551be0cf8d3ecfa192e60914540646ff087`.
+No production candidate/query identity helper produced this expectation.
+
+M1-M8: **8 independent mutation/invariance controls PASS; 0 failures/skips**.
+They prove reduced-store partition checks and source-facing logical identity-input
+invariance under PK reallocation/order reversal, **not production Unit 9 behavior**.
+`python -B -m scripts.verify_unit1`: **PASS**, exit 0.
+Existing Unit 7/8 suites were not rerun: their production/tests/accepted fixtures
+and registry interactions are unchanged. No Unit 9 implementation tests exist.
+No Matthew rebuild or Unit 3 second-build gate ran.
+
+The existing source DB remains 160,968,704 bytes, SHA-256
+`E52DB7E2ABDB1C2B9B4F93060312587A1363066378B7A0C9B8FB72475C25CE7E`,
+`user_version=2`, with unchanged complete catalog and all table counts.
+Upstream Matthew XML and both protected repositories remain unchanged.
+Temporary audit scripts, outputs and synthetic stores are removed at closeout;
+the original user-contract backup is retained.
+
+Checkpoint boundary: one freeze-only commit with sole parent
+`5bfd1d4b979aa0f4f42f101eeddf72118b46912a`; actual SHA and final cleanliness are
+reported after Git creates it. No previous checkpoint is amended.
+Unit 8 remains **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**, with no contract,
+implementation or registry amendment. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
+Unit 9 production was not started. No persistence, semantic projection, BRW
+integration or Unit 10. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
 ## Unit 1 execution evidence
 
 - Implementation repository: `C:\Projects\MACULA-Extract` (hyphenated).

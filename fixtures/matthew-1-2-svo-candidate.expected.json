@@ -1,0 +1,90 @@
+{
+  "identity_protocol": "macula.structural-candidate.v1",
+  "candidate_id": "sha256:129c397055985ed0156e320bc543d551be0cf8d3ecfa192e60914540646ff087",
+  "candidate_kind": "clause-structure",
+  "derivation_kind": "source-rule-s-v-o",
+  "derivation_version": "1",
+  "status": "candidate",
+  "source_snapshot": {
+    "source_family": "MACULA Greek",
+    "edition": "SBLGNT",
+    "repository_uri": "https://github.com/Clear-Bible/macula-greek",
+    "revision": "8423afe47b9e8f24b7772e808af45c7159a6fe7e",
+    "manifest_sha256": "894CD81CFFE0DEB3FD5A6D29A81CB0694A6A82E547542014191C0E1DAC31731F",
+    "relative_path": "SBLGNT/nodes/01-matthew.xml",
+    "source_sha256": "FE1A8FED24DEC268A0D04160EC15BABDBE90105FFFDB915FD041B572C1FC40F4"
+  },
+  "scope": {
+    "source_node_id": "400010020050040",
+    "member_token_refs": [
+      "MAT 1:2!5",
+      "MAT 1:2!7",
+      "MAT 1:2!8",
+      "MAT 1:2!9"
+    ]
+  },
+  "evidence": [
+    {
+      "role": "anchor",
+      "kind": "syntax_node",
+      "source_node_id": "400010020050040"
+    },
+    {
+      "role": "subject-child",
+      "kind": "syntax_node",
+      "source_node_id": "400010020050012"
+    },
+    {
+      "role": "verbal-child",
+      "kind": "syntax_node",
+      "source_node_id": "400010020070012"
+    },
+    {
+      "role": "object-child",
+      "kind": "syntax_node",
+      "source_node_id": "400010020080021"
+    }
+  ],
+  "payload": {
+    "anchor_source_node_id": "400010020050040",
+    "source_rule": "S-V-O",
+    "source_head_raw": "1",
+    "components": [
+      {
+        "source_node_id": "400010020050012",
+        "source_cat": "S",
+        "sibling_ordinal": 0,
+        "component_role": "subject-component",
+        "member_token_refs": [
+          "MAT 1:2!5"
+        ]
+      },
+      {
+        "source_node_id": "400010020070012",
+        "source_cat": "V",
+        "sibling_ordinal": 1,
+        "component_role": "verbal-component",
+        "member_token_refs": [
+          "MAT 1:2!7"
+        ]
+      },
+      {
+        "source_node_id": "400010020080021",
+        "source_cat": "O",
+        "sibling_ordinal": 2,
+        "component_role": "object-component",
+        "member_token_refs": [
+          "MAT 1:2!8",
+          "MAT 1:2!9"
+        ]
+      }
+    ]
+  },
+  "source_annotations": {
+    "source_start_raw": "5",
+    "source_end_raw": "8"
+  },
+  "excluded_token_refs": [
+    "MAT 1:2!6"
+  ]
+}

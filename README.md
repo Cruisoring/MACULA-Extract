@@ -37,6 +37,13 @@ is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** at its
 [in-memory implementation boundary](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation).
 No persistence or automatic independent acceptance is authorized.
 
+Unit 9: **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**.
+The separately authorized [S-V-O design and freeze](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
+and [expected fixture](fixtures/matthew-1-2-svo-candidate.expected.json) freeze
+Matthew 1:2's independently verified S/V/O memberships and expected identity.
+Production implementation is **NOT YET PERFORMED**. Unit 8's status and closed
+registry are unchanged; Phase remains **AUTHORIZED**.
+
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
 - SBLGNT `nodes` is the primary linguistic source for the authorized Matthew vertical slice.

@@ -48,8 +48,19 @@ The implementation checkpoint has sole parent
 existing-Matthew integration, 62 Unit 4-7 fast regressions and both required
 verifiers passed. This does not independently accept Unit 8.
 No persistence, semantic roles, confidence, BRW integration, source-schema change
-or Unit 9 is authorized. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
+or Unit 9 production is authorized by that implementation checkpoint.
+Unit 5 M1 and Unit 7 audit M1 remain unresolved.
 Phase remains AUTHORIZED; see [current governance](../governance/PHASE-STATUS.md).
+
+The separately authorized [Unit 9 S-V-O component freeze](UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
+is **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**; production implementation is
+**NOT YET PERFORMED**. Independent raw XML and read-only SQLite agree on exact
+S=`MAT 1:2!5`, V=`MAT 1:2!7`, O=`MAT 1:2!8,!9`; token 6 is excluded.
+The [source-facing fixture](../../fixtures/matthew-1-2-svo-candidate.expected.json)
+freezes the expected canonical candidate identity after membership agreement.
+Eight disposable-store controls passed; they do not prove production Unit 9
+behavior. Unit 8 is unchanged and remains pending independent acceptance.
+No Unit 8 amendment, persistence, semantic projection, BRW integration or Unit 10.
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)
  Document the post-Unit-4 read-only SQLite exploration and resulting

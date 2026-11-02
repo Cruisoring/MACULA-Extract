@@ -27,6 +27,7 @@ checkpoints and are not rewritten by later governance.
 | Unit 6 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT (same audit as Units 3 and 4) |
 | Unit 7 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 7 audit M1 unresolved**; I1-I6 informational, not remediated ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
 | Unit 8 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | Separately authorized in-memory boundary only; no persistence; no independent acceptance audit exists |
+| Unit 9 | DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED | Production implementation NOT YET PERFORMED; independently frozen S/V/O memberships and expected identity only |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -76,7 +77,7 @@ Without separate explicit user authorization, do NOT:
 - modify the source schema
 - integrate Bible Research / BRW
 - implement semantic roles or create Actor/Action/Patient/Event/Result/Identity/Property entities
-- begin Unit 9
+- begin Unit 9 production implementation
 
 Implemented invariants (details in the contract):
 - Source fact, Unit 7 `StructuralCandidate` and Unit 8 evaluated interpretation are distinct
@@ -87,6 +88,22 @@ Implemented invariants (details in the contract):
 - No semantic-role or theological interpretation.
 - Persistence is not part of the current Unit 8 design/implementation boundary.
 - Unit 5 M1 and Unit 7 audit M1 remain unresolved; Phase remains AUTHORIZED.
+
+## Unit 9 design/fixture freeze and stop boundary
+The separately authorized [Unit 9 freeze](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
+adds only a design contract and
+[source-facing expected fixture](fixtures/matthew-1-2-svo-candidate.expected.json).
+Status: **DESIGN + FIXTURE FROZEN / NOT IMPLEMENTED**.
+Production implementation: **NOT YET PERFORMED**.
+Raw XML and independent read-only SQLite agree on Matthew 1:2 anchor exact scope
+`!5,!7,!8,!9`, S=`!5`, V=`!7`, O=`!8,!9`; token 6 is excluded everywhere.
+The expected candidate identity was independently computed only after membership
+freeze. Eight reduced-store audit controls are not production Unit 9 tests.
+Do not extend `scripts/structural_candidates.py`, create `tests/test_unit9.py`,
+amend Unit 8's contract/registry, add persistence, semantic roles/projection, BRW
+integration or Unit 10 without separate authorization.
+Unit 8 remains IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
+Unit 5 M1 and Unit 7 audit M1 remain unresolved; Phase remains AUTHORIZED.
 
 ## Fidelity principles
 1. Raw source is source authority.
