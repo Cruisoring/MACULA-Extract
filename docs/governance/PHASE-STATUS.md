@@ -690,6 +690,32 @@ Unit 8, Unit 8 Amendment 1 and Unit 9 are each **IMPLEMENTED / PENDING INDEPENDE
 ACCEPTANCE**. Unit 5 M1 and Unit 7 audit M1 remain unresolved and distinct.
 Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
+#### Post-Amendment active-test reconciliation
+
+Starting HEAD `ac215cb46bc2be814b6a76f671981449128dced2`; clean. Executable assertions
+whose sole premises were lifecycle states superseded by Unit 9 and Unit 8 Amendment 1
+were replaced in `tests/test_unit7.py` and `tests/test_unit9.py`:
+
+- Unit 7's assertions that no S-V-O candidate existed for Matthew 1:2 (three Fast tests
+  and the Matthew integration test, the last renamed
+  `test_post_unit9_svo_preserves_unit7_exact_scope_invariants`);
+- Unit 9's assertion that Unit 8 rejected S-V-O before a registry amendment (renamed
+  `test_unit8_amendment_accepts_registered_svo_candidate`).
+
+They were replaced by current regressions for exact S-V-O membership (scope
+`[5,7,8,9]`, token 6 excluded) and explicit Unit 8 Amendment 1 registry compatibility.
+The forged-envelope rejection remains active. `tests/README.md` gained a current
+regression rule; its historical filter records are preserved.
+
+Historical contracts, audits and implementation-time filter records were not rewritten.
+No production behavior, schema, fixture, candidate/evaluation identity or lifecycle
+status changed. No Unit or Amendment status was created.
+
+Unit 7 remains **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS).
+Unit 8, Unit 8 Amendment 1 and Unit 9 remain **IMPLEMENTED / PENDING INDEPENDENT
+ACCEPTANCE**. Unit 5 M1 and Unit 7 audit M1 remain unresolved and distinct.
+Phase remains **AUTHORIZED**.
+
 ## Unit 1 execution evidence
 
 - Implementation repository: `C:\Projects\MACULA-Extract` (hyphenated).

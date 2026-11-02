@@ -560,3 +560,33 @@ verification, full-population guard, Unit 3 second-build gate disabled):
 Units 1, 2, 4-9 and the amendment: 295 tests, 0 failures/errors, 5 explicit skips;
 Unit 3: 23 tests, 22 passed, 1 skip (the disabled second-build gate). Skips are not
 passes. This is implementation validation only, not independent acceptance.
+
+### Current post-Amendment regression rule
+
+Historical validation records above describe test filtering that was necessary at
+their respective pre-Unit-9 or pre-Unit-8-Amendment-1 checkpoints. Those records
+remain checkpoint evidence.
+
+At the current repository HEAD, active regression must not remove test methods
+solely because they encode a pre-S-V-O lifecycle state. The superseded pre-S-V-O
+assertions were replaced by current regressions:
+
+- Unit 7 Fast `test_valid_no_match_is_empty_unknown_is_none_invalid_is_error`,
+  `test_semantic_annotations_categories_ellipsis_and_head_do_not_create_candidates`
+  and `test_exact_discontinuous_scope_and_span_mutation` now expect exactly one
+  `clause-structure/source-rule-s-v-o/1` candidate for `MAT 1:2!5/7/8/9`, `()` for
+  `MAT 1:2!6`, and no Apposition candidate;
+- Unit 7 Integration `test_matthew_1_2_discontinuous_scope_without_svo_candidate` was
+  renamed `test_post_unit9_svo_preserves_unit7_exact_scope_invariants`: the S-V-O
+  candidate preserves exact scope [5,7,8,9] and excludes token 6;
+- Unit 9 `test_unit8_rejects_new_candidate_without_registry_amendment` was renamed
+  `test_unit8_amendment_accepts_registered_svo_candidate`: the exact
+  `clause-structure/source-rule-s-v-o/1` tuple is accepted by Unit 8;
+- `test_unit8_envelope_forgery_remains_rejected` is unchanged: a forged envelope
+  remains rejected;
+- unknown neighboring candidate tuples still fail closed (existing Unit 8 and
+  Amendment 1 tests).
+
+The guarded Unit 3 read-only reuse fixture may replace expensive full-build setup,
+but the current runner must not remove active test methods. The `obsolete` filter
+sets recorded above are historical and must not be applied at the current HEAD.

@@ -476,17 +476,27 @@ class Unit9FastTests(unittest.TestCase):
         self.assertEqual(self.db.execute("SELECT voice_raw,frame_raw FROM token WHERE ref_raw='MAT 1:2!7'").fetchone(),
                          ("Passive", "A1 A2"))
 
-    def test_unit8_rejects_new_candidate_without_registry_amendment(self) -> None:
+    def test_unit8_amendment_accepts_registered_svo_candidate(self) -> None:
         item = self.derive()
-        with self.assertRaisesRegex(query.QueryError, "Unit 7 StructuralCandidate"):
-            evaluation.create_evaluated_interpretation(
-                self.path, item, evaluator_class="human", evaluator_label="reviewer",
-                evaluation_protocol_id="human-structural-adequacy", evaluation_protocol_version="1",
-                disposition="accepted", rationale_evidence=(
-                    evaluation.RationaleCitation("syntax_node", ANCHOR),
-                ), rationale_note=evaluation.RationaleNote("Structural evidence inspected.", "en"),
-                event_key="unit9-firewall",
-            )
+        before_id = item.candidate_id
+        record = evaluation.create_evaluated_interpretation(
+            self.path, item, evaluator_class="human", evaluator_label="reviewer",
+            evaluation_protocol_id="human-structural-adequacy", evaluation_protocol_version="1",
+            disposition="accepted", rationale_evidence=(
+                evaluation.RationaleCitation("syntax_node", ANCHOR),
+            ), rationale_note=evaluation.RationaleNote("Structural evidence inspected.", "en"),
+            event_key="unit9-amendment-compatibility",
+        )
+        self.assertEqual(record.record_protocol, "macula.evaluated-structural-interpretation.v1")
+        self.assertEqual(record.evaluation_protocol_id, "human-structural-adequacy")
+        self.assertEqual(record.evaluation_protocol_version, "1")
+        self.assertEqual(record.evaluator_class, "human")
+        self.assertEqual(record.candidate, item)
+        self.assertEqual(record.candidate.status, "candidate")
+        self.assertEqual(record.candidate.candidate_id, before_id)
+        self.assertEqual(item.candidate_id, before_id)
+        evaluation.verify_evaluated_interpretation(record)
+        evaluation.verify_evaluated_interpretation(record, db_path=self.path)
 
     def test_unit8_envelope_forgery_remains_rejected(self) -> None:
         fixture = unit8.Unit8FastTests(methodName="runTest")

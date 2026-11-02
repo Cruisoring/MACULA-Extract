@@ -27,6 +27,15 @@ MATTHEW_APPOSITIONS = (
 )
 
 
+SVO_TUPLE = ("clause-structure", "source-rule-s-v-o", "1")
+SVO_SCOPE = tuple(f"MAT 1:2!{word}" for word in (5, 7, 8, 9))
+
+
+def svo_candidates(result: tuple) -> list:
+    return [item for item in result
+            if (item.candidate_kind, item.derivation_kind, item.derivation_version) == SVO_TUPLE]
+
+
 class Unit7FastTests(unittest.TestCase):
     def setUp(self) -> None:
         directory = TemporaryDirectory(prefix="macula-unit7-")
@@ -181,8 +190,12 @@ class Unit7FastTests(unittest.TestCase):
             replace(item, **{"candidate_kind": "predicate"})
 
     def test_valid_no_match_is_empty_unknown_is_none_invalid_is_error(self) -> None:
-        for ref in ("MAT 1:2!5", "MAT 1:2!6", "MAT 1:2!7", "MAT 1:2!8", "MAT 1:2!9"):
-            self.assertEqual(candidate.derive_structural_candidates(self.path, ref), ())
+        self.assertEqual(candidate.derive_structural_candidates(self.path, "MAT 1:2!6"), ())
+        for ref in ("MAT 1:2!5", "MAT 1:2!7", "MAT 1:2!8", "MAT 1:2!9"):
+            result = candidate.derive_structural_candidates(self.path, ref)
+            assert result is not None
+            self.assertEqual([item.candidate_kind for item in result], ["clause-structure"])
+            self.assertEqual(len(svo_candidates(result)), 1)
         for ref in ("MAT 1:1!999", "mat 1:1!3", "MRK 1:1!3", "MAT 1:1!30"):
             self.assertIsNone(candidate.derive_structural_candidates(self.path, ref))
         for ref in ("", "MAT 1:1", "MAT 01:1!3", " MAT 1:1!3", "MAT 1:1!3 ", "z-leaf"):
@@ -204,11 +217,15 @@ class Unit7FastTests(unittest.TestCase):
 
     def test_semantic_annotations_categories_ellipsis_and_head_do_not_create_candidates(self) -> None:
         self.mutate("DROP TRIGGER node_no_update;")
+        before = candidate.derive_structural_candidates(self.path, "MAT 1:2!7")
         for cat in ("S", "V", "O", "P", "OC", "O2"):
             self.db.execute("UPDATE syntax_node SET cat=?,cl_type='Ellipsis',head_raw='1' "
                             "WHERE upstream_node_id=?", (cat, BOUNDARY))
             self.db.commit()
-            self.assertEqual(candidate.derive_structural_candidates(self.path, "MAT 1:2!7"), ())
+            result = candidate.derive_structural_candidates(self.path, "MAT 1:2!7")
+            assert result is not None
+            self.assertEqual([item.candidate_kind for item in result], ["clause-structure"])
+            self.assertEqual(result, before)
         result = candidate.derive_structural_candidates(self.path, "MAT 1:1!3")
         self.db.execute("UPDATE syntax_node SET head_raw='0' WHERE rule='Np-Appos'")
         self.db.commit()
@@ -227,11 +244,14 @@ class Unit7FastTests(unittest.TestCase):
         ))
         self.assertNotIn("MAT 1:2!6", scope.member_token_refs)
         before = candidate.derive_structural_candidates(self.path, "MAT 1:1!3")
+        svo_before = candidate.derive_structural_candidates(self.path, "MAT 1:2!5")
+        assert svo_before is not None
+        self.assertEqual(len(svo_candidates(svo_before)), 1)
         self.mutate("DROP TRIGGER node_no_update; UPDATE syntax_node SET start_raw='999',end_raw='1';")
         self.assertEqual(before, candidate.derive_structural_candidates(self.path, "MAT 1:1!3"))
         with query._open_syntax_readonly(self.path) as db:
             self.assertEqual(scope, candidate._scope(db, BOUNDARY))
-        self.assertEqual(candidate.derive_structural_candidates(self.path, "MAT 1:2!5"), ())
+        self.assertEqual(svo_before, candidate.derive_structural_candidates(self.path, "MAT 1:2!5"))
 
     def test_scope_uses_materialized_membership_not_reconstructed_topology(self) -> None:
         self.mutate("DELETE FROM node_token_membership WHERE node_id=("
@@ -552,15 +572,21 @@ class Unit7MatthewIntegrationTests(unittest.TestCase):
             self.assertTrue(set(item.scope.member_token_refs).issubset({token.ref for token in verse.tokens}))
         self.assertEqual(evidence, query.get_source_evidence(_LOCAL_DATABASE, "MAT 1:1!3"))
 
-    def test_matthew_1_2_discontinuous_scope_without_svo_candidate(self) -> None:
+    def test_post_unit9_svo_preserves_unit7_exact_scope_invariants(self) -> None:
         node = query.get_node(_LOCAL_DATABASE, BOUNDARY)
         assert node is not None
         self.assertEqual((node.rule, node.start_raw, node.end_raw), ("S-V-O", "5", "8"))
         with query._open_syntax_readonly(_LOCAL_DATABASE) as db:
             scope = candidate._scope(db, BOUNDARY)
-        self.assertEqual(scope.member_token_refs, tuple(f"MAT 1:2!{word}" for word in (5, 7, 8, 9)))
+        self.assertEqual(scope.member_token_refs, SVO_SCOPE)
         self.assertNotIn("MAT 1:2!6", scope.member_token_refs)
-        self.assertEqual(candidate.derive_structural_candidates(_LOCAL_DATABASE, "MAT 1:2!5"), ())
+        result = candidate.derive_structural_candidates(_LOCAL_DATABASE, "MAT 1:2!5")
+        assert result is not None
+        self.assertTrue(result)
+        matched = svo_candidates(result)
+        self.assertEqual(len(matched), 1)
+        self.assertEqual(matched[0].scope, candidate.CandidateScope(BOUNDARY, SVO_SCOPE))
+        self.assertNotIn("MAT 1:2!6", matched[0].scope.member_token_refs)
 
 
 if __name__ == "__main__":
