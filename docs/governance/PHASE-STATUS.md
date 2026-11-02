@@ -794,6 +794,20 @@ No production remediation, persistence, semantic projection, BRW integration or 
 Unit is authorized. Unit 9 audit M-1 is distinct from Unit 5 M1 and Unit 7 audit M1,
 which remain unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
+### Unit 10 - Separate Structural Interpretation Persistence Boundary
+
+**Status:** CONTRACT FROZEN / IMPLEMENTATION NOT STARTED
+
+Separately authorized from clean `master` at
+`efb0311da039da3c5bf7f2b0704ed2722ac5fbfb`.
+The [contract](../architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md)
+freezes exact paths, APIs, representation, validation gates, literal vectors and
+AC-U10-01..30 before production implementation in a dedicated checkpoint.
+Only a physically separate append-only derived/evaluation store is authorized.
+The following implementation checkpoint must have the contract checkpoint as sole parent.
+No prior findings or accepted semantics are remediated; no independent acceptance,
+semantic projection, BRW integration or Unit 11. Phase remains AUTHORIZED.
+
 ## Unit 1 execution evidence
 
 - Implementation repository: `C:\Projects\MACULA-Extract` (hyphenated).

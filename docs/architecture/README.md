@@ -1,5 +1,11 @@
 # Architecture Notes
 
+The separately authorized [Unit 10 persistence contract](UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md)
+is **CONTRACT FROZEN / IMPLEMENTATION NOT STARTED** at its dedicated checkpoint.
+It authorizes only a separate append-only derived/evaluation store after that checkpoint,
+not source writes, new structural/evaluation semantics, BRW or independent acceptance.
+Historical stop lines below retain their checkpoint meaning. Unit 11 is NOT AUTHORIZED.
+
 Historical investigations remain evidence, not retrospective implementation specifications:
 
 - [MACULA data architecture Spike](MACULA-GREEK-TO-SQLITE-LINGUISTIC-STORE-ARCHITECTURE-SPIKE.md)

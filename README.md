@@ -51,6 +51,16 @@ The [amendment](docs/architecture/UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md)
 extends only the closed `human-structural-adequacy/1` registry so Unit 9 S-V-O
 candidates can also be evaluated in memory; Phase remains **AUTHORIZED**.
 
+## Unit 10 separate persistence boundary
+
+**CONTRACT FROZEN / IMPLEMENTATION NOT STARTED.**
+The separately authorized [Unit 10 contract](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md)
+freezes a physically separate append-only candidate/human-evaluation store.
+Implementation may begin only after its dedicated contract checkpoint. This narrowly
+supersedes historical persistence prohibitions, not prior derivation/evaluation semantics.
+No source-schema change, semantic projection, BRW integration or independent acceptance.
+Unit 11 is NOT AUTHORIZED; existing findings remain open; Phase remains AUTHORIZED.
+
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
 - SBLGNT `nodes` is the primary linguistic source for the authorized Matthew vertical slice.
