@@ -37,7 +37,9 @@ is **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS) at its
 [in-memory implementation boundary](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation).
 No persistence is authorized.
 
-Unit 9: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
+Unit 9: **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS; see the
+[independent audit](docs/audits/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md);
+Unit 9 audit M-1 unresolved).
 The separately authorized [S-V-O design and freeze](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
 and [expected fixture](fixtures/matthew-1-2-svo-candidate.expected.json) freeze
 Matthew 1:2's independently verified S/V/O memberships and expected identity.
@@ -45,7 +47,6 @@ The [production implementation](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-C
 Unit 8 Amendment 1: **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS;
 Unit 8 likewise, see the
 [independent audit](docs/audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
-Unit 9 independent acceptance was not performed.
 The [amendment](docs/architecture/UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md)
 extends only the closed `human-structural-adequacy/1` registry so Unit 9 S-V-O
 candidates can also be evaluated in memory; Phase remains **AUTHORIZED**.
@@ -274,7 +275,7 @@ Verbless with eight noun leaves, no verb leaves and unchanged Apposition IDs.
 
 No semantic role, confidence, persistence, source-schema change or BRW integration
 is introduced. Unit 8 Amendment 1 now allows human evaluation of this candidate type
-(see below); no independent acceptance was performed. See [Unit 9 tests](tests/README.md#unit-9-production-implementation),
+(see below). Unit 9 is independently accepted (see the audit linked above). See [Unit 9 tests](tests/README.md#unit-9-production-implementation),
 including explicit treatment of frozen pre-Unit-9 no-S-V-O assertions.
 
 ## Unit 8 evaluated structural interpretations

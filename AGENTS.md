@@ -28,7 +28,7 @@ checkpoints and are not rewritten by later governance.
 | Unit 7 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 7 audit M1 unresolved**; I1-I6 informational, not remediated ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
 | Unit 8 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; in-memory boundary only; no persistence ([audit](docs/audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
 | Unit 8 Amendment 1 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS (separate decision, same audit); `human-structural-adequacy/1` also evaluates Unit 9 S-V-O candidates; in-memory only |
-| Unit 9 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | In-memory S-V-O clause candidates; frozen fixture matched; evaluable via Unit 8 Amendment 1 |
+| Unit 9 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 9 audit M-1 unresolved**; I-1..I-5 informational, not remediated ([audit](docs/audits/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); in-memory S-V-O clause candidates; evaluable via Unit 8 Amendment 1 |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -107,8 +107,13 @@ Unit 8 remains IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.
 Unit 5 M1 and Unit 7 audit M1 remain unresolved; Phase remains AUTHORIZED.
 
 ## Unit 9 implementation and stop boundary
-Unit 9 is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**, separately authorized
-from clean `master` at `22595753477d6ed36317bb685347d77ed1c0a567`.
+Unit 9 is **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS;
+[audit](docs/audits/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)),
+separately authorized from clean `master` at `22595753477d6ed36317bb685347d77ed1c0a567`.
+The independent audit found no BLOCKER or MAJOR issue; **Unit 9 audit M-1** (the
+contract section 16 "token 6 in anchor/component" rule has no dedicated production
+check) and informational I-1..I-5 are not remediated. Unit 9 audit M-1 is distinct from
+Unit 5 M1 and Unit 7 audit M1.
 This supersedes the historical Unit 9 production stop above only for the frozen
 S-V-O implementation. [Contract section 28](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#28-authorized-production-implementation)
 records implementation evidence; no frozen design criterion was weakened.
@@ -127,8 +132,9 @@ second-build gate. Do not edit the frozen Unit 7 tests to hide this distinction.
 two Unit 8 tests were later amended narrowly by Unit 8 Amendment 1.)
 Unit 8 remains **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**. Its registry was
 extended only by Unit 8 Amendment 1 (below); this section describes the pre-amendment
-Apposition-only registry. No independent Unit 9 acceptance, persistence, semantic
-projection, BRW integration or Unit 10 is authorized. Unit 5 M1 and Unit 7 audit M1
+Apposition-only registry. No persistence, semantic
+projection, BRW integration or Unit 10 is authorized (Unit 8 and Unit 9 statuses in this
+paragraph are superseded by their independent acceptance records). Unit 5 M1 and Unit 7 audit M1
 remain unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Unit 8 Amendment 1 implementation and stop boundary
@@ -151,8 +157,9 @@ needed (see tests/README.md "Current post-Amendment regression rule").
 Unit 8 and Unit 8 Amendment 1 were independently audited separately: each is
 **IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS)**
 ([audit](docs/audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
-Unit 9 independent acceptance was NOT performed; no persistence, semantic roles,
-BRW integration or new Unit is authorized. Unit 5 M1 and Unit 7 audit M1 remain
+Unit 9 was independently audited separately (ACCEPT WITH MINOR FINDINGS, see the Unit 9
+section above); no persistence, semantic roles, BRW integration or new Unit is
+authorized. Unit 5 M1 and Unit 7 audit M1 remain
 unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Fidelity principles

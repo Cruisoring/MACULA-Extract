@@ -542,7 +542,8 @@ AC-U8-34 are preserved unchanged.
 
 ### Unit 9 - S-V-O Clause Structural Candidate
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS; see
+[Unit 9 independent acceptance](#unit-9-independent-acceptance) below)
 
 **Production implementation:** implemented under separate authorization from
 `22595753477d6ed36317bb685347d77ed1c0a567`.
@@ -719,7 +720,8 @@ Unit 8, Unit 8 Amendment 1 and Unit 9 remain **IMPLEMENTED / PENDING INDEPENDENT
 ACCEPTANCE**. Unit 5 M1 and Unit 7 audit M1 remain unresolved and distinct.
 Phase remains **AUTHORIZED**.
 (The Unit 8 and Amendment 1 statuses in this paragraph are superseded by the
-independent acceptance section below; Unit 9 remains pending.)
+independent acceptance section below; Unit 9's status is superseded by the Unit 9
+independent acceptance section.)
 
 #### Unit 8 and Amendment 1 independent acceptance
 
@@ -752,10 +754,45 @@ commit `86c1aad`. Full report:
 - Existing Matthew DB (SHA-256 `E52DB7E2...25CE7E`), fixtures, production, schema,
   contracts and both protected repositories were verified unchanged.
 
-**UNIT 9 INDEPENDENT ACCEPTANCE WAS NOT PERFORMED.** Unit 9 remains **IMPLEMENTED /
+**UNIT 9 INDEPENDENT ACCEPTANCE WAS NOT PERFORMED** at that checkpoint (superseded by
+the Unit 9 independent acceptance section below). Unit 9 was then **IMPLEMENTED /
 PENDING INDEPENDENT ACCEPTANCE**. No production remediation, persistence, semantic
 projection, BRW integration or next Unit is authorized. Unit 5 M1 and Unit 7 audit M1
 remain unresolved and distinct. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
+#### Unit 9 independent acceptance
+
+Starting HEAD `35337d87bb93e9c19099ff3298afe6e3f36ea76c`; clean. The user separately
+authorized an independent acceptance audit of Unit 9 (implementation checkpoint
+`ddd23c4bc51c651aea82722d747c44671f15832a`). Full report:
+[UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md).
+
+| Unit | Status | Independent decision |
+|---|---|---|
+| Unit 9 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | **ACCEPT WITH MINOR FINDINGS** (AC-U9-01..26: 25 PASS, 1 superseded by accepted Unit 8 Amendment 1, 0 FAIL) |
+
+- Independent raw-XML derivation reproduced the frozen Matthew 1:2 S-V-O membership
+  (`!5,!7,!8,!9`; S `!5`, V `!7`, O `!8,!9`; `!6` excluded) and identity
+  `sha256:129c3970...ff087`, plus the three Matthew 1:1!3 Apposition ids. A full-corpus
+  comparison of all 18,329 Matthew tokens (1,474 candidate instances: 523 S-V-O, 951
+  Apposition) found 0 mismatches or errors.
+- Surrogate-PK reallocation (5 modes), identity sensitivity (28 variants), hash-seed/path
+  invariance, 37 store mutations, Start/End firewall, semantic-annotation invariance,
+  authorizer-traced read-only behaviour, Matthew 1:1 Verbless negative and Unit 8
+  Amendment 1 envelope-forgery rejection (stale and self-consistent) all passed.
+- Regression: unfiltered run of 295 tests (Units 1, 2, 4-9 and Amendment 1), 295 passed,
+  0 failures, 0 errors, 0 skips; both verifiers passed. Unit 3 was not re-run (its
+  discovery performs a full build); no Matthew build occurred.
+- **MINOR M-1:** the contract section 16 "token 6 appears in the anchor or a component"
+  `QueryError` rule has no dedicated production check; a self-consistent store edit
+  (`!6` added to anchor and O) yields a candidate. Not remediated.
+- Informational findings I-1..I-5 are recorded in the audit and are not remediated.
+- Existing Matthew DB (SHA-256 `E52DB7E2...25CE7E`), fixtures, production, schema,
+  contracts and both protected repositories were verified unchanged.
+
+No production remediation, persistence, semantic projection, BRW integration or next
+Unit is authorized. Unit 9 audit M-1 is distinct from Unit 5 M1 and Unit 7 audit M1,
+which remain unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Unit 1 execution evidence
 

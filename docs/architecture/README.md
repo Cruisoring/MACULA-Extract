@@ -54,7 +54,9 @@ Unit 5 M1 and Unit 7 audit M1 remain unresolved.
 Phase remains AUTHORIZED; see [current governance](../governance/PHASE-STATUS.md).
 
 The separately authorized [Unit 9 S-V-O production implementation](UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#28-authorized-production-implementation)
-is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**. Its preceding independent
+is **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS, see
+[audit](../audits/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md);
+Unit 9 audit M-1 unresolved). Its preceding independent
 raw XML and read-only SQLite freeze established exact
 S=`MAT 1:2!5`, V=`MAT 1:2!7`, O=`MAT 1:2!8,!9`; token 6 is excluded.
 The [source-facing fixture](../../fixtures/matthew-1-2-svo-candidate.expected.json)
@@ -65,9 +67,10 @@ Generic exact membership retrieval and clause-specific topology/partition checks
 live in the existing structural candidate module, over the owned read-only query
 boundary. 39 Unit 9 fast and 3 real-Matthew integration tests passed; the two-stage
 regression validated 267 tests, with 7 explicit skips (see test instructions).
-Unit 8 is unchanged by Unit 9 itself and remains pending independent acceptance; clause
+Unit 8 is unchanged by Unit 9 itself; clause
 evaluation support is added only by Unit 8 Amendment 1 below.
-This is implementation validation, not independent acceptance.
+The validation above is implementation validation; independent acceptance is recorded
+in the linked audit.
 No persistence, semantic projection, BRW integration or Unit 10.
 
 The separately authorized
@@ -77,8 +80,7 @@ INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS, separate decision in the s
 registry to `clause-structure` / `source-rule-s-v-o` / `1` (Unit 9
 `ClauseStructureCandidate`) alongside the Apposition tuple, with generic V1 clause
 verification and unchanged V2 re-derivation; evaluation remains in-memory. No
-persistence, semantic roles, BRW integration or new Unit; Unit 9 independent acceptance
-was not performed.
+persistence, semantic roles, BRW integration or new Unit.
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)
  Document the post-Unit-4 read-only SQLite exploration and resulting
