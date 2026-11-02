@@ -31,7 +31,10 @@ Unit 7: **IMPLEMENTED / INDEPENDENTLY ACCEPTED**.
 Independent decision: **ACCEPT WITH MINOR FINDINGS** ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
 Units 3, 4 and 6 are independently accepted (ACCEPT). Unit 2 Amendment 1 remains
 `IMPLEMENTED` only; Unit 5 M1 and the Unit 7 M1 remain unresolved. Phase remains **AUTHORIZED**.
-No Unit 8 or automatic independent acceptance is authorized.
+A design-only
+[Unit 8 evaluated structural interpretation contract](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md)
+exists: **CONTRACT DRAFT / NOT IMPLEMENTED**. Unit 8 implementation is
+**NOT AUTHORIZED**, and no automatic independent acceptance is authorized.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.

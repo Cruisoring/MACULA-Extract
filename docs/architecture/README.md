@@ -34,7 +34,9 @@ Source facts/composition remain in the query module; derived DTOs, snapshot-boun
 SHA-256 identity and derivation live in a separate structural candidate module.
 Unit 7 is IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS, see
 [audit](../audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)). No evaluation, persistence,
-semantic roles, automatic independent acceptance or Unit 8 is authorized;
+semantic roles or automatic independent acceptance is authorized.
+The design-only [Unit 8 evaluated structural interpretation contract](UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md)
+is CONTRACT DRAFT / NOT IMPLEMENTED; Unit 8 implementation is NOT AUTHORIZED;
 see [current governance](../governance/PHASE-STATUS.md).
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)

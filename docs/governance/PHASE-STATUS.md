@@ -490,6 +490,28 @@ Unit 6 independent acceptance, M1 remediation, full audit archival,
 candidate persistence/evaluation, other candidate kinds, semantic roles/entities,
 Bible Research integration, UI/localization and Unit 8 remain deferred.
 
+### Unit 8 - Evaluated Structural Interpretation Boundary
+
+**Status:** CONTRACT DRAFT / NOT IMPLEMENTED
+
+**Implementation authorization: NOT AUTHORIZED.**
+
+The user separately requested a design-only contract:
+[UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md](../architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md).
+It defines, without any production behavior, an immutable evaluation record that is
+distinct from a Unit 7 candidate, bound to a candidate identity and source snapshot,
+with a closed disposition vocabulary, no confidence values, no semantic-role or
+theological content, and no persistence.
+
+- Unit 8 is not `IMPLEMENTED` and not `INDEPENDENTLY ACCEPTED`; no audit exists.
+- This record does not authorize `scripts/evaluated_interpretations.py`, tests, schema
+  changes, a new SQLite database, candidate or evaluation persistence, Bible Research
+  integration or any later unit. A separate user instruction is required.
+- Unit 7 (ACCEPT WITH MINOR FINDINGS), Unit 5 (ACCEPT WITH MINOR FINDINGS), Units 3, 4
+  and 6 (ACCEPT) and Unit 2 Amendment 1 (`IMPLEMENTED`) are unchanged. Unit 5 M1 and the
+  Unit 7 audit M1 remain unresolved; no informational finding is treated as fixed.
+- Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
 ## Unit 1 execution evidence
 
 - Implementation repository: `C:\Projects\MACULA-Extract` (hyphenated).
