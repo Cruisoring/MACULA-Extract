@@ -36,7 +36,8 @@ Unit 7 is IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS, see
 [audit](../audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
 Unit 7 itself adds no evaluation or persistence.
 The separately authorized [Unit 8 in-memory evaluation boundary](UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation)
-is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**. Its frozen
+is **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS, see
+[audit](../audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)). Its frozen
 `EvaluatedStructuralInterpretation`, `RationaleCitation` and `RationaleNote` DTOs
 and `create_evaluated_interpretation`, `verify_evaluated_interpretation`,
 `compute_evaluation_id` API live in `scripts/evaluated_interpretations.py`.
@@ -46,7 +47,7 @@ Only the human structural adequacy / `1` protocol is registered.
 The implementation checkpoint has sole parent
 `8f8b2e7642204378eb0e56e20d096b6233e409b2`; 50 Unit 8 fast tests, 1 opt-in
 existing-Matthew integration, 62 Unit 4-7 fast regressions and both required
-verifiers passed. This does not independently accept Unit 8.
+verifiers passed (implementation validation; independent acceptance is recorded above).
 No persistence, semantic roles, confidence, BRW integration, source-schema change
 or Unit 9 production is authorized by that implementation checkpoint.
 Unit 5 M1 and Unit 7 audit M1 remain unresolved.
@@ -71,11 +72,13 @@ No persistence, semantic projection, BRW integration or Unit 10.
 
 The separately authorized
 [Unit 8 Amendment 1](UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md) is **IMPLEMENTED /
-PENDING INDEPENDENT ACCEPTANCE**. It extends only the closed `human-structural-adequacy/1`
+INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS, separate decision in the same
+[audit](../audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)). It extends only the closed `human-structural-adequacy/1`
 registry to `clause-structure` / `source-rule-s-v-o` / `1` (Unit 9
 `ClauseStructureCandidate`) alongside the Apposition tuple, with generic V1 clause
-verification and unchanged V2 re-derivation; evaluation remains in-memory. No independent
-acceptance, persistence, semantic roles, BRW integration or new Unit.
+verification and unchanged V2 re-derivation; evaluation remains in-memory. No
+persistence, semantic roles, BRW integration or new Unit; Unit 9 independent acceptance
+was not performed.
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)
  Document the post-Unit-4 read-only SQLite exploration and resulting

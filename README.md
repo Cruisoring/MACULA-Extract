@@ -33,16 +33,19 @@ Units 3, 4 and 6 are independently accepted (ACCEPT). Unit 2 Amendment 1 remains
 `IMPLEMENTED` only; Unit 5 M1 and the Unit 7 M1 remain unresolved. Phase remains **AUTHORIZED**.
 The separately authorized
 [Unit 8 evaluated structural interpretation contract](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md)
-is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** at its
+is **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS) at its
 [in-memory implementation boundary](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation).
-No persistence or automatic independent acceptance is authorized.
+No persistence is authorized.
 
 Unit 9: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
 The separately authorized [S-V-O design and freeze](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#27-authorized-component-membership-freeze-evidence)
 and [expected fixture](fixtures/matthew-1-2-svo-candidate.expected.json) freeze
 Matthew 1:2's independently verified S/V/O memberships and expected identity.
 The [production implementation](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#28-authorized-production-implementation)
-Unit 8 Amendment 1: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
+Unit 8 Amendment 1: **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDINGS;
+Unit 8 likewise, see the
+[independent audit](docs/audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
+Unit 9 independent acceptance was not performed.
 The [amendment](docs/architecture/UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md)
 extends only the closed `human-structural-adequacy/1` registry so Unit 9 S-V-O
 candidates can also be evaluated in memory; Phase remains **AUTHORIZED**.

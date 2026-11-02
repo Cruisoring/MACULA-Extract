@@ -492,7 +492,10 @@ Bible Research integration, UI/localization and Unit 8 remain deferred.
 
 ### Unit 8 - Evaluated Structural Interpretation Boundary
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED - ACCEPT WITH MINOR FINDINGS
+([audit](../audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md); see
+"Unit 8 and Amendment 1 independent acceptance" below). The checkpoint text in this
+section is historical and records the pre-audit state.
 
 The user separately authorized the bounded in-memory implementation from clean
 `master` at `8f8b2e7642204378eb0e56e20d096b6233e409b2`, superseding the prior
@@ -715,6 +718,44 @@ Unit 7 remains **IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT WITH MINOR FINDI
 Unit 8, Unit 8 Amendment 1 and Unit 9 remain **IMPLEMENTED / PENDING INDEPENDENT
 ACCEPTANCE**. Unit 5 M1 and Unit 7 audit M1 remain unresolved and distinct.
 Phase remains **AUTHORIZED**.
+(The Unit 8 and Amendment 1 statuses in this paragraph are superseded by the
+independent acceptance section below; Unit 9 remains pending.)
+
+#### Unit 8 and Amendment 1 independent acceptance
+
+Starting HEAD `86c1aad9b2e2563b3c69057f93dd863f60619d5d`; clean. The user separately
+authorized an independent acceptance audit of Unit 8 (checkpoint
+`5bfd1d4b979aa0f4f42f101eeddf72118b46912a`) and Unit 8 Amendment 1 (checkpoint
+`ac215cb46bc2be814b6a76f671981449128dced2`), including review of the reconciliation
+commit `86c1aad`. Full report:
+[UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md](../audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md).
+
+| Unit | Status | Independent decision |
+|---|---|---|
+| Unit 8 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | **ACCEPT WITH MINOR FINDINGS** (AC-U8-01..34: 34 PASS, 2 scope-narrowed per contract 8.2/34.1, 0 FAIL) |
+| Unit 8 Amendment 1 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | **ACCEPT WITH MINOR FINDINGS** (auditor-derived checklist 10/10; the contract has no numbered criteria) |
+
+- Independent raw-source derivation reproduced the three Matthew 1:1!3 Apposition ids and
+  the frozen Matthew 1:2 S-V-O id; evaluation identity, including the frozen section 34.2
+  vector, was reconstructed from literal JSON; V1/V2, closed registry, rationale/citation,
+  event-key, supersession, surrogate-PK invariance, read-only, persistence and semantic
+  firewall audits passed. Apposition evaluation ids are byte-identical to checkpoint
+  5bfd1d4. Matthew 1:1 Verbless yields no clause candidate; the Matthew 1:2 token-6
+  envelope forgery is rejected by V2.
+- Regression: guarded run of 318 tests, 317 passed, 0 failures, 0 errors, 1 skip (Unit 3's
+  disabled second-build gate); no obsolete-test filter; no full Matthew build.
+- **MINOR M-1:** after `86c1aad` fixed the Unit 9 test, stale "fails by design / filtered
+  in memory" statements remain in historical text (this file's Amendment 1 section, the
+  Amendment contract and plan, historical `tests/README.md`). `AGENTS.md`'s live statement
+  was corrected; historical prose and frozen contracts were not rewritten.
+- Informational findings (I-1..I-8) are recorded in the audit and are not remediated.
+- Existing Matthew DB (SHA-256 `E52DB7E2...25CE7E`), fixtures, production, schema,
+  contracts and both protected repositories were verified unchanged.
+
+**UNIT 9 INDEPENDENT ACCEPTANCE WAS NOT PERFORMED.** Unit 9 remains **IMPLEMENTED /
+PENDING INDEPENDENT ACCEPTANCE**. No production remediation, persistence, semantic
+projection, BRW integration or next Unit is authorized. Unit 5 M1 and Unit 7 audit M1
+remain unresolved and distinct. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Unit 1 execution evidence
 

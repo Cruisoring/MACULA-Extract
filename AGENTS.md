@@ -26,8 +26,8 @@ checkpoints and are not rewritten by later governance.
 | Unit 5 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 5 M1 unresolved** |
 | Unit 6 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT (same audit as Units 3 and 4) |
 | Unit 7 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 7 audit M1 unresolved**; I1-I6 informational, not remediated ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
-| Unit 8 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | Separately authorized in-memory boundary only; no persistence; no independent acceptance audit exists |
-| Unit 8 Amendment 1 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | `human-structural-adequacy/1` also evaluates Unit 9 S-V-O candidates; in-memory only; no independent acceptance audit exists |
+| Unit 8 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; in-memory boundary only; no persistence ([audit](docs/audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
+| Unit 8 Amendment 1 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS (separate decision, same audit); `human-structural-adequacy/1` also evaluates Unit 9 S-V-O candidates; in-memory only |
 | Unit 9 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | In-memory S-V-O clause candidates; frozen fixture matched; evaluable via Unit 8 Amendment 1 |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
@@ -144,9 +144,14 @@ candidate id, and V2 re-derives through the public Unit 9 API.
 Unit 8 amendment tests: 41 fast + 3 opt-in read-only integration; tests/support holds the
 disposable store builder. Evaluation remains in-memory only.
 `tests/test_unit9.py::test_unit8_rejects_new_candidate_without_registry_amendment`
-asserted the pre-amendment behavior and now fails by design; Unit 9 tests were not edited,
-and it is filtered in memory with the other superseded tests (see tests/README.md).
-No independent Unit 8 Amendment 1 or Unit 9 acceptance, persistence, semantic roles,
+asserted the pre-amendment behavior and failed by design at that checkpoint; reconciliation
+commit `86c1aad` renamed it `test_unit8_amendment_accepts_registered_svo_candidate` and it
+now passes, with the superseded Unit 7 assertions retired, so no in-memory test filter is
+needed (see tests/README.md "Current post-Amendment regression rule").
+Unit 8 and Unit 8 Amendment 1 were independently audited separately: each is
+**IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS)**
+([audit](docs/audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
+Unit 9 independent acceptance was NOT performed; no persistence, semantic roles,
 BRW integration or new Unit is authorized. Unit 5 M1 and Unit 7 audit M1 remain
 unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
