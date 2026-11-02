@@ -62,7 +62,7 @@ Its dedicated contract checkpoint is `d690209f7dce140b61d0056446cec370afce2edd`.
 This narrowly
 supersedes historical persistence prohibitions, not prior derivation/evaluation semantics.
 No source-schema change, semantic projection or BRW integration.
-Unit 11 implementation is NOT AUTHORIZED (see below); existing findings remain open; Phase remains AUTHORIZED.
+Unit 11 was implemented separately (see below); existing findings remain open; Phase remains AUTHORIZED.
 
 ```python
 from scripts.projection_store import (
@@ -91,15 +91,30 @@ The evaluation-list frozenset is deliberately unordered.
 See [tests](tests/README.md#unit-10-separate-persistence) and
 [implementation evidence](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md#13-implementation-validation).
 
-## Unit 11 discovery and history query contract
+## Unit 11 discovery and history queries
 
-**CONTRACT FROZEN / IMPLEMENTATION NOT AUTHORIZED.**
-The [Unit 11 contract](docs/architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
-is a design freeze only: a scripture selector discovers persisted candidates by exact
-member-token scope (Matthew 1:2 token 6 is excluded), yielding `candidate_id` and then the
-complete read-only evaluation/supersession history. No module, tests, schema change,
-independent acceptance, semantic projection, BRW integration or Unit 12 is authorized;
-existing findings remain open; Phase remains AUTHORIZED.
+**IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.**
+The frozen [Unit 11 contract](docs/architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
+is implemented by [projection_query.py](scripts/projection_query.py): a scripture selector discovers
+persisted candidates by exact member-token scope (Matthew 1:2 token 6 is excluded), yielding
+`candidate_id` and then the complete read-only evaluation/supersession history.
+
+```python
+from scripts.projection_query import (
+    ScriptureSelector, list_persisted_candidates_for_token,
+    get_structural_interpretation_histories_for_selector,
+)
+
+candidates = list_persisted_candidates_for_token(projection_path, "MAT 1:2!5")
+histories = get_structural_interpretation_histories_for_selector(
+    projection_path, ScriptureSelector("MAT", 1, 2))
+```
+
+The module opens the Unit 10 store read-only, validates every persisted record, never writes,
+never needs the source database and defines no current/latest/winner evaluation: unsuperseded
+means graph leaf only. See [tests](tests/README.md#unit-11-discovery-and-history-queries). No
+independent acceptance, schema change, semantic projection, BRW integration or Unit 12 is
+authorized; existing findings remain open; Phase remains AUTHORIZED.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.

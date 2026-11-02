@@ -632,3 +632,49 @@ and still executed offline XmlReader on synthetic Unit 3 inputs.
 **Full Matthew builds performed: 0.** No obsolete-test filters or prior-test edits.
 Source bytes/catalog/version/logical fidelity and protected repository Git states
 were checked before/after. This is implementation validation, NOT independent acceptance.
+
+## Unit 11 discovery and history queries
+
+The [frozen contract](../docs/architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
+precedes [projection_query.py](../scripts/projection_query.py). The
+[new tests](test_unit11.py) use standard-library unittest/SQLite only, with disposable
+source and projection databases outside the repository; no Matthew build, network access
+or third-party dependency is needed.
+
+```powershell
+python -B -m unittest tests.test_unit11 -v
+
+# Opt-in read-only real-Matthew integration (temporary projection store outside the repo).
+$env:MACULA_UNIT11_INTEGRATION = "1"
+$env:MACULA_MATTHEW_DB = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit11.Unit11MatthewIntegrationTests -v
+Remove-Item Env:MACULA_UNIT11_INTEGRATION
+Remove-Item Env:MACULA_MATTHEW_DB
+```
+
+Actual result: **32 fast + 1 opt-in integration PASS**; default discovery skips the
+integration test explicitly (a skip is not a pass). Coverage includes strict selector and
+string-form validation before database access, exact integer-coordinate token/verse/chapter/
+book discovery (no `1:2`/`1:20`, `!5`/`!50` or chapter 1/11 prefix collisions, no
+cross-verse envelope), the Matthew 1:2 `!6` negative case, unevaluated-candidate
+discoverability, multiple/opposing evaluations, superseded history, forks, graph-leaf
+semantics, self/dangling/cross-candidate/cross-evaluator/cyclic supersession failures,
+corrupt or unvalidatable non-matching candidate rows failing discovery, SQLite-enforced
+read-only access with an authorizer trace and connection-closure spy, path/PK/insertion-order
+invariance, no source-database dependency and an unchanged Unit 10 DDL hash.
+
+Required regression (no Unit 3 discovery, no Matthew build, no obsolete-test filters):
+
+```powershell
+python -B -m scripts.verify_unit1
+python -B -m scripts.source_schema
+python -B -m unittest tests.test_unit10 tests.test_unit11 -v
+python -B -m unittest tests.test_unit1 tests.test_unit2 tests.test_unit4 tests.test_unit5 tests.test_unit6 tests.test_unit7 tests.test_unit8 tests.test_unit8_amendment1 tests.test_unit9 tests.test_unit10 tests.test_unit11 -v
+```
+
+Actual results: both verifiers exit 0; Units 10+11: 81 tests, OK, 4 explicit opt-in skips;
+Units 1, 2, 4-11: 376 tests, OK, 25 explicit opt-in integration skips. Unit 3 was not run
+(its default discovery can rebuild Matthew, its code is untouched) and its second-build gate
+stayed disabled. The separate opt-in Unit 11 integration run passed read-only against the
+existing source database (unchanged) with **0 full Matthew builds**. This is implementation
+validation, NOT independent acceptance.

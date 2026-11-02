@@ -858,11 +858,11 @@ distinct. Unit 11 is NOT AUTHORIZED. Phase remains **AUTHORIZED**, not COMPLETE 
 
 ### Unit 11 - Read-Only Structural Interpretation Discovery & History Query Boundary
 
-**Status:** CONTRACT FROZEN / IMPLEMENTATION NOT AUTHORIZED
+**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
 
 The [contract](../architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md)
-is frozen as a design contract only, starting from clean `master` at
-`d6d44d6262a849a1408235c756ff79809842e0d2` (Unit 10 independent acceptance, ACCEPT).
+was frozen as a design contract at checkpoint `38e0d89f01a8dc4fd9ad83a967a2e2f56da06351`
+(sole parent `d6d44d6262a849a1408235c756ff79809842e0d2`, Unit 10 independent acceptance, ACCEPT).
 It freezes the navigation path scripture selector, persisted candidate discovery,
 `candidate_id`, then complete persisted evaluation/history query; `candidate_id` is not the
 only entry point. Discovery uses exact validated member-token scope (parsed integer
@@ -870,10 +870,26 @@ coordinates), never Start/End, min/max, envelopes, lexical ranges, PK/rowid or i
 Matthew 1:2 token 6 is a mandatory negative case: `MAT 1:2`, `!5`, `!7`, `!8`, `!9` discover
 the S-V-O candidate and `MAT 1:2!6` does not. Unsuperseded means graph leaf only; no
 current/canonical/consensus/ranking/semantic projection.
-No Unit 11 production module, tests, schema or Unit 10 change exists or is authorized;
-no independent acceptance, BRW integration, Unit 12 or remediation of Unit 5 M1, Unit 7 audit M1,
-Unit 8 audit M-1 or Unit 9 audit M-1. The freeze checkpoint's actual SHA is verified from
-Git after commit, not recorded in its own diff. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
+A separate user authorization from clean `master` at the freeze checkpoint then implemented
+the frozen boundary with new `scripts/projection_query.py` and `tests/test_unit11.py` only
+(plus documentation/index updates and an appended contract implementation-evidence section).
+No schema, Unit 10 production module, candidate/evaluation module, source code, fixture,
+historical audit or protected repository changed. It exposes eleven read-only functions and
+frozen selector/edge/history DTOs over the Unit 10 read-only profile; every persisted candidate
+is validated before matching, so an unvalidatable row fails discovery instead of being skipped.
+
+Validation: 32 fast tests and 1 opt-in read-only real-Matthew integration test pass; Units 10+11
+81 tests OK (4 explicit skips); Units 1, 2 and 4-11 376 tests OK (25 explicit opt-in integration
+skips); both required verifiers exit 0. Unit 3 discovery was not run, the second-build gate stayed
+disabled and full Matthew builds performed: 0. The source database and protected repositories
+were verified unchanged. This is implementation validation, NOT independent acceptance; no
+independent Unit 11 acceptance audit exists. The implementation checkpoint's actual SHA is
+verified from Git after commit, not recorded in its own diff.
+
+No independent acceptance, schema change, semantic projection, BRW integration, Unit 12 or
+remediation of Unit 5 M1, Unit 7 audit M1, Unit 8 audit M-1 or Unit 9 audit M-1 is authorized.
+Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Unit 1 execution evidence
 
