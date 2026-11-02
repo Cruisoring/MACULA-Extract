@@ -278,3 +278,53 @@ override, fresh exhaustive BYTE/NORMALIZED/schema/membership validation and logi
 digest check, with a guard forbidding full Matthew population. Keep the existing
 second-build slow-gate skip. Do not invoke default Unit 3 discovery for this zero-build
 task. Implementation validation does not independently accept Units 3, 4, 6 or 7.
+
+## Unit 8
+
+```powershell
+python -B -m unittest tests.test_unit8.Unit8FastTests
+python -B -m unittest tests.test_unit4.Unit4FastTests tests.test_unit5.Unit5FastTests tests.test_unit6.Unit6FastTests tests.test_unit7.Unit7FastTests
+python -B -m scripts.verify_unit1
+python -B -m scripts.source_schema
+```
+
+The **50 fast tests** reuse Unit 7's small, validated synthetic-store fixture without
+running its test class. They cover human accepted/rejected/undetermined records;
+frozen literal candidate/evaluation identity vectors; independent V1 and public-API
+V2; all seven snapshot fields; exact scope/evidence/payload shape and ordering;
+malformed/altered identities; closed protocol/class/disposition/field vocabularies;
+verbatim Unicode/whitespace and BCP 47 language tags; typed tuple rationale;
+external/duplicate/misordered citations; explicit event keys, idempotence/reuse
+conflicts, coexisting opposing evaluations, supersession chains/forks and invalid
+predecessors; no PK identity; no source writes/sidecars; frozen DTOs; Verbless safety;
+Matthew 1:2 envelope rejection; unknown exact candidate errors; error propagation;
+process/hash-seed/path independence and complete output equality under PK reallocation.
+
+Opt-in integration never builds or populates Matthew:
+
+```powershell
+$env:MACULA_UNIT8_INTEGRATION = "1"
+$env:MACULA_UNIT8_DATABASE = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit8
+Remove-Item Env:MACULA_UNIT8_INTEGRATION
+Remove-Item Env:MACULA_UNIT8_DATABASE
+```
+
+The **1 read-only integration test** exercises actual Matthew 1:1 Apposition
+candidates, the fixed nearest candidate id, all three nested source-grounded
+records, Verbless/eight-noun safety and Matthew 1:2 exact membership. It checks
+before/after DB hash, size, catalog and version, even if an assertion fails.
+Without opt-in or an existing file it explicitly skips; a skip is not a pass.
+Records are test-only `undetermined` evaluations, not historical human judgments.
+
+Actual implementation validation from
+`8f8b2e7642204378eb0e56e20d096b6233e409b2`: **51 Unit 8 PASS, 0 failures/errors,
+0 skips** (50 fast + 1 opted-in integration); **62 Unit 4-7 fast PASS,
+0 failures/errors/skips** (11/16/19/16); both verifiers PASS. Python 3.10 syntax and
+current-runtime compilation checks PASS. No Unit 3/full-build gate was invoked.
+The single implementation checkpoint has that sole parent; Git's resulting SHA is
+reported after creation. Implementation validation is not independent acceptance.
+The [Unit 8 API/DTOs and frozen vector](../docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation)
+remain in-memory only, with no persistence, semantic roles, confidence, BRW,
+source-schema changes or Unit 9. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
+Unit 8 is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**; Phase remains AUTHORIZED.

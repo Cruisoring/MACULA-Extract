@@ -492,21 +492,46 @@ Bible Research integration, UI/localization and Unit 8 remain deferred.
 
 ### Unit 8 - Evaluated Structural Interpretation Boundary
 
-**Status:** CONTRACT DRAFT / NOT IMPLEMENTED
+**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
 
-**Implementation authorization: NOT AUTHORIZED.**
+The user separately authorized the bounded in-memory implementation from clean
+`master` at `8f8b2e7642204378eb0e56e20d096b6233e409b2`, superseding the prior
+design-only stop line for this implementation only.
+The [contract implementation section](../architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation)
+records the effective authorization; the design content and AC-U8-01 through
+AC-U8-34 are preserved unchanged.
 
-The user separately requested a design-only contract:
-[UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md](../architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md).
-It defines, without any production behavior, an immutable evaluation record that is
-distinct from a Unit 7 candidate, bound to a candidate identity and source snapshot,
-with a closed disposition vocabulary, no confidence values, no semantic-role or
-theological content, and no persistence.
-
-- Unit 8 is not `IMPLEMENTED` and not `INDEPENDENTLY ACCEPTED`; no audit exists.
-- This record does not authorize `scripts/evaluated_interpretations.py`, tests, schema
-  changes, a new SQLite database, candidate or evaluation persistence, Bible Research
-  integration or any later unit. A separate user instruction is required.
+- Production module: `scripts/evaluated_interpretations.py`; tests: `tests/test_unit8.py`.
+- Public API: `create_evaluated_interpretation`, `verify_evaluated_interpretation`,
+  `compute_evaluation_id`. Frozen DTOs: `EvaluatedStructuralInterpretation`,
+  `RationaleCitation`, `RationaleNote`, with tuple collections.
+- Creation requires untrusted-candidate V1 using the frozen Unit 7 protocol and V2
+  field-for-field public Unit 7 re-derivation. Verification without a database is
+  V1/history only; with a database it also performs V2.
+- Only `human-structural-adequacy` / `1`, class `human`, Apposition
+  `source-np-appos` / `1`, is registered. Caller-supplied event keys, exact rationale
+  text, restricted ordered citations and same-evaluator supersession are validated.
+- Identity is `macula.evaluated-structural-interpretation.v1`, ordered canonical
+  JSON/UTF-8, lowercase SHA-256 with prefix `eval-sha256:`; a literal frozen test
+  vector and independent candidate recomputation cover both identity boundaries.
+- Implementation validation: **50 Unit 8 fast + 1 opt-in read-only Matthew
+  integration PASS; 0 failures/errors/skips**. **62 Unit 4-7 fast tests PASS
+  (11/16/19/16); 0 failures/errors/skips**. Both
+  `python -B -m scripts.verify_unit1` and `python -B -m scripts.source_schema` PASS.
+  Python 3.10 syntax parsing/current-runtime compilation PASS. No Unit 3 discovery
+  or second-full-build gate was run; Matthew was not rebuilt.
+- Existing Matthew artifact preserved: **160,968,704 bytes**, SHA-256
+  `E52DB7E2ABDB1C2B9B4F93060312587A1363066378B7A0C9B8FB72475C25CE7E`,
+  `user_version=2`, unchanged catalog/index inventory. Protected upstream and
+  downstream repositories remain untouched.
+- Checkpoint boundary: one implementation commit with sole parent
+  `8f8b2e7642204378eb0e56e20d096b6233e409b2`. The actual resulting SHA, parent and
+  final cleanliness are verified and reported after Git creates it, not fabricated
+  inside its own diff. No earlier checkpoint is amended.
+- This is implementation validation, **not an independent acceptance audit**.
+  Unit 8 is not independently accepted; no acceptance audit exists.
+- Unit 8 remains in-memory: no candidate/evaluation persistence, projection store,
+  source-schema change, semantic roles, confidence, BRW integration or Unit 9.
 - Unit 7 (ACCEPT WITH MINOR FINDINGS), Unit 5 (ACCEPT WITH MINOR FINDINGS), Units 3, 4
   and 6 (ACCEPT) and Unit 2 Amendment 1 (`IMPLEMENTED`) are unchanged. Unit 5 M1 and the
   Unit 7 audit M1 remain unresolved; no informational finding is treated as fixed.

@@ -1048,3 +1048,163 @@ Candidates never become evaluated interpretations merely by being generated.
 An evaluation never rewrites either.
 
 **STOP.** Unit 8 implementation requires a separate, explicit user authorization.
+
+## 34. Authorized initial implementation
+
+**Current Unit 8 status: IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.**
+
+The user separately authorized this bounded in-memory implementation from
+`master` at `8f8b2e7642204378eb0e56e20d096b6233e409b2`.
+That authorization supersedes the historical design-only status and implementation
+stop lines above for this implementation only. Sections 1-33, including
+AC-U8-01 through AC-U8-34, remain byte-for-byte unchanged as design-checkpoint
+evidence. This section does not weaken any technical invariant or authorize an
+independent acceptance audit.
+
+### 34.1 Actual public boundary
+
+Implementation: `scripts/evaluated_interpretations.py`.
+Focused tests: `tests/test_unit8.py`. No existing production module is changed.
+
+Frozen, slotted DTOs:
+
+- `RationaleCitation(kind, citation_id)`: `syntax_node` or `token`.
+- `RationaleNote(text, language)`: nonblank exact UTF-8 text and verbatim,
+  syntactically well-formed BCP 47 tag (including private-use/grandfathered tags).
+- `EvaluatedStructuralInterpretation`: exactly the section 7.1 fields,
+  with tuple citations and the unchanged Unit 7 candidate echo. Its constructor
+  validates V1 content and both identities. Source/history checks use the API.
+
+```python
+create_evaluated_interpretation(
+    db_path, candidate, *,
+    evaluator_class, evaluator_label,
+    evaluation_protocol_id, evaluation_protocol_version,
+    disposition, rationale_evidence, rationale_note, event_key,
+    supersedes=None, prior_records=(),
+) -> EvaluatedStructuralInterpretation
+
+verify_evaluated_interpretation(
+    record, *, db_path=None, prior_records=(),
+) -> None
+
+compute_evaluation_id(
+    candidate, *,
+    evaluator_class, evaluator_label,
+    evaluation_protocol_id, evaluation_protocol_version,
+    disposition, rationale_evidence, rationale_note, event_key,
+    supersedes=None,
+) -> str
+```
+
+Creation requires V1 and V2; `db_path=None` is not a creation exemption.
+Offline verification validates V1 and supplied history; supplying `db_path` also
+requires V2. The identity function validates V1 content only and does not access
+the source store or history, nor generate event keys. Errors use existing
+`source_query.QueryError`; closed Python signatures reject unsupported fields.
+
+V1 independently encodes the frozen `macula.structural-candidate.v1` array,
+without importing private Unit 7 identity helpers. It validates candidate-id
+syntax/equality, kind/derivation/version/status, all seven nonempty snapshot
+fields, nonempty immutable exact canonical scope, ordered anchor/child syntax-node
+evidence, matching Apposition payload and no local-PK identity.
+
+V2 calls only public `derive_structural_candidates`, using the first exact scope
+token ref as a lookup hint, then requires field-for-field candidate equality.
+Source access remains through Unit 7's existing read-only boundary.
+Unknown exact candidates raise `candidate not found in bound source store`;
+different source snapshots raise `candidate source snapshot mismatch`; altered
+echoes for a re-derived anchor raise an explicit source-grounded mismatch.
+Infrastructure/schema errors propagate, never becoming not-found or empty success.
+
+Exactly section 8.2's initial registry is implemented:
+`human-structural-adequacy` / `1`, class `human`, kind `apposition`,
+derivation `source-np-appos` / `1`, dispositions accepted/rejected/undetermined.
+There is no registered deterministic-policy protocol or AI/model evaluator.
+
+Rationale cites only the candidate's own evidence/scope, in evidence-then-token
+order. It is not sorted or normalized. Human labels, explicit bounded event keys
+and notes are mandatory; accepted/rejected require at least one citation.
+`prior_records` is a tuple of V1-valid records including complete supersession
+ancestry. Verification checks the whole supplied set for event reuse conflicts
+and invalid edges, without requiring insertion order. Same-evaluator/candidate
+supersession preserves predecessors, permits forks and introduces no "latest wins".
+Event uniqueness cannot be guaranteed outside caller-supplied history.
+
+### 34.2 Frozen literal identity vector
+
+The frozen candidate vector has candidate id:
+
+```text
+sha256:7f5ec0e7ad1a70565f1ef852f0b466213b03600214505408e61b809d9fae7a7c
+```
+
+Its snapshot fields, in order, are `family`, `edition`, `urn:source`, `revision`,
+`manifest`, `source.xml`, `digest`. Scope is node `n:\u03b1` with sole token
+`MAT 1:1!3`; evidence is that anchor only, with an empty child payload.
+These synthetic strings are test data, not a source snapshot claim.
+
+Literal evaluation identity input (one UTF-8 line; backslash escapes shown are
+the actual ASCII JSON bytes; no trailing newline):
+
+```json
+["macula.evaluated-structural-interpretation.v1","sha256:7f5ec0e7ad1a70565f1ef852f0b466213b03600214505408e61b809d9fae7a7c","human","example-reviewer","human-structural-adequacy","1","accepted",[["syntax_node","n:\u03b1"],["token","MAT 1:1!3"]],["  \u03b1\r\n","el"],"event:1",null]
+```
+
+Expected literal identity:
+
+```text
+eval-sha256:b13074925b58de0b3595d088e7f6c505906d1f34500e1af78bb017aa6eaf83b0
+```
+
+The test fixes both the input bytes and digest; it does not derive its expected
+digest from the production identity function. Serialization remains exactly
+`json.dumps(value, ensure_ascii=True, separators=(",", ":"), allow_nan=False).encode("utf-8")`.
+
+### 34.3 Implementation validation and checkpoint
+
+Commands actually run successfully:
+
+```powershell
+$env:MACULA_UNIT8_INTEGRATION = "1"
+$env:MACULA_UNIT8_DATABASE = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit8
+python -B -m unittest tests.test_unit4.Unit4FastTests tests.test_unit5.Unit5FastTests tests.test_unit6.Unit6FastTests tests.test_unit7.Unit7FastTests
+python -B -m scripts.verify_unit1
+python -B -m scripts.source_schema
+```
+
+- Unit 8: **51 passed, 0 failures/errors, 0 skipped** (50 synthetic fast tests,
+  1 opt-in read-only existing-Matthew integration test).
+- Unit 4-7 fast regressions: **62 passed, 0 failures/errors, 0 skipped**
+  (Unit 4: 11; Unit 5: 16; Unit 6: 19; Unit 7: 16).
+- Unit 1 verifier: PASS. In-memory source-schema verifier: PASS (version 2).
+- Python 3.10 syntax parsing and current-runtime compilation: PASS.
+- Matthew integration re-derived all three actual Matthew 1:1 candidates and
+  verified test-only undetermined records, preserved Verbless/eight-noun facts,
+  and confirmed Matthew 1:2 `[5,7,8,9]` membership excluding token 6.
+- Source DB before/after: **160,968,704 bytes**, SHA-256
+  `E52DB7E2ABDB1C2B9B4F93060312587A1363066378B7A0C9B8FB72475C25CE7E`,
+  `user_version=2`, unchanged schema/catalog/index inventory.
+- No Unit 3 discovery, second-full-build gate or Matthew rebuild was run.
+  The existing ignored database is not a deliverable.
+- Protected `C:\Works\macula-greek` and `C:\Projects\bible-research-merged`
+  remain untouched.
+
+Checkpoint boundary: one implementation commit with sole parent
+`8f8b2e7642204378eb0e56e20d096b6233e409b2`. Its actual SHA, sole parent and final
+worktree state are reported after Git creates it; they are not fabricated inside
+the commit or added by amending it.
+
+### 34.4 Effective stop line
+
+**UNIT 8 IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.**
+Implementation validation is not an independent acceptance audit.
+The Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+Unit 5 M1 and Unit 7 audit M1 remain unresolved; prior acceptance decisions and
+informational findings are unchanged.
+
+No persistence, semantic roles, confidence, BRW integration, source-schema
+changes or Unit 9. No deterministic-policy registration, AI evaluator,
+cross-snapshot migration or new candidate kind. Stop after this implementation
+checkpoint; independent acceptance requires a separately authorized task.

@@ -33,11 +33,23 @@ adds only in-memory, versioned Apposition candidates over explicit Np-Appos ance
 Source facts/composition remain in the query module; derived DTOs, snapshot-bound
 SHA-256 identity and derivation live in a separate structural candidate module.
 Unit 7 is IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS, see
-[audit](../audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)). No evaluation, persistence,
-semantic roles or automatic independent acceptance is authorized.
-The design-only [Unit 8 evaluated structural interpretation contract](UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md)
-is CONTRACT DRAFT / NOT IMPLEMENTED; Unit 8 implementation is NOT AUTHORIZED;
-see [current governance](../governance/PHASE-STATUS.md).
+[audit](../audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
+Unit 7 itself adds no evaluation or persistence.
+The separately authorized [Unit 8 in-memory evaluation boundary](UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation)
+is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**. Its frozen
+`EvaluatedStructuralInterpretation`, `RationaleCitation` and `RationaleNote` DTOs
+and `create_evaluated_interpretation`, `verify_evaluated_interpretation`,
+`compute_evaluation_id` API live in `scripts/evaluated_interpretations.py`.
+Creation requires independent candidate V1 recomputation plus public Unit 7 V2
+re-derivation; verification is V1/history offline and also V2 with a database.
+Only the human structural adequacy / `1` protocol is registered.
+The implementation checkpoint has sole parent
+`8f8b2e7642204378eb0e56e20d096b6233e409b2`; 50 Unit 8 fast tests, 1 opt-in
+existing-Matthew integration, 62 Unit 4-7 fast regressions and both required
+verifiers passed. This does not independently accept Unit 8.
+No persistence, semantic roles, confidence, BRW integration, source-schema change
+or Unit 9 is authorized. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
+Phase remains AUTHORIZED; see [current governance](../governance/PHASE-STATUS.md).
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)
  Document the post-Unit-4 read-only SQLite exploration and resulting

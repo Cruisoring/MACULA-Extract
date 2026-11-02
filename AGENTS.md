@@ -26,7 +26,7 @@ checkpoints and are not rewritten by later governance.
 | Unit 5 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 5 M1 unresolved** |
 | Unit 6 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT (same audit as Units 3 and 4) |
 | Unit 7 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 7 audit M1 unresolved**; I1-I6 informational, not remediated ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
-| Unit 8 | CONTRACT DRAFT / NOT IMPLEMENTED | Design-only; **implementation NOT AUTHORIZED**; no independent acceptance audit exists |
+| Unit 8 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | Separately authorized in-memory boundary only; no persistence; no independent acceptance audit exists |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -56,21 +56,29 @@ composition and in-memory Apposition structural candidates. Unit 2 Amendment 1 r
 per-row membership ancestry INSERT trigger and retains transactional post-load
 complete-set validation.
 
-## Unit 8 stop boundary
-Unit 8 currently has a **design-only** contract:
-[UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md).
-**Unit 8 implementation is NOT AUTHORIZED.** Do not infer authorization from the contract's
-existence, the acceptance of Units 1-7, the Phase being AUTHORIZED, a request to inspect
-Unit 8, or a request to reconcile governance. Without separate explicit user authorization, do NOT:
-- create `scripts/evaluated_interpretations.py` or Unit 8 tests
-- implement `EvaluatedStructuralInterpretation`
+## Unit 8 implementation and stop boundary
+Unit 8 is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** under the separate user
+authorization starting at `8f8b2e7642204378eb0e56e20d096b6233e409b2`.
+The [contract implementation section](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation)
+supersedes its preserved historical design-only authorization/status text.
+`scripts/evaluated_interpretations.py` exposes `create_evaluated_interpretation`,
+`verify_evaluated_interpretation`, `compute_evaluation_id` and frozen
+`EvaluatedStructuralInterpretation`, `RationaleCitation`, `RationaleNote` DTOs.
+Creation requires independent frozen-protocol candidate V1 and public Unit 7 V2;
+verification without a database is V1/history only, with a database also V2.
+Only `human-structural-adequacy` / `1`, class `human`, is registered.
+The checkpoint validated 50 Unit 8 fast tests, 1 opt-in existing-Matthew integration
+test, 62 Unit 4-7 fast regressions and both required verifiers (all PASS).
+This is implementation validation, not an independent acceptance audit.
+Without separate explicit user authorization, do NOT:
+- conduct independent Unit 8 acceptance in the implementation task
 - create evaluation persistence or a projection database
 - modify the source schema
 - integrate Bible Research / BRW
 - implement semantic roles or create Actor/Action/Patient/Event/Result/Identity/Property entities
 - begin Unit 9
 
-Design invariants (details in the contract):
+Implemented invariants (details in the contract):
 - Source fact, Unit 7 `StructuralCandidate` and Unit 8 evaluated interpretation are distinct
   epistemic object classes; do not collapse them.
 - Evaluating a candidate must not mutate source facts or the candidate.
@@ -78,6 +86,7 @@ Design invariants (details in the contract):
 - No synthetic confidence, probability or scoring.
 - No semantic-role or theological interpretation.
 - Persistence is not part of the current Unit 8 design/implementation boundary.
+- Unit 5 M1 and Unit 7 audit M1 remain unresolved; Phase remains AUTHORIZED.
 
 ## Fidelity principles
 1. Raw source is source authority.

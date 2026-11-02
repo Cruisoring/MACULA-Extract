@@ -31,10 +31,11 @@ Unit 7: **IMPLEMENTED / INDEPENDENTLY ACCEPTED**.
 Independent decision: **ACCEPT WITH MINOR FINDINGS** ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
 Units 3, 4 and 6 are independently accepted (ACCEPT). Unit 2 Amendment 1 remains
 `IMPLEMENTED` only; Unit 5 M1 and the Unit 7 M1 remain unresolved. Phase remains **AUTHORIZED**.
-A design-only
+The separately authorized
 [Unit 8 evaluated structural interpretation contract](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md)
-exists: **CONTRACT DRAFT / NOT IMPLEMENTED**. Unit 8 implementation is
-**NOT AUTHORIZED**, and no automatic independent acceptance is authorized.
+is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** at its
+[in-memory implementation boundary](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation).
+No persistence or automatic independent acceptance is authorized.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
@@ -227,3 +228,62 @@ python -B -m unittest tests.test_unit7.Unit7FastTests -v
 
 See the [Unit 7 contract](docs/architecture/UNIT-7-DERIVED-STRUCTURAL-CANDIDATE-CONTRACT.md#41-authorized-initial-implementation)
 and [test instructions](tests/README.md#unit-7).
+
+## Unit 8 evaluated structural interpretations
+
+Unit 8 records a caller-supplied human disposition for one unchanged Unit 7
+candidate; it does not generate a judgment or claim source truth.
+
+```python
+from scripts.evaluated_interpretations import (
+    RationaleCitation, RationaleNote, create_evaluated_interpretation,
+    verify_evaluated_interpretation,
+)
+
+record = create_evaluated_interpretation(
+    database_path, candidate,
+    evaluator_class="human", evaluator_label="example-reviewer",
+    evaluation_protocol_id="human-structural-adequacy",
+    evaluation_protocol_version="1", disposition="undetermined",
+    rationale_evidence=(
+        RationaleCitation("syntax_node", candidate.scope.source_node_id),
+    ),
+    rationale_note=RationaleNote("Further human assessment is needed.", "en"),
+    event_key="caller-chosen-event:1",
+)
+verify_evaluated_interpretation(record)  # V1 and supplied history, offline
+verify_evaluated_interpretation(record, db_path=database_path)  # also V2
+```
+
+Public frozen DTOs: `EvaluatedStructuralInterpretation`, `RationaleCitation(kind,
+citation_id)` and `RationaleNote(text, language)`. Collections are tuples. Creation
+requires candidate V1 recomputation using the frozen Unit 7 identity protocol and
+V2 field-for-field re-derivation through the public Unit 7 API. Errors raise
+`QueryError`; an unknown exact candidate is an explicit not-found error, never an
+empty success. Direct DTO construction validates V1 content/identity only; use the
+factory for source-grounded creation.
+
+`compute_evaluation_id(candidate, *, evaluator_class, evaluator_label,
+evaluation_protocol_id, evaluation_protocol_version, disposition,
+rationale_evidence, rationale_note, event_key, supersedes=None)` validates V1
+content and computes the frozen `eval-sha256:` identity without source/history
+access. It does not generate `event_key`. Labels are unauthenticated assertions.
+
+Creation and verification accept `prior_records=()` (a tuple, including complete
+supersession ancestry). Same evaluator/event plus different content is rejected
+within that supplied set. Supersession requires the same candidate and evaluator;
+opposing evaluations and forks coexist without ranking or "latest wins".
+The only registry entry is human structural adequacy / version `1`; accepted and
+rejected require citations, and every human disposition requires a nonblank note
+with a verbatim BCP 47 language tag. Text is preserved without normalization.
+
+Implementation checkpoint boundary: one commit whose sole parent is
+`8f8b2e7642204378eb0e56e20d096b6233e409b2`; its actual SHA is reported after Git
+creates it. Validation: **50 fast + 1 opt-in Matthew integration tests passed**;
+**62 Unit 4-7 fast regressions passed**; Unit 1 and schema verifiers passed.
+This is not independent acceptance. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
+Phase remains **AUTHORIZED**. No persistence, semantic roles, confidence, BRW
+integration, source-schema changes or Unit 9.
+
+See the [implementation contract](docs/architecture/UNIT-8-EVALUATED-STRUCTURAL-INTERPRETATION-CONTRACT.md#34-authorized-initial-implementation)
+and [Unit 8 test instructions](tests/README.md#unit-8).
