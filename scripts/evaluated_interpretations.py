@@ -13,6 +13,21 @@ from scripts.source_query import QueryError
 RECORD_PROTOCOL: Final = "macula.evaluated-structural-interpretation.v1"
 EVALUATION_PROTOCOL_ID: Final = "human-structural-adequacy"
 EVALUATION_PROTOCOL_VERSION: Final = "1"
+EVALUATOR_CLASS_HUMAN: Final = "human"
+
+# Closed registry keyed by the complete compatibility tuple, never by candidate kind alone:
+# (protocol id, protocol version, evaluator class, candidate kind, derivation kind, derivation version).
+REGISTRY: Final = frozenset((
+    (EVALUATION_PROTOCOL_ID, EVALUATION_PROTOCOL_VERSION, EVALUATOR_CLASS_HUMAN,
+     structural.CANDIDATE_KIND, structural.DERIVATION_KIND, structural.DERIVATION_VERSION),
+    (EVALUATION_PROTOCOL_ID, EVALUATION_PROTOCOL_VERSION, EVALUATOR_CLASS_HUMAN,
+     structural.CLAUSE_CANDIDATE_KIND, structural.CLAUSE_DERIVATION_KIND,
+     structural.CLAUSE_DERIVATION_VERSION),
+))
+_CLAUSE_EVIDENCE_ROLES: Final = ("anchor", "subject-child", "verbal-child", "object-child")
+_CLAUSE_COMPONENTS: Final = (
+    ("S", "subject-component"), ("V", "verbal-component"), ("O", "object-component"),
+)
 
 _CANDIDATE_ID = re.compile(r"sha256:[0-9a-f]{64}")
 _EVALUATION_ID = re.compile(r"eval-sha256:[0-9a-f]{64}")
@@ -88,15 +103,71 @@ class RationaleNote:
         _language(self.language)
 
 
-def _verify_candidate(candidate: structural.StructuralCandidate) -> None:
-    if type(candidate) is not structural.StructuralCandidate:
-        raise QueryError("candidate must be a Unit 7 StructuralCandidate, not a local PK")
+def _scope_keys(refs: object, label: str) -> list[tuple[str, int, int, int]]:
+    if type(refs) is not tuple or not refs:
+        raise QueryError(f"{label} requires nonempty tuple members")
+    keys: list[tuple[str, int, int, int]] = []
+    for ref in refs:
+        _text(ref, "scope token ref")
+        match = _TOKEN_REF.fullmatch(ref)
+        if match is None:
+            raise QueryError("scope token ref must have exact source coordinate form")
+        book, chapter, verse, word = match.groups()
+        numbers = (chapter, verse, word)
+        if any(len(number) > 19 or int(number) > 2**63 - 1 for number in numbers):
+            raise QueryError("scope coordinates must be positive SQLite integers")
+        keys.append((book, int(chapter), int(verse), int(word)))
+    if len({key[0] for key in keys}) != 1 or any(a >= b for a, b in zip(keys, keys[1:])):
+        raise QueryError("scope tokens must be unique and in canonical scripture order")
+    return keys
+
+
+def _clause_payload_value(
+    payload: structural.ClauseStructurePayload, scope: structural.CandidateScope,
+    node_ids: tuple[str, ...],
+) -> list[object]:
+    if (payload.anchor_source_node_id != scope.source_node_id
+            or payload.anchor_source_node_id != node_ids[0]):
+        raise QueryError("candidate payload must match scope and ordered evidence")
+    if payload.source_rule != "S-V-O" or payload.source_head_raw != "1":
+        raise QueryError("clause payload must carry the exact S-V-O rule and Head 1")
+    if type(payload.components) is not tuple or len(payload.components) != len(_CLAUSE_COMPONENTS):
+        raise QueryError("clause payload requires exactly S, V and O components")
+    assigned: set[str] = set()
+    values: list[list[object]] = []
+    for index, (component, (cat, role)) in enumerate(zip(payload.components, _CLAUSE_COMPONENTS)):
+        if type(component) is not structural.ClauseComponent:
+            raise QueryError("clause payload must contain Unit 9 ClauseComponent values")
+        if (component.source_node_id != node_ids[index + 1] or component.source_cat != cat
+                or type(component.sibling_ordinal) is not int or component.sibling_ordinal != index
+                or component.component_role != role):
+            raise QueryError("clause components must match ordered evidence, S-V-O codes and roles")
+        _scope_keys(component.member_token_refs, "clause component")
+        if assigned.intersection(component.member_token_refs):
+            raise QueryError("clause component memberships must be disjoint")
+        assigned.update(component.member_token_refs)
+        values.append([component.component_role, component.source_cat, component.sibling_ordinal,
+                       component.source_node_id, list(component.member_token_refs)])
+    if assigned != set(scope.member_token_refs):
+        raise QueryError("clause component union must equal the exact scope")
+    return [payload.anchor_source_node_id, payload.source_rule, payload.source_head_raw, values]
+
+
+def _verify_candidate(candidate: structural.StructuralCandidate | structural.ClauseStructureCandidate) -> None:
+    if type(candidate) not in (structural.StructuralCandidate, structural.ClauseStructureCandidate):
+        raise QueryError("candidate must be a Unit 7 StructuralCandidate or Unit 9 "
+                         "ClauseStructureCandidate, not a local PK")
     if not isinstance(candidate.candidate_id, str) or not _CANDIDATE_ID.fullmatch(candidate.candidate_id):
         raise QueryError("malformed candidate_id")
-    if candidate.candidate_kind != "apposition":
+    derivations = next((entry[4:] for entry in sorted(REGISTRY)
+                        if entry[3] == candidate.candidate_kind), None)
+    if derivations is None:
         raise QueryError("unsupported candidate kind")
-    if candidate.derivation_kind != "source-np-appos" or candidate.derivation_version != "1":
+    if (candidate.derivation_kind, candidate.derivation_version) != derivations:
         raise QueryError("unsupported candidate derivation kind or version")
+    clause = candidate.candidate_kind == structural.CLAUSE_CANDIDATE_KIND
+    if type(candidate) is not (structural.ClauseStructureCandidate if clause else structural.StructuralCandidate):
+        raise QueryError("candidate type does not match its candidate kind")
     if candidate.status != "candidate":
         raise QueryError("candidate status must remain candidate")
     snapshot = candidate.source_snapshot
@@ -113,28 +184,17 @@ def _verify_candidate(candidate: structural.StructuralCandidate) -> None:
     if type(scope) is not structural.CandidateScope:
         raise QueryError("candidate requires an exact scope")
     _text(scope.source_node_id, "scope source node id")
-    if type(scope.member_token_refs) is not tuple or not scope.member_token_refs:
-        raise QueryError("candidate requires nonempty tuple scope members")
-    keys: list[tuple[str, int, int, int]] = []
-    for ref in scope.member_token_refs:
-        _text(ref, "scope token ref")
-        match = _TOKEN_REF.fullmatch(ref)
-        if match is None:
-            raise QueryError("scope token ref must have exact source coordinate form")
-        book, chapter, verse, word = match.groups()
-        numbers = (chapter, verse, word)
-        if any(len(number) > 19 or int(number) > 2**63 - 1 for number in numbers):
-            raise QueryError("scope coordinates must be positive SQLite integers")
-        keys.append((book, int(chapter), int(verse), int(word)))
-    if len({key[0] for key in keys}) != 1 or any(a >= b for a, b in zip(keys, keys[1:])):
-        raise QueryError("scope tokens must be unique and in canonical scripture order")
+    _scope_keys(scope.member_token_refs, "candidate")
     if type(candidate.evidence) is not tuple or not candidate.evidence:
         raise QueryError("candidate requires nonempty tuple evidence")
+    if clause and len(candidate.evidence) != len(_CLAUSE_EVIDENCE_ROLES):
+        raise QueryError("clause candidate evidence must be anchor then S, V and O children")
     evidence_values: list[list[str]] = []
     for index, ref in enumerate(candidate.evidence):
         if type(ref) is not structural.EvidenceRef:
             raise QueryError("candidate evidence must contain Unit 7 EvidenceRef values")
-        if ref.role != ("anchor" if index == 0 else "child") or ref.kind != "syntax_node":
+        expected_role = _CLAUSE_EVIDENCE_ROLES[index] if clause else ("anchor" if index == 0 else "child")
+        if ref.role != expected_role or ref.kind != "syntax_node":
             raise QueryError("candidate evidence must be anchor then syntax_node children")
         _text(ref.source_node_id, "evidence source node id")
         evidence_values.append([ref.role, ref.kind, ref.source_node_id])
@@ -142,19 +202,25 @@ def _verify_candidate(candidate: structural.StructuralCandidate) -> None:
     if len(set(node_ids)) != len(node_ids):
         raise QueryError("duplicate candidate evidence")
     payload = candidate.payload
-    if type(payload) is not structural.AppositionCandidatePayload:
-        raise QueryError("candidate requires an Apposition payload")
-    if (type(payload.child_source_node_ids) is not tuple
-            or payload.anchor_source_node_id != scope.source_node_id
-            or payload.anchor_source_node_id != node_ids[0]
-            or payload.child_source_node_ids != node_ids[1:]):
-        raise QueryError("candidate payload must match scope and ordered evidence")
+    if clause:
+        if type(payload) is not structural.ClauseStructurePayload:
+            raise QueryError("candidate requires a clause-structure payload")
+        payload_value = _clause_payload_value(payload, scope, node_ids)
+    else:
+        if type(payload) is not structural.AppositionCandidatePayload:
+            raise QueryError("candidate requires an Apposition payload")
+        if (type(payload.child_source_node_ids) is not tuple
+                or payload.anchor_source_node_id != scope.source_node_id
+                or payload.anchor_source_node_id != node_ids[0]
+                or payload.child_source_node_ids != node_ids[1:]):
+            raise QueryError("candidate payload must match scope and ordered evidence")
+        payload_value = [payload.anchor_source_node_id, list(payload.child_source_node_ids)]
     # Frozen Unit 7 wire protocol, independent of its private identity helpers.
     value = [
         "macula.structural-candidate.v1", snapshot_values, candidate.candidate_kind,
         candidate.derivation_kind, candidate.derivation_version,
         [scope.source_node_id, list(scope.member_token_refs)], evidence_values,
-        [payload.anchor_source_node_id, list(payload.child_source_node_ids)],
+        payload_value,
     ]
     expected = "sha256:" + hashlib.sha256(_identity_bytes(value)).hexdigest()
     if candidate.candidate_id != expected:
@@ -166,7 +232,7 @@ def _identity_bytes(value: list[object]) -> bytes:
 
 
 def compute_evaluation_id(
-    candidate: structural.StructuralCandidate, *,
+    candidate: structural.StructuralCandidate | structural.ClauseStructureCandidate, *,
     evaluator_class: str, evaluator_label: str,
     evaluation_protocol_id: str, evaluation_protocol_version: str,
     disposition: str, rationale_evidence: tuple[RationaleCitation, ...],
@@ -177,8 +243,11 @@ def compute_evaluation_id(
     if (evaluation_protocol_id != EVALUATION_PROTOCOL_ID
             or evaluation_protocol_version != EVALUATION_PROTOCOL_VERSION):
         raise QueryError("unsupported evaluation protocol id or version")
-    if evaluator_class != "human":
+    if evaluator_class != EVALUATOR_CLASS_HUMAN:
         raise QueryError("unsupported evaluator class; only human has a registered protocol")
+    if (evaluation_protocol_id, evaluation_protocol_version, evaluator_class, candidate.candidate_kind,
+            candidate.derivation_kind, candidate.derivation_version) not in REGISTRY:
+        raise QueryError("unsupported evaluation registry tuple")
     _text(evaluator_label, "human evaluator_label")
     if len(evaluator_label) > 128 or any(unicodedata.category(char) == "Cc" for char in evaluator_label):
         raise QueryError("human evaluator_label must be 1-128 characters without control characters")
@@ -225,7 +294,7 @@ def compute_evaluation_id(
 class EvaluatedStructuralInterpretation:
     record_protocol: str
     evaluation_id: str
-    candidate: structural.StructuralCandidate
+    candidate: structural.StructuralCandidate | structural.ClauseStructureCandidate
     evaluator_class: Literal["human"]
     evaluator_label: str
     evaluation_protocol_id: str
@@ -322,7 +391,7 @@ def verify_evaluated_interpretation(
 
 
 def create_evaluated_interpretation(
-    db_path: str | Path, candidate: structural.StructuralCandidate, *,
+    db_path: str | Path, candidate: structural.StructuralCandidate | structural.ClauseStructureCandidate, *,
     evaluator_class: Literal["human"], evaluator_label: str,
     evaluation_protocol_id: str, evaluation_protocol_version: str,
     disposition: Literal["accepted", "rejected", "undetermined"],

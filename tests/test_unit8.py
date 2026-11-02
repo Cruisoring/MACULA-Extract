@@ -590,14 +590,18 @@ class Unit8FastTests(unittest.TestCase):
         assert members is not None
         self.assertEqual(tuple(token.ref for token in members),
                          tuple(f"MAT 1:2!{word}" for word in (5, 7, 8, 9)))
-        self.assertEqual(structural.derive_structural_candidates(self.path, "MAT 1:2!5"), ())
+        derived = structural.derive_structural_candidates(self.path, "MAT 1:2!5")
+        assert derived is not None
+        self.assertEqual([type(item) for item in derived], [structural.ClauseStructureCandidate])
+        self.assertEqual(derived[0].scope.member_token_refs, tuple(f"MAT 1:2!{word}" for word in (5, 7, 8, 9)))
+        self.assertEqual([item for item in derived if item.candidate_kind == "apposition"], [])
         forged = replace(self.candidate, scope=structural.CandidateScope(
             unit7.BOUNDARY, tuple(f"MAT 1:2!{word}" for word in (5, 6, 7, 8, 9))),
             evidence=(structural.EvidenceRef("anchor", "syntax_node", unit7.BOUNDARY),),
             payload=structural.AppositionCandidatePayload(unit7.BOUNDARY, ()))
         with self.assertRaisesRegex(query.QueryError, "does not recompute"):
             self.create(forged, rationale_evidence=(evaluation.RationaleCitation("token", "MAT 1:2!6"),))
-        with self.assertRaisesRegex(query.QueryError, "candidate not found"):
+        with self.assertRaisesRegex(query.QueryError, "does not match source-grounded re-derivation"):
             self.create(reidentify(forged),
                         rationale_evidence=(evaluation.RationaleCitation("token", "MAT 1:2!6"),))
 
@@ -660,7 +664,11 @@ class Unit8MatthewIntegrationTests(unittest.TestCase):
                 print(f"Unit 8 test-only evaluation: {record.evaluation_id}; candidate={candidate.candidate_id}",
                       flush=True)
             self.assertEqual(candidates, structural.derive_structural_candidates(_LOCAL_DATABASE, "MAT 1:1!3"))
-            self.assertEqual(structural.derive_structural_candidates(_LOCAL_DATABASE, "MAT 1:2!5"), ())
+            clause_derived = structural.derive_structural_candidates(_LOCAL_DATABASE, "MAT 1:2!5")
+            assert clause_derived is not None
+            self.assertEqual([type(item) for item in clause_derived], [structural.ClauseStructureCandidate])
+            self.assertEqual(clause_derived[0].scope.member_token_refs,
+                             tuple(f"MAT 1:2!{word}" for word in (5, 7, 8, 9)))
             members = query.get_members(_LOCAL_DATABASE, unit7.BOUNDARY)
             assert members is not None
             self.assertEqual(tuple(token.ref for token in members),

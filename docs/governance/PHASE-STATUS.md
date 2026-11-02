@@ -652,6 +652,44 @@ No Unit 8 registry amendment, persistence, semantic projection, BRW integration
 or Unit 10. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
 Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
+#### Unit 8 Amendment 1 authorized implementation
+
+Starting root `C:\Projects\MACULA-Extract`, branch `master`, HEAD
+`ddd23c4bc51c651aea82722d747c44671f15832a`; tracked/index clean. The two user-supplied
+untracked files (the amendment plan and `tests/test_unit8_amendment1.py`) were preserved
+and reconciled. The user separately authorized only the registry amendment, not acceptance.
+The [amendment contract](../architecture/UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md)
+supersedes the statements above that Unit 8 rejects clause DTOs; it changes only
+`scripts/evaluated_interpretations.py` production behavior.
+
+- Registry: `human-structural-adequacy/1` evaluates `apposition/source-np-appos/1` and
+  `clause-structure/source-rule-s-v-o/1`. Protocol version, identity serialization,
+  V1/V2 semantics, rationale/citation order and firewalls are unchanged.
+- V1 independently verifies the clause candidate (scope, evidence, payload, Head, ordered
+  disjoint components, recomputed candidate id); V2 re-derives through the public Unit 9 API.
+- Tests: `tests/test_unit8_amendment1.py` (41 fast + 3 opt-in integration) with the
+  disposable `tests/support/unit8_amendment1_store.py`. The two obsolete Unit 8 no-S-V-O
+  assertions in `tests/test_unit8.py` were amended narrowly. Real Matthew: the frozen
+  S-V-O id was evaluated from all of `MAT 1:2!5/7/8/9`; `!6` is excluded; the three
+  Apposition ids are unchanged.
+- Superseded Unit 9 test: `test_unit8_rejects_new_candidate_without_registry_amendment`
+  asserts the pre-amendment behavior and now fails by design. Unit 9 tests were not
+  edited (read-only for this amendment); it is filtered in memory and must be retired or
+  rewritten by a future authorized change.
+- Guarded combined regression (existing DB reused read-only, fresh fidelity verification,
+  no full population, Unit 3 second-build gate disabled): Units 1, 2, 4-9 and the amendment
+  ran 295 tests, 0 failures/errors, 5 explicit skips (the four Unit 7 superseded tests and
+  the Unit 9 superseded test); Unit 3 ran 23 tests with 22 passes and its one disabled
+  second-build skip. Both required verifiers PASS.
+- Existing Matthew DB, frozen fixture and both protected repositories were verified
+  unchanged. No persistence, semantic role or confidence field was added.
+
+**UNIT 8 AMENDMENT 1 INDEPENDENT ACCEPTANCE WAS NOT PERFORMED.**
+**UNIT 9 INDEPENDENT ACCEPTANCE WAS NOT PERFORMED.**
+Unit 8, Unit 8 Amendment 1 and Unit 9 are each **IMPLEMENTED / PENDING INDEPENDENT
+ACCEPTANCE**. Unit 5 M1 and Unit 7 audit M1 remain unresolved and distinct.
+Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
 ## Unit 1 execution evidence
 
 - Implementation repository: `C:\Projects\MACULA-Extract` (hyphenated).

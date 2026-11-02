@@ -1208,3 +1208,17 @@ No persistence, semantic roles, confidence, BRW integration, source-schema
 changes or Unit 9. No deterministic-policy registration, AI evaluator,
 cross-snapshot migration or new candidate kind. Stop after this implementation
 checkpoint; independent acceptance requires a separately authorized task.
+
+## 35. Amendment 1 reference
+
+Unit 8 Amendment 1 extends the closed `human-structural-adequacy/1` registry to the
+Unit 9 candidate tuple `clause-structure / source-rule-s-v-o / 1` while preserving the
+`apposition / source-np-appos / 1` tuple. Sections 1-34 above are historical and are not
+rewritten: statements in them that Unit 7 `StructuralCandidate` is the only supported
+candidate type, or that new clause DTOs are unsupported for evaluation, are superseded
+for that tuple only by
+[UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md](UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md).
+The protocol version, identity serialization, V1/V2 semantics, rationale and
+citation-order rules, firewalls and the no-persistence decision are unchanged.
+
+**UNIT 8 AMENDMENT 1 IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.**

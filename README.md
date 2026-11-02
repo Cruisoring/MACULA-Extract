@@ -42,8 +42,10 @@ The separately authorized [S-V-O design and freeze](docs/architecture/UNIT-9-SVO
 and [expected fixture](fixtures/matthew-1-2-svo-candidate.expected.json) freeze
 Matthew 1:2's independently verified S/V/O memberships and expected identity.
 The [production implementation](docs/architecture/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-CONTRACT.md#28-authorized-production-implementation)
-matches that unchanged fixture. Unit 8's status and closed registry are unchanged;
-Phase remains **AUTHORIZED**.
+Unit 8 Amendment 1: **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**.
+The [amendment](docs/architecture/UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md)
+extends only the closed `human-structural-adequacy/1` registry so Unit 9 S-V-O
+candidates can also be evaluated in memory; Phase remains **AUTHORIZED**.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
@@ -268,8 +270,8 @@ All four exact member lookups return the same candidate. Matthew 1:1 remains
 Verbless with eight noun leaves, no verb leaves and unchanged Apposition IDs.
 
 No semantic role, confidence, persistence, source-schema change or BRW integration
-is introduced. Unit 8 still rejects this new candidate type; no registry amendment
-or independent acceptance was performed. See [Unit 9 tests](tests/README.md#unit-9-production-implementation),
+is introduced. Unit 8 Amendment 1 now allows human evaluation of this candidate type
+(see below); no independent acceptance was performed. See [Unit 9 tests](tests/README.md#unit-9-production-implementation),
 including explicit treatment of frozen pre-Unit-9 no-S-V-O assertions.
 
 ## Unit 8 evaluated structural interpretations
@@ -316,7 +318,13 @@ Creation and verification accept `prior_records=()` (a tuple, including complete
 supersession ancestry). Same evaluator/event plus different content is rejected
 within that supplied set. Supersession requires the same candidate and evaluator;
 opposing evaluations and forks coexist without ranking or "latest wins".
-The only registry entry is human structural adequacy / version `1`; accepted and
+The registry entries are human structural adequacy / version `1` for the Unit 7
+Apposition candidate and, by [Amendment 1](docs/architecture/UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md),
+for the Unit 9 `ClauseStructureCandidate` (`clause-structure` / `source-rule-s-v-o` / `1`).
+Clause candidates pass the same V1/V2 checks; V1 additionally verifies the exact S-V-O
+payload and component membership, and citations may name only the anchor, the three
+child nodes and the exact scope tokens (never excluded token `MAT 1:2!6`), in canonical
+order. Accepted and
 rejected require citations, and every human disposition requires a nonblank note
 with a verbatim BCP 47 language tag. Text is preserved without normalization.
 

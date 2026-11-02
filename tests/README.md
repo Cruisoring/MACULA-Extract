@@ -500,3 +500,63 @@ complete pre-change Apposition DTOs, Matthew source SHA and both protected
 repositories were preserved. No full Matthew population or second build occurred.
 This is implementation validation only; Unit 8 remains pending independent acceptance,
 Unit 9 is pending independent acceptance, and the Phase remains AUTHORIZED.
+
+> **Superseded by Unit 8 Amendment 1 (below):** the two Unit 8 rows in the table above
+> were later amended narrowly and are no longer skipped, and the filter now also needs
+> the Unit 9 test that asserted the pre-amendment Unit 8 rejection.
+
+## Unit 8 Amendment 1
+
+```powershell
+python -B -m unittest tests.test_unit8_amendment1.Unit8Amendment1FastTests -v
+```
+
+41 fast tests use the disposable schema-v2 store from
+`tests/support/unit8_amendment1_store.py` (real Matthew node ids for the Matthew 1:1
+Np-Appos chain and the Matthew 1:2 S-V-O clause with interior token 6). The store carries
+a synthetic snapshot because `source_file.sha256` must match the stored bytes, so the
+builder self-validates all non-snapshot fields against the frozen fixture and re-encodes
+every candidate under the frozen snapshot with an independent encoder to prove the frozen
+S-V-O and three Apposition ids; fast tests assert the frozen ids through that recompute.
+Citation order is a caller requirement (misordered citations are rejected), matching
+frozen Unit 8 behavior.
+
+Opt-in real-Matthew tests (3, read-only; skip otherwise, a skip is not a pass):
+
+```powershell
+$env:MACULA_UNIT8_AMENDMENT1_INTEGRATION = "1"
+$env:MACULA_MATTHEW_DB = "C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3"
+python -B -m unittest tests.test_unit8_amendment1 -v
+Remove-Item Env:MACULA_UNIT8_AMENDMENT1_INTEGRATION
+Remove-Item Env:MACULA_MATTHEW_DB
+```
+
+`tests/test_unit8.py` was amended narrowly: Matthew 1:2 now yields exactly one
+`ClauseStructureCandidate` (refs `!5,!7,!8,!9`), no Apposition, and a reidentified forged
+envelope reports `does not match source-grounded re-derivation`. The two Unit 8 tests
+therefore pass and are no longer filtered.
+
+Current superseded-test filter for the combined Units 4-9 and amendment regression
+(replace the `obsolete` set and add `tests.test_unit8_amendment1` to the modules):
+
+```python
+obsolete = {
+    "test_valid_no_match_is_empty_unknown_is_none_invalid_is_error",
+    "test_semantic_annotations_categories_ellipsis_and_head_do_not_create_candidates",
+    "test_exact_discontinuous_scope_and_span_mutation",
+    "test_matthew_1_2_discontinuous_scope_without_svo_candidate",
+    "test_unit8_rejects_new_candidate_without_registry_amendment",
+}
+```
+
+`tests/test_unit9.py::test_unit8_rejects_new_candidate_without_registry_amendment`
+asserts that Unit 8 rejects an S-V-O candidate, the exact behavior Amendment 1
+replaces, so it fails by design when run unfiltered. Unit 9 tests were not edited;
+replacement coverage is `test_a1_02_clause_structure_registry_entry_is_supported`. A
+future authorized change should retire or rewrite it.
+
+Guarded validation actually run (existing DB read-only, fresh source-fidelity
+verification, full-population guard, Unit 3 second-build gate disabled):
+Units 1, 2, 4-9 and the amendment: 295 tests, 0 failures/errors, 5 explicit skips;
+Unit 3: 23 tests, 22 passed, 1 skip (the disabled second-build gate). Skips are not
+passes. This is implementation validation only, not independent acceptance.

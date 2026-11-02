@@ -64,9 +64,18 @@ Generic exact membership retrieval and clause-specific topology/partition checks
 live in the existing structural candidate module, over the owned read-only query
 boundary. 39 Unit 9 fast and 3 real-Matthew integration tests passed; the two-stage
 regression validated 267 tests, with 7 explicit skips (see test instructions).
-Unit 8 is unchanged and remains pending independent acceptance, with no clause
-evaluation support. This is implementation validation, not independent acceptance.
-No Unit 8 amendment, persistence, semantic projection, BRW integration or Unit 10.
+Unit 8 is unchanged by Unit 9 itself and remains pending independent acceptance; clause
+evaluation support is added only by Unit 8 Amendment 1 below.
+This is implementation validation, not independent acceptance.
+No persistence, semantic projection, BRW integration or Unit 10.
+
+The separately authorized
+[Unit 8 Amendment 1](UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md) is **IMPLEMENTED /
+PENDING INDEPENDENT ACCEPTANCE**. It extends only the closed `human-structural-adequacy/1`
+registry to `clause-structure` / `source-rule-s-v-o` / `1` (Unit 9
+`ClauseStructureCandidate`) alongside the Apposition tuple, with generic V1 clause
+verification and unchanged V2 re-derivation; evaluation remains in-memory. No independent
+acceptance, persistence, semantic roles, BRW integration or new Unit.
 
  [record post-Unit-4 product readiness findings](POST-UNIT-4-PRODUCT-READINESS-CONCLUSION.md)
  Document the post-Unit-4 read-only SQLite exploration and resulting

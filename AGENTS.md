@@ -27,7 +27,8 @@ checkpoints and are not rewritten by later governance.
 | Unit 6 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT (same audit as Units 3 and 4) |
 | Unit 7 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 7 audit M1 unresolved**; I1-I6 informational, not remediated ([audit](docs/audits/UNIT-7-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
 | Unit 8 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | Separately authorized in-memory boundary only; no persistence; no independent acceptance audit exists |
-| Unit 9 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | In-memory S-V-O clause candidates; frozen fixture matched; no Unit 8 registry amendment |
+| Unit 8 Amendment 1 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | `human-structural-adequacy/1` also evaluates Unit 9 S-V-O candidates; in-memory only; no independent acceptance audit exists |
+| Unit 9 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | In-memory S-V-O clause candidates; frozen fixture matched; evaluable via Unit 8 Amendment 1 |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -122,12 +123,32 @@ Unit 9 tests: 39 fast + 3 read-only integration PASS. Combined regression eviden
 267 passed, 7 explicitly skipped across two stages (not a single 274-test run).
 Six frozen Unit 7/8 tests contain obsolete no-S-V-O expectations; their still-valid
 assertions have Unit 9 replacement coverage. The seventh skip is Unit 3's disabled
-second-build gate. Do not edit the frozen Unit 7/8 tests to hide this distinction.
-Unit 8 remains **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE** with its original
-Apposition-only registry. New clause DTOs remain unsupported for evaluation.
-No independent Unit 9 acceptance, persistence, semantic projection, BRW integration
-or Unit 10 is authorized. Unit 5 M1 and Unit 7 audit M1 remain unresolved.
-Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+second-build gate. Do not edit the frozen Unit 7 tests to hide this distinction. (The
+two Unit 8 tests were later amended narrowly by Unit 8 Amendment 1.)
+Unit 8 remains **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**. Its registry was
+extended only by Unit 8 Amendment 1 (below); this section describes the pre-amendment
+Apposition-only registry. No independent Unit 9 acceptance, persistence, semantic
+projection, BRW integration or Unit 10 is authorized. Unit 5 M1 and Unit 7 audit M1
+remain unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
+## Unit 8 Amendment 1 implementation and stop boundary
+Unit 8 Amendment 1 is **IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE**, separately
+authorized from clean `master` at `ddd23c4bc51c651aea82722d747c44671f15832a`.
+[The amendment](docs/architecture/UNIT-8-AMENDMENT-1-SVO-EVALUATION-REGISTRY.md)
+extends only the closed registry of `human-structural-adequacy` / `1` to
+`clause-structure` / `source-rule-s-v-o` / `1` (Unit 9 `ClauseStructureCandidate`) while
+keeping `apposition` / `source-np-appos` / `1`. Protocol version, criterion, identity,
+V1/V2 semantics, rationale/citation-order rules and firewalls are unchanged; V1
+independently verifies clause scope, evidence order, payload, Head, components and
+candidate id, and V2 re-derives through the public Unit 9 API.
+Unit 8 amendment tests: 41 fast + 3 opt-in read-only integration; tests/support holds the
+disposable store builder. Evaluation remains in-memory only.
+`tests/test_unit9.py::test_unit8_rejects_new_candidate_without_registry_amendment`
+asserted the pre-amendment behavior and now fails by design; Unit 9 tests were not edited,
+and it is filtered in memory with the other superseded tests (see tests/README.md).
+No independent Unit 8 Amendment 1 or Unit 9 acceptance, persistence, semantic roles,
+BRW integration or new Unit is authorized. Unit 5 M1 and Unit 7 audit M1 remain
+unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Fidelity principles
 1. Raw source is source authority.
