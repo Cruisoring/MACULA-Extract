@@ -796,7 +796,8 @@ which remain unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ### Unit 10 - Separate Structural Interpretation Persistence Boundary
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT; see
+[Unit 10 independent acceptance](#unit-10-independent-acceptance))
 
 Separately authorized from clean `master` at
 `efb0311da039da3c5bf7f2b0704ed2722ac5fbfb`.
@@ -831,8 +832,29 @@ The original source size/SHA/version/catalog/indexes/triggers and full source fi
 remain unchanged; protected upstream/downstream Git states remain unchanged and clean.
 Full details and AC-to-test mapping are in the contract's appended implementation evidence.
 
-No prior findings or accepted semantics are remediated; no independent acceptance,
-semantic projection, BRW integration or Unit 11. Phase remains AUTHORIZED.
+No prior findings or accepted semantics are remediated; no semantic projection, BRW
+integration or Unit 11. Phase remains AUTHORIZED.
+
+#### Unit 10 independent acceptance
+
+Independent acceptance audit of implementation checkpoint
+`dfe52ba1f78dfdd488862862efb3c3017a668c45` (freeze `d690209f7dce140b61d0056446cec370afce2edd`,
+pre-Unit-10 `efb0311da039da3c5bf7f2b0704ed2722ac5fbfb`); starting HEAD `dfe52ba`, clean.
+Full report: [audit](../audits/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-INDEPENDENT-ACCEPTANCE-AUDIT.md).
+
+| Item | Result |
+|---|---|
+| Decision | **ACCEPT** |
+| Findings | 0 BLOCKER, 0 MAJOR, 0 MINOR; informational I-1..I-6, not remediated |
+| AC-U10-01..30 | 30 PASS, 0 FAIL, 0 SUPERSEDED |
+| Independent identities | S-V-O candidate, human evaluation and supersession literals reproduced from raw XML by an independent serializer; 272 anchors matched, 0 mismatches |
+| Adversarial evidence | 300 scripted checks, 0 failures (init/drift, trust zones, append-only guards, idempotence/conflicts, event keys, supersession, snapshots, PK/insertion-order invariance, 37 tamper mutations, aliasing, connection lifetime/atomicity) |
+| Regression | unfiltered guarded run: 366 ran, 365 passed, 1 skipped (Unit 3 second-build gate), 0 failures/errors; Unit 10 48 tests; full Matthew builds 0 |
+| Source preservation | SHA-256 `E52DB7E2...25CE7E`, size, version, catalog, row counts and fidelity unchanged; protected repositories unchanged and clean |
+
+No production remediation, semantic projection, BRW integration or next Unit is authorized.
+Unit 5 M1, Unit 7 audit M1, Unit 8 audit M-1 and Unit 9 audit M-1 remain unresolved and
+distinct. Unit 11 is NOT AUTHORIZED. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
 ## Unit 1 execution evidence
 

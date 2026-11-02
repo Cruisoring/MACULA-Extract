@@ -53,13 +53,15 @@ candidates can also be evaluated in memory; Phase remains **AUTHORIZED**.
 
 ## Unit 10 separate persistence boundary
 
-**IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE.**
+**IMPLEMENTED / INDEPENDENTLY ACCEPTED** (ACCEPT; 0 BLOCKER/MAJOR/MINOR, six
+informational observations, not remediated; see the
+[independent audit](docs/audits/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-INDEPENDENT-ACCEPTANCE-AUDIT.md)).
 The separately authorized [Unit 10 contract](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md)
 freezes a physically separate append-only candidate/human-evaluation store.
 Its dedicated contract checkpoint is `d690209f7dce140b61d0056446cec370afce2edd`.
 This narrowly
 supersedes historical persistence prohibitions, not prior derivation/evaluation semantics.
-No source-schema change, semantic projection, BRW integration or independent acceptance.
+No source-schema change, semantic projection or BRW integration.
 Unit 11 is NOT AUTHORIZED; existing findings remain open; Phase remains AUTHORIZED.
 
 ```python

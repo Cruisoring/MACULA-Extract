@@ -29,7 +29,7 @@ checkpoints and are not rewritten by later governance.
 | Unit 8 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; in-memory boundary only; no persistence ([audit](docs/audits/UNIT-8-AND-AMENDMENT-1-INDEPENDENT-ACCEPTANCE-AUDIT.md)) |
 | Unit 8 Amendment 1 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS (separate decision, same audit); `human-structural-adequacy/1` also evaluates Unit 9 S-V-O candidates; in-memory only |
 | Unit 9 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 9 audit M-1 unresolved**; I-1..I-5 informational, not remediated ([audit](docs/audits/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); in-memory S-V-O clause candidates; evaluable via Unit 8 Amendment 1 |
-| Unit 10 | IMPLEMENTED / PENDING INDEPENDENT ACCEPTANCE | Separate append-only [persistence boundary](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md); no acceptance or Unit 11 |
+| Unit 10 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT; 0 BLOCKER/MAJOR/MINOR, I-1..I-6 informational, not remediated ([audit](docs/audits/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); separate append-only [persistence boundary](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md); Unit 11 NOT AUTHORIZED |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -173,7 +173,10 @@ store protocol/version. Writes require V1 + source V2; load never re-derives or 
 Only existing Apposition/S-V-O candidates and registered human evaluations are persisted.
 Follow its exact API/path/validation boundary; do not modify older production semantics,
 source schema, historical contracts/audits or existing findings. No BRW/semantic projection
-or independent acceptance is authorized. Unit 11 is NOT AUTHORIZED.
+or independent acceptance is authorized. Unit 10 was independently accepted separately
+(ACCEPT, see the [audit](docs/audits/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-INDEPENDENT-ACCEPTANCE-AUDIT.md));
+that acceptance does not authorize BRW, semantic projection or Unit 11, and does not
+resolve Unit 5 M1, Unit 7 audit M1 or Unit 9 audit M-1. Unit 11 is NOT AUTHORIZED.
 
 ## Fidelity principles
 1. Raw source is source authority.
