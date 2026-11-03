@@ -24,6 +24,11 @@ scope, then candidate-centered evaluation/supersession history, with no current-
 unresolved MINOR M-1 is a wrong exception type on 4300+-digit selector strings. No schema
 change or Unit 12 is authorized.
 
+[MACULA Consumer Baseline v0](CONSUMER-BASELINE-V0.md) is **FROZEN** as a documentation contract
+(not a Unit): the smallest stable boundary between the accepted Units 1-11 and a future
+Matthew-only, read-only consumer application. Product implementation may be separately
+authorized against it; none, and no Unit 12, is authorized here.
+
 Historical investigations remain evidence, not retrospective implementation specifications:
 
 - [MACULA data architecture Spike](MACULA-GREEK-TO-SQLITE-LINGUISTIC-STORE-ARCHITECTURE-SPIKE.md)

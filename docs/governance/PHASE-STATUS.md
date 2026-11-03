@@ -909,6 +909,32 @@ Unit 11 audit M-1 is distinct from Unit 5 M1, Unit 7 audit M1, Unit 8 audit M-1 
 all of which remain unresolved. No remediation, schema change, semantic projection, BRW integration
 or next Unit is authorized. Unit 12 is NOT AUTHORIZED. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
+### MACULA Consumer Baseline v0
+
+**Status:** FROZEN (documentation/contract checkpoint; not a Unit)
+
+The [Consumer Baseline v0](../architecture/CONSUMER-BASELINE-V0.md) records what a consumer
+application may depend on from the independently accepted Units 1-11 and what stays outside
+the consumer contract: source fact / derived structural candidate / evaluation / presentation
+separation, exact (never envelope) membership, graph-leaf-only supersession meaning,
+provenance and identity rules, read-only boundaries, a consumer error model, a thin-adapter
+recommendation, a capability matrix, a Matthew-only vertical slice definition and acceptance
+criteria AC-CB0-01..33. Starting commit and sole parent: `679ff2f61b255680d209bfd5e759af619fe6cbcc`;
+the checkpoint's own SHA is verified from Git after commit, not recorded in its own diff.
+
+It identifies two non-blocking capability gaps (GAP-1 chapter/verse enumeration, GAP-2
+projection-store provisioning) and records, without remediating, the consumer-relevant findings
+(Unit 5 M1, Unit 7 audit M1, Unit 8 audit M-1, Unit 9 audit M-1, Unit 10 I-1/I-2/I-3/I-5,
+Unit 11 audit M-1 and I-1/I-3), none of which blocks product implementation.
+
+This checkpoint changes only `docs/architecture/CONSUMER-BASELINE-V0.md`, `docs/architecture/README.md`,
+`docs/governance/PHASE-STATUS.md`, `README.md` and `AGENTS.md`: no production code, test, schema,
+fixture, historical contract/audit, source database, projection database or protected repository.
+Product implementation may be separately authorized against this baseline; it is **not**
+authorized here. Unit 12, semantic projection, BRW integration, localization, UI and finding
+remediation are NOT AUTHORIZED. Unit 11 remains IMPLEMENTED / INDEPENDENTLY ACCEPTED
+(ACCEPT WITH MINOR FINDINGS). Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
 ## Unit 1 execution evidence
 
 - Implementation repository: `C:\Projects\MACULA-Extract` (hyphenated).

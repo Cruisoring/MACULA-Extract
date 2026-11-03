@@ -118,6 +118,17 @@ unresolved Unit 11 audit M-1: string-form verse/token selectors above 4300 digit
 instead of `ProjectionQueryError` (fail-closed). No schema change, semantic projection, BRW integration
 or Unit 12 is authorized; existing findings remain open; Phase remains AUTHORIZED.
 
+## Consumer Baseline v0
+
+**FROZEN** (documentation contract, not a Unit). [MACULA Consumer Baseline v0](docs/architecture/CONSUMER-BASELINE-V0.md)
+freezes what a consumer application may depend on from the accepted Units 1-11 (Matthew-only,
+read-only): source fact / derived structural candidate / evaluation / presentation separation,
+exact (never envelope) membership, graph-leaf-only supersession, stable logical identities,
+a consumer error model and a minimum Scripture Structural Explorer slice. It implements no UI,
+adapter, API or provisioning, and does not authorize product implementation, Unit 12, semantic
+projection or BRW integration; product implementation may be separately authorized against it.
+Existing findings remain open; Phase remains AUTHORIZED.
+
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
 - SBLGNT `nodes` is the primary linguistic source for the authorized Matthew vertical slice.

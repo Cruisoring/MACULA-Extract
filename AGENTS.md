@@ -31,6 +31,7 @@ checkpoints and are not rewritten by later governance.
 | Unit 9 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 9 audit M-1 unresolved**; I-1..I-5 informational, not remediated ([audit](docs/audits/UNIT-9-SVO-CLAUSE-STRUCTURAL-CANDIDATE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); in-memory S-V-O clause candidates; evaluable via Unit 8 Amendment 1 |
 | Unit 10 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT; 0 BLOCKER/MAJOR/MINOR, I-1..I-6 informational, not remediated ([audit](docs/audits/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); separate append-only [persistence boundary](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md); Unit 11 was later separately authorized and implemented |
 | Unit 11 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 11 audit M-1 unresolved**; I-1..I-5 informational, not remediated ([audit](docs/audits/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-INDEPENDENT-ACCEPTANCE-AUDIT.md)); read-only [discovery and history queries](docs/architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md) over the Unit 10 store; Unit 12 NOT AUTHORIZED |
+| Consumer Baseline v0 | FROZEN (documentation contract, not a Unit) | [CONSUMER-BASELINE-V0](docs/architecture/CONSUMER-BASELINE-V0.md); product implementation may be separately authorized against it; not authorized here; Unit 12 still NOT AUTHORIZED |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -195,6 +196,14 @@ integer coordinates (never min/max, Start/End, envelopes, lexical/PK/rowid range
 prefix/LIKE/GLOB); Matthew 1:2 token 6 is not a member of the S-V-O candidate; unsuperseded
 means graph leaf only, never current/canonical; the source database is not used. Unit 5 M1
 and Unit 7 audit M1 remain unresolved. Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
+
+## Consumer Baseline v0 boundary
+[Consumer Baseline v0](docs/architecture/CONSUMER-BASELINE-V0.md) is a FROZEN documentation
+contract (not a Unit, not Unit 12) for a future Matthew-only, read-only consumer. It authorizes no
+product, UI, adapter, API server, provisioning, semantic projection, BRW integration, localization
+or finding remediation; each needs separate explicit authorization. Consumers must not use local
+SQLite PKs as identity, must treat membership as exact (never an envelope), must never call an
+unsuperseded evaluation "current", and must keep source / candidate / evaluation distinct.
 
 ## Fidelity principles
 1. Raw source is source authority.
