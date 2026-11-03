@@ -937,8 +937,8 @@ remediation are NOT AUTHORIZED. Unit 11 remains IMPLEMENTED / INDEPENDENTLY ACCE
 
 ### Product Implementation #1 - Matthew Scripture Structural Explorer
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT PRODUCT ACCEPTANCE (product track; not a Unit;
-see [implementation record](#product-implementation-1))
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS; product track,
+not a Unit; see [independent acceptance](#product-implementation-1-independent-acceptance))
 
 The following paragraphs preserve the historical design-freeze checkpoint scope.
 Separate explicit implementation authorization and validation are recorded below.
@@ -1143,7 +1143,11 @@ AC-U2-36 result must be reported from actual post-commit verification.
 
 ## Product Implementation #1
 
-**Status:** IMPLEMENTED / PENDING INDEPENDENT PRODUCT ACCEPTANCE.
+**Current status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS).
+
+The following implementation-checkpoint evidence retains its historical meaning.
+The separate [independent acceptance](#product-implementation-1-independent-acceptance)
+below supersedes its pending-acceptance status without changing implementation claims.
 
 Separately authorized from clean `master` at product design freeze
 `0a10c810b55da46d2358e3cd894ad59121d616bf` (sole parent
@@ -1172,3 +1176,40 @@ Unit 12 is NOT AUTHORIZED. Phase remains AUTHORIZED, not COMPLETE or CLOSED.
 Stop after implementation/post-checkpoint verification; independent product acceptance,
 provisioning, evaluation authoring, semantic projection, localization and BRW integration
 require separate explicit authorization.
+
+## Product Implementation #1 Independent Acceptance
+
+**Status:** IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS).
+
+The separate
+[independent product audit](../audits/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER-INDEPENDENT-ACCEPTANCE-AUDIT.md)
+audits implementation `4f939462b1dc2ca84cdf87a9f6cc94fd2b43b790`, whose sole parent is
+design freeze `0a10c810b55da46d2358e3cd894ad59121d616bf`.
+Decision: **ACCEPT WITH MINOR FINDINGS**; 0 BLOCKER, 0 MAJOR, 1 MINOR, 4 INFORMATIONAL.
+AC-P1-01..56: 55 PASS, 1 QUALIFIED for historical clean-start evidence, 0 observed FAIL.
+P1-P12: 12 PASS in independently executed checks.
+
+Independent evidence includes raw-XML/read-only-SQL agreement for all 18,329 token
+surfaces and 22 optional fields, 60 real product verses / 1,008 tokens over all 28
+chapters, every Matthew 1:2 token selection, six adversarial evaluations with four
+graph leaves, input/error/binding/HTTP/AST probes, and a fresh bounded browser fixture.
+Final independent harness: 16 checks passed, including reproduction of the minor
+finding. Existing product discovery: 42 passed, 1 opt-in skip; separate real-Matthew
+product integration: 1 passed. Required core regression: 351 passed, 25 opt-in skips;
+those 25 integration cases separately passed. Both frozen verifiers exited 0.
+No full Matthew build or Unit 3 second-build gate was run.
+
+**Product P1-M-1 remains unresolved:** the home header reports VERIFIED_EMPTY for a
+populated projection store; loaded verse discovery remains correct. Informational
+items document historical Git evidence, runtime/platform coverage, the frozen
+fingerprint guarantee, and mandatory order-note wording. No remediation occurred.
+Source/projection preservation, exact `!5,!7,!8,!9` membership excluding `!6`,
+Matthew 1:1 Verbless, epistemic separation and all graph-leaf presentation were
+independently verified. Temporary stores/server were closed and removed.
+
+This acceptance changes only the product lifecycle. CB0 remains FROZEN; all research
+Unit statuses and historical audits/contracts remain unchanged. Unit 5 M1, Unit 7
+audit M1, Unit 8 audit M-1, Unit 9 audit M-1 and Unit 11 audit M-1 remain unresolved
+and distinct from Product P1-M-1. Unit 12 is NOT AUTHORIZED. Phase remains AUTHORIZED,
+not COMPLETE or CLOSED. Stop after the independent acceptance checkpoint and its
+post-checkpoint verification; no downstream implementation is authorized here.
