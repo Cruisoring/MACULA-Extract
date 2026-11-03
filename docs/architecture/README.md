@@ -29,6 +29,11 @@ change or Unit 12 is authorized.
 Matthew-only, read-only consumer application. Product implementation may be separately
 authorized against it; none, and no Unit 12, is authorized here.
 
+[Product Implementation #1](../product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md) (a product
+track document, not a Unit) is **DESIGN FROZEN / NOT IMPLEMENTED**: the Matthew Scripture Structural
+Explorer design against CB0. It implements nothing and authorizes no implementation, Unit 12, semantic
+projection or BRW integration.
+
 Historical investigations remain evidence, not retrospective implementation specifications:
 
 - [MACULA data architecture Spike](MACULA-GREEK-TO-SQLITE-LINGUISTIC-STORE-ARCHITECTURE-SPIKE.md)

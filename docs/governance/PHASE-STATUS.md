@@ -935,6 +935,32 @@ authorized here. Unit 12, semantic projection, BRW integration, localization, UI
 remediation are NOT AUTHORIZED. Unit 11 remains IMPLEMENTED / INDEPENDENTLY ACCEPTED
 (ACCEPT WITH MINOR FINDINGS). Phase remains **AUTHORIZED**, not COMPLETE or CLOSED.
 
+### Product Implementation #1 - Matthew Scripture Structural Explorer
+
+**Status:** DESIGN FROZEN / NOT IMPLEMENTED (product track; not a Unit; implementation requires
+separate explicit authorization)
+
+The [Product Implementation #1 contract](../product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md)
+freezes the design of a local, single-user, read-only, Matthew-only explorer built on
+[Consumer Baseline v0](../architecture/CONSUMER-BASELINE-V0.md): a stdlib-only server-rendered Python
+web application (no JavaScript, no third-party package, no new dependency/config file), a thin
+product adapter that is the only module importing the research core, immutable product view models,
+coordinate-entry navigation (GAP-1; no hard-coded versification, no previous/next), supported
+absent/empty/corrupt projection-store states (GAP-2; no provisioning or write control), a one-time
+source-grounded binding gate, exact-membership marking (Matthew 1:2 `!5,!7,!8,!9` members, `!6` non-member),
+Matthew 1:1 Verbless, `Not superseded` graph-leaf wording, twelve product fixtures P1-P12 and 56 acceptance
+criteria AC-P1-01..56. The contract ends with the decision **READY FOR IMPLEMENTATION AUTHORIZATION**; that
+is not an implementation authorization. The checkpoint's own SHA is verified from Git after commit, not
+recorded in its own diff.
+
+This checkpoint changes only `docs/product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md`,
+`docs/architecture/README.md`, `docs/governance/PHASE-STATUS.md`, `README.md` and `AGENTS.md`: no production or
+product code, test, package/dependency/config file, schema, fixture, existing contract or audit, CB0, source
+or projection database or protected repository. Unit 12, semantic projection, BRW integration, localization,
+evaluation authoring, projection provisioning and finding remediation remain NOT AUTHORIZED; Unit 11 remains
+IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS). Phase remains **AUTHORIZED**, not COMPLETE
+or CLOSED.
+
 ## Unit 1 execution evidence
 
 - Implementation repository: `C:\Projects\MACULA-Extract` (hyphenated).

@@ -129,6 +129,15 @@ adapter, API or provisioning, and does not authorize product implementation, Uni
 projection or BRW integration; product implementation may be separately authorized against it.
 Existing findings remain open; Phase remains AUTHORIZED.
 
+## Product Implementation #1
+
+**DESIGN FROZEN / NOT IMPLEMENTED** (product track, not a Unit). The
+[Matthew Scripture Structural Explorer contract](docs/product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md)
+freezes a local, read-only, stdlib-only, server-rendered personal application over Consumer Baseline v0
+(thin adapter, view models, coordinate navigation, exact-membership display, no provisioning/authoring).
+No product code exists yet; implementation needs a separate explicit authorization. Unit 12, semantic
+projection and BRW integration remain NOT AUTHORIZED; existing findings remain open; Phase remains AUTHORIZED.
+
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.
 - SBLGNT `nodes` is the primary linguistic source for the authorized Matthew vertical slice.

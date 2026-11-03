@@ -32,6 +32,7 @@ checkpoints and are not rewritten by later governance.
 | Unit 10 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT; 0 BLOCKER/MAJOR/MINOR, I-1..I-6 informational, not remediated ([audit](docs/audits/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-INDEPENDENT-ACCEPTANCE-AUDIT.md)); separate append-only [persistence boundary](docs/architecture/UNIT-10-STRUCTURAL-INTERPRETATION-PERSISTENCE-CONTRACT.md); Unit 11 was later separately authorized and implemented |
 | Unit 11 | IMPLEMENTED / INDEPENDENTLY ACCEPTED | ACCEPT WITH MINOR FINDINGS; **Unit 11 audit M-1 unresolved**; I-1..I-5 informational, not remediated ([audit](docs/audits/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-INDEPENDENT-ACCEPTANCE-AUDIT.md)); read-only [discovery and history queries](docs/architecture/UNIT-11-READ-ONLY-STRUCTURAL-INTERPRETATION-DISCOVERY-HISTORY-QUERY-CONTRACT.md) over the Unit 10 store; Unit 12 NOT AUTHORIZED |
 | Consumer Baseline v0 | FROZEN (documentation contract, not a Unit) | [CONSUMER-BASELINE-V0](docs/architecture/CONSUMER-BASELINE-V0.md); product implementation may be separately authorized against it; not authorized here; Unit 12 still NOT AUTHORIZED |
+| Product Implementation #1 | DESIGN FROZEN / NOT IMPLEMENTED (product track, not a Unit) | [Matthew Structural Explorer contract](docs/product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md); implementation requires separate explicit authorization; Unit 12 still NOT AUTHORIZED |
 | Phase | AUTHORIZED | Not COMPLETE, not CLOSED |
 
 Unit 5 M1 and the Unit 7 audit M1 are different findings; keep them distinct and do not
@@ -204,6 +205,15 @@ product, UI, adapter, API server, provisioning, semantic projection, BRW integra
 or finding remediation; each needs separate explicit authorization. Consumers must not use local
 SQLite PKs as identity, must treat membership as exact (never an envelope), must never call an
 unsuperseded evaluation "current", and must keep source / candidate / evaluation distinct.
+
+## Product Implementation #1 boundary
+The [Product Implementation #1 contract](docs/product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md)
+is **DESIGN FROZEN / NOT IMPLEMENTED**: a product track (not a Unit, not Unit 12) for a local, read-only,
+stdlib-only, server-rendered Matthew explorer. Do not create `product/` or `tests/product/`, UI, adapter or
+server code, add dependency/config files, provisioning, evaluation authoring or write controls, or start Unit 12,
+semantic projection or BRW integration without a separate explicit `IMPLEMENT PRODUCT IMPLEMENTATION #1`
+authorization; any implementation must stay inside the contract's section 25 path boundary and must not modify the
+research core, schema, fixtures, CB0 or existing contracts/audits.
 
 ## Fidelity principles
 1. Raw source is source authority.
