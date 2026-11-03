@@ -131,12 +131,36 @@ Existing findings remain open; Phase remains AUTHORIZED.
 
 ## Product Implementation #1
 
-**DESIGN FROZEN / NOT IMPLEMENTED** (product track, not a Unit). The
+**IMPLEMENTED / PENDING INDEPENDENT PRODUCT ACCEPTANCE** (product track, not a Unit). The
 [Matthew Scripture Structural Explorer contract](docs/product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md)
 freezes a local, read-only, stdlib-only, server-rendered personal application over Consumer Baseline v0
 (thin adapter, view models, coordinate navigation, exact-membership display, no provisioning/authoring).
-No product code exists yet; implementation needs a separate explicit authorization. Unit 12, semantic
-projection and BRW integration remain NOT AUTHORIZED; existing findings remain open; Phase remains AUTHORIZED.
+The separately authorized [product package](product/) implements that frozen design without changing
+the research core or CB0. Python 3.10+; no install, configuration file or browser-side JavaScript:
+
+```powershell
+python -B -m product --source-db "<existing-source-db>" --projection-db "<existing-projection-db>"
+```
+
+Omit `--projection-db` to use source exploration alone. CLI overrides
+`MACULA_EXPLORER_SOURCE_DB` / `MACULA_EXPLORER_PROJECTION_DB`; no database is created.
+The default address is `http://127.0.0.1:8765`; only loopback hosts are accepted.
+Routes: `/`, `/verse?chapter=1&verse=1` (optional `token`, `candidate`, `evaluation`)
+and `/static/explorer.css`; GET/HEAD only.
+The startup source gate checks Matthew 1:1; configured projection stores pass offline and
+source-grounded verification once. Changed file fingerprints require restart to re-verify.
+Missing, invalid, unconfigured and empty stores remain distinct visible states.
+
+Navigation is direct coordinate entry (GAP-1; no enumeration or Previous/Next).
+Persisted-only discovery handles empty/partial stores without provisioning (GAP-2).
+Exact membership marks Matthew 1:2 `!5,!7,!8,!9`, never `!6`; Matthew 1:1 remains
+Verbless with eight unaltered Greek tokens. All human evaluations and fork leaves coexist,
+with `Not superseded` meaning graph leaf only.
+See [product tests](tests/README.md#product-implementation-1) and
+[implementation evidence](docs/product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md#26-authorized-production-implementation).
+Implementation validation is not independent acceptance. Unit 12, semantic projection, BRW
+integration, evaluation authoring and provisioning remain NOT AUTHORIZED; existing findings
+remain open; Phase remains AUTHORIZED, not COMPLETE or CLOSED.
 
 ## Boundaries
 - Upstream MACULA checkout is read-only evidence.

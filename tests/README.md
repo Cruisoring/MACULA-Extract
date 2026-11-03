@@ -678,3 +678,86 @@ Units 1, 2, 4-11: 376 tests, OK, 25 explicit opt-in integration skips. Unit 3 wa
 stayed disabled. The separate opt-in Unit 11 integration run passed read-only against the
 existing source database (unchanged) with **0 full Matthew builds**. This is implementation
 validation, NOT independent acceptance.
+
+## Product Implementation #1
+
+The [frozen contract](../docs/product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md)
+is implemented by the [product package](../product/), separately from research Units.
+Four visible layers use standard-library unittest only:
+
+- A: [adapter/config tests](product/test_product_adapter.py): closed core calls, startup
+  stages, error class/stage mapping, input-before-core checks, query budgets, actual snapshot
+  mismatch, latched staleness, evidence-read race, absence and path/PK invariance.
+- B: [model/AST tests](product/test_product_models.py): frozen slotted model trees, logical keys,
+  omitted surrogate/scoring fields, closed enums, absence vs empty, exact authorized files,
+  adapter-only core imports, no SQL/writes/network/dependencies.
+- C: [presentation/routes](product/test_product_presentation.py): P1-P12, exact token markup,
+  CSS prohibitions, separate epistemic sections, all/forked/opposing evaluations, escaping,
+  all forbidden bidi/C0/C1 controls, accessible labels, GET/HEAD, loopback/Host guard,
+  duplicate Host rejection and unread request bodies; real IPv4 and IPv6 socket checks.
+- D: [real-Matthew integration](product/test_product_integration.py): opt-in only, existing
+  source read-only, temporary projection using accepted Unit 10 writers, frozen S-V-O id,
+  Verbless, exact scope, token 6 exclusion, evaluations and store preservation.
+
+All fixtures live in system temporary directories and are removed. Test-only source fixture
+construction redirects the existing SchemaFixture to preserve Greek text consistently in
+archived bytes, content and token mirrors; it still runs the accepted schema validator.
+Every consumer fixture checks size/mtime_ns/SHA-256 and absence of WAL/SHM/journal sidecars.
+No production code builds a store and no test rebuilds Matthew.
+
+```powershell
+python -B -m unittest discover -s tests/product -p "test_product_*.py" -v
+
+$env:MACULA_PRODUCT1_INTEGRATION = "1"
+python -B -m unittest discover -s tests/product -p "test_product_integration.py" -v
+Remove-Item Env:MACULA_PRODUCT1_INTEGRATION
+```
+
+Integration uses `MACULA_MATTHEW_DB`, or the existing repository source-store convention.
+An opted-in missing database fails explicitly. The implementation executions were separate:
+default product discovery **43 ran, 42 passed, 1 skipped** (the explicit integration opt-in);
+opted-in integration **1 passed**, no skips. Browser/syntax validation is recorded in the
+[implementation section](../docs/product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md#26-authorized-production-implementation).
+
+Unchanged research regression actually run:
+
+```powershell
+python -B -m scripts.verify_unit1
+python -B -m scripts.source_schema
+python -B -m unittest tests.test_unit1 tests.test_unit2 tests.test_unit4 tests.test_unit5 tests.test_unit6 tests.test_unit7 tests.test_unit8 tests.test_unit8_amendment1 tests.test_unit9 tests.test_unit10 tests.test_unit11 -v
+```
+
+Both verifiers exit 0. Regression **376 ran, 351 passed, 25 skipped**, no failures/errors.
+All 25 skips are existing read-only integration opt-ins: Units 4 (4), 5 (4), 6 (3), 7 (3),
+8 (1), 8 Amendment 1 (3), 9 (3), 10 (3), 11 (1).
+Exact skipped test names, grouped by owning module (reason: the corresponding existing
+real-Matthew integration opt-in was not enabled):
+
+- Unit 4: `test_exact_jesus_occurrence`, `test_matthew_1_1_exact_surfaces_and_refs`,
+  `test_matthew_1_2_canonical_order`, `test_not_found`.
+- Unit 5: `test_matthew_1_1_exact_token_ancestry_matches_independent_source`,
+  `test_matthew_1_2_direct_children_and_head_match_source`,
+  `test_matthew_1_2_exact_membership_excludes_envelope_token_six`,
+  `test_matthew_root_absence_and_unknown_identities`.
+- Unit 6: `test_matthew_1_1_exact_composition_and_verbless_source_ancestry`,
+  `test_matthew_1_2_composition_reaches_exact_discontinuous_boundary`,
+  `test_matthew_unknown_and_repeated_queries_are_deterministic`.
+- Unit 7: `test_matthew_1_1_fixed_nested_apposition_path`,
+  `test_matthew_1_1_verbless_and_no_semantic_or_fabricated_material`,
+  `test_post_unit9_svo_preserves_unit7_exact_scope_invariants`.
+- Unit 8: `test_actual_matthew_1_1_apposition_and_preservation`.
+- Unit 8 Amendment 1: `test_int_a1_01_real_matthew_clause_candidate_can_be_evaluated`,
+  `test_int_a1_02_all_four_scope_members_produce_the_same_evaluable_candidate`,
+  `test_int_a1_03_token_six_is_excluded_and_database_is_unchanged`.
+- Unit 9: `test_frozen_complete_production_dto_and_all_lookups`,
+  `test_matthew_1_1_verbless_and_frozen_apposition_identities`,
+  `test_unit8_existing_apposition_evaluation_remains_unchanged`.
+- Unit 10: `test_46_real_svo_candidate_fixture_and_independent_identity`,
+  `test_47_real_human_and_supersession_literal_vectors`,
+  `test_48_real_verbless_apposition_lossless`.
+- Unit 11: `test_50_real_matthew_discovery_history_and_token_6_negative_case`.
+
+The default product skip is `test_p1_p2_p3_p4_p5_p12_real_store_preservation`
+(reason: `MACULA_PRODUCT1_INTEGRATION` not enabled); its separate opted-in execution passed.
+No active-test filter, Unit 3 discovery, second-build gate or full Matthew build was used.
+These are implementation checks, not independent acceptance; existing findings remain open.

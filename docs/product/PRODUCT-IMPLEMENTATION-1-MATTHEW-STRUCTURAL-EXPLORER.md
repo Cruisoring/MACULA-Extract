@@ -2,8 +2,9 @@
 
 ## 1. Status
 
-**DESIGN FROZEN / NOT IMPLEMENTED.** Implementation requires a separate explicit user
-authorization (section 25).
+**IMPLEMENTED / PENDING INDEPENDENT PRODUCT ACCEPTANCE.** Separate explicit implementation
+authorization from the design-freeze checkpoint is recorded in [section 26](#26-authorized-production-implementation).
+The frozen design/authorization text below retains its design-checkpoint meaning.
 
 This is a **product design + implementation-authorization contract**. It is a consumer
 track document governed by [Consumer Baseline v0](../architecture/CONSUMER-BASELINE-V0.md)
@@ -12,7 +13,7 @@ a change to CB0. Where this contract quotes CB0 behavior, CB0 remains the author
 
 | Item | State at this checkpoint |
 |---|---|
-| Product Implementation #1 | **DESIGN FROZEN / NOT IMPLEMENTED** |
+| Product Implementation #1 | **IMPLEMENTED / PENDING INDEPENDENT PRODUCT ACCEPTANCE** |
 | Consumer Baseline v0 | FROZEN, unchanged (byte-identical to the starting checkpoint) |
 | Units 1-11 | statuses unchanged ([PHASE-STATUS](../governance/PHASE-STATUS.md)) |
 | Unit 11 | IMPLEMENTED / INDEPENDENTLY ACCEPTED (ACCEPT WITH MINOR FINDINGS) |
@@ -733,3 +734,144 @@ READY FOR IMPLEMENTATION AUTHORIZATION
 Product Implementation #1 is **DESIGN FROZEN / NOT IMPLEMENTED**. Implementation is **not**
 authorized by this contract; the next action must be a new explicit user authorization
 `IMPLEMENT PRODUCT IMPLEMENTATION #1` against this frozen contract.
+
+## 26. Authorized production implementation
+
+### 26.1 Starting state and scope
+
+Explicit user authorization implemented this frozen contract from clean `master` at
+`0a10c810b55da46d2358e3cd894ad59121d616bf`, sole parent
+`7f46b1208e5b3dcbc9587a9cb6d4a4fb4d3a1a11`, in `C:\Projects\MACULA-Extract`.
+Recent graph, staged/unstaged/untracked state and `git diff --check` were verified before
+editing. No untracked file (including the previously recorded malformed-name file) was
+present; nothing user-owned was inspected, renamed, deleted or committed.
+The only ignored artifact was the existing source database.
+Current lifecycle was independently read from governance: Product #1 design frozen/not
+implemented, CB0 FROZEN, Unit 11 independently accepted with minor findings,
+Unit 12 NOT AUTHORIZED, Phase AUTHORIZED.
+
+Only the eleven production paths of section 25, four new test modules plus one
+test-only support module, and the six authorized documentation paths changed.
+No dependency/config file, JavaScript, research-core change, schema, fixture, Unit test,
+CB0 change, audit, provisioning API or new research Unit is part of this implementation.
+No package was installed or downloaded.
+
+### 26.2 Implemented boundary
+
+The adapter alone imports the exact eight permitted core names. Source gate runs once;
+offline/source-grounded projection gates run once and in order only after source success.
+Binding fingerprints are in memory only; changed/deleted files latch a mismatch until
+restart, including changes during reads. Validated selectors become bounded integers;
+each verse uses one source verse read, one ancestry read per token, at most one combined
+Unit 11 history query, and evidence-node reads only for a selected candidate.
+All token/candidate/evaluation selection is in memory, never additional Unit 11 fan-out.
+No core DTO/exception or local PK reaches presentation.
+
+Frozen slotted models retain optional absent/empty values, exact refs, seven snapshot
+fields and all evaluation/history records. Server-rendered HTML/CSS separates the three
+epistemic classes. Membership is per exact ref, with a marker, underline/tint and accessible
+text; selection has its own outline. Matthew 1:1 has eight Greek source tokens and source
+Verbless wording without a fabricated copula. All evaluations coexist and every graph leaf
+is `Not superseded`. Human labels/notes are isolated escaped text with control characters
+made visible; source surfaces are unchanged.
+
+GAP-1 is direct coordinate entry only. GAP-2 is persisted-only consumption of
+unconfigured/empty/partial/error stores, not provisioning or derivation.
+HTTP is loopback-only IPv4/IPv6 with strict Host validation, GET/HEAD, the single fixed
+stylesheet and the section 19 headers. Request bodies are not read.
+
+Launch (no install):
+
+```powershell
+python -B -m product --source-db "<existing-source-db>" --projection-db "<existing-projection-db>"
+```
+
+Projection is optional; CLI/environment behavior and routes remain exactly sections 9/13.
+
+### 26.3 Validation executions
+
+Final executions, not a combined total:
+
+| Command / check | Actual result |
+|---|---|
+| `python -B -m unittest discover -s tests/product -p "test_product_*.py" -v` | 43 ran in 69.220s; 42 passed, 1 explicit opt-in integration skip; no failures/errors |
+| `MACULA_PRODUCT1_INTEGRATION=1`, then `python -B -m unittest discover -s tests/product -p "test_product_integration.py" -v` | 1 passed in 3.945s; no skips |
+| `python -B -m scripts.verify_unit1` | exit 0; source/fixture verification PASS |
+| `python -B -m scripts.source_schema` | exit 0; in-memory schema version 2 verification PASS |
+| `python -B -m unittest tests.test_unit1 tests.test_unit2 tests.test_unit4 tests.test_unit5 tests.test_unit6 tests.test_unit7 tests.test_unit8 tests.test_unit8_amendment1 tests.test_unit9 tests.test_unit10 tests.test_unit11 -v` | 376 ran in 82.410s; 351 passed, 25 explicit opt-in skips; no failures/errors |
+| `python -B` inline `ast.parse(..., feature_version=(3,10))` and `compile(..., "exec")` | all 15 new Python files PASS; no bytecode emitted |
+| Bounded loopback browser check against existing Matthew and a disposable projection | 18 Greek verse tokens; only `!5,!7,!8,!9` marked, `!6` plain; 3 epistemic sections, 3 simultaneous graph leaves, 0 scripts; helper exited and fixture removed |
+
+Earlier executions of the same implementation checks are not folded into those totals:
+`python -B -m unittest discover -s tests/product -p "test_product_adapter.py" -v`
+ran 17 tests, all passed (20.232s). Initial full product discovery ran 40 tests
+(35 passed, 3 failures, 1 error, 1 opt-in skip; 45.835s); the following full discovery
+ran 41 (38 passed, 2 failures, 1 opt-in skip; 42.760s). The earlier separate opted-in
+integration execution ran 1 and passed (2.915s). Final product/integration executions
+above supersede the failed development runs, not by omitting tests.
+
+The first product executions exposed test harness assertions that confused source S-V-O
+facts with candidate discovery, the standing order note with fabricated source "is",
+and a non-context-manager HTTPConnection. These were corrected without weakening product
+requirements; final executions above pass. Real source S-V-O facts may remain visible when
+token 6 is selected; no S-V-O **candidate** or component includes that token.
+Pylance's MCP service was unavailable (transport initialization failed). No editor type-check
+result is claimed; source inspection, syntax/runtime compilation and executable tests supply
+the validation evidence.
+
+The 25 regression skips are existing integration opt-ins, not failures or passes:
+Unit 4 (4), Unit 5 (4), Unit 6 (3), Unit 7 (3), Unit 8 (1),
+Unit 8 Amendment 1 (3), Unit 9 (3), Unit 10 (3), Unit 11 (1).
+Product default discovery's one skip is its explicit real-Matthew opt-in, which passed
+in the separate execution. No Unit 3 discovery, active-test filtering, second-build
+gate or full Matthew build was run. The exact skipped test names and reasons are
+enumerated in [the test evidence](../../tests/README.md#product-implementation-1).
+
+### 26.4 Fixture and criterion evidence
+
+P1-P12: **12 PASS** in implementation validation. P1/P2/P3/P4/P5/P12 also exercise
+real Matthew in the separate integration run; P6/P7/P8/P9/P10/P11 exercise disposable
+stores and route/error behavior. This is not independent product acceptance.
+
+| Criteria | Implementation evidence |
+|---|---|
+| AC-P1-01..02 | recorded Git/lifecycle baseline and checkpoint scope gate; no new research Unit |
+| AC-P1-03..10 | model/AST exact file/import/core-call tests; immutable model tree and logical keys |
+| AC-P1-11..14 | all fixture preservation checks; source/protected baseline gates; no write/state API |
+| AC-P1-15..16 | direct and route call spies; malformed, non-ASCII, overflow, 20-digit and 4301-digit inputs |
+| AC-P1-17..19 | ordered startup spies, actual source snapshot mismatch, latched fingerprint and evidence-read race |
+| AC-P1-20..22 | semantic HTML/label tests, candidate status separate from evaluation disposition |
+| AC-P1-23..26 | per-token markup, component scope, CSS scans, token 6 selected/filtered and browser check |
+| AC-P1-27..28 | eight-Greek-token Verbless fast/real fixtures, no fabricated source verb/copula |
+| AC-P1-29..34 | unevaluated/opposing/fork fixtures, all records visible, prohibited authored wording/scoring scans |
+| AC-P1-35..37 | escaped HTML and all bidi/C0/C1 tests; safe language metadata; unchanged surface; absent vs empty |
+| AC-P1-38..43 | coordinate-only navigation, no enumeration/Previous/Next; empty/unconfigured/error/absent/input fixtures |
+| AC-P1-44..45 | stage/class-only failure tests, sanitized messages/logs, source independence, one history-query budget |
+| AC-P1-46..49 | IPv4/IPv6 sockets, duplicate Host/body-unread tests, HTTP headers/static restrictions, CLI/env/path tests and diagnostics |
+| AC-P1-50..51 | four test layers, root discovery, explicit read-only integration and zero builds |
+| AC-P1-52..56 | unchanged regressions/verifiers; exact staged allowlist and frozen-byte preservation; lifecycle and artifact gates |
+
+Behavioral implementation checks cover all 56 criteria; the final Git/path/preservation
+items are mandatory pre/post-checkpoint gates, verified from actual Git rather than an
+invented resulting commit SHA.
+
+### 26.5 Preservation and checkpoint stop
+
+Existing source: `C:\Projects\MACULA-Extract\sblgnt-matthew.sqlite3`,
+160,968,704 bytes, UTC mtime `2026-11-01T04:57:39.4880565Z`,
+SHA-256 `E52DB7E2ABDB1C2B9B4F93060312587A1363066378B7A0C9B8FB72475C25CE7E`.
+Shared-read hashing was necessary because another process holds the source file.
+Source bytes/size/mtime and absence of WAL/SHM/journal are rechecked at checkpoint gates.
+Every disposable projection is checked unchanged by reads and removed.
+Protected repositories stay read-only and clean at their recorded HEADs:
+upstream `8423afe47b9e8f24b7772e808af45c7159a6fe7e`,
+downstream `0e4c9baad299f7149cc71b35bcd5208297d4f8c0`.
+
+Required single subject: `implement Product Implementation #1 Matthew Structural Explorer`.
+Required sole parent: `0a10c810b55da46d2358e3cd894ad59121d616bf`.
+The resulting SHA and post-checkpoint verification are reported only after Git creates it.
+Status is **IMPLEMENTED / PENDING INDEPENDENT PRODUCT ACCEPTANCE**.
+CB0 stays FROZEN; all research Unit decisions and distinct unresolved findings remain unchanged.
+Unit 12 stays NOT AUTHORIZED; Phase stays AUTHORIZED, not COMPLETE or CLOSED.
+Stop after the single implementation checkpoint and post-checkpoint gate.
+Independent product acceptance requires separate explicit authorization.

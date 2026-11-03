@@ -937,8 +937,11 @@ remediation are NOT AUTHORIZED. Unit 11 remains IMPLEMENTED / INDEPENDENTLY ACCE
 
 ### Product Implementation #1 - Matthew Scripture Structural Explorer
 
-**Status:** DESIGN FROZEN / NOT IMPLEMENTED (product track; not a Unit; implementation requires
-separate explicit authorization)
+**Status:** IMPLEMENTED / PENDING INDEPENDENT PRODUCT ACCEPTANCE (product track; not a Unit;
+see [implementation record](#product-implementation-1))
+
+The following paragraphs preserve the historical design-freeze checkpoint scope.
+Separate explicit implementation authorization and validation are recorded below.
 
 The [Product Implementation #1 contract](../product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md)
 freezes the design of a local, single-user, read-only, Matthew-only explorer built on
@@ -1137,3 +1140,35 @@ The test evidence below is from the complete successful suite in
 The unique checkpoint subject is `implement MACULA SQLite source schema contract`.
 Do not amend, rebase or rewrite either prior checkpoint. The full ending SHA and
 AC-U2-36 result must be reported from actual post-commit verification.
+
+## Product Implementation #1
+
+**Status:** IMPLEMENTED / PENDING INDEPENDENT PRODUCT ACCEPTANCE.
+
+Separately authorized from clean `master` at product design freeze
+`0a10c810b55da46d2358e3cd894ad59121d616bf` (sole parent
+`7f46b1208e5b3dcbc9587a9cb6d4a4fb4d3a1a11`).
+The [implementation evidence](../product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md#26-authorized-production-implementation)
+records the stdlib-only read-only product, its twelve fixtures and 56 implementation criteria.
+No research Unit entry or decision is added or changed.
+
+Validation executions: product discovery 43 ran, 42 passed and 1 explicit opt-in skip;
+separate real-Matthew product integration 1 passed; unchanged Units 1, 2 and 4-11
+regression 376 ran, 351 passed and 25 explicit opt-in skips; both required verifiers exit 0.
+Python 3.10 grammar/current-runtime compile checks cover 15 new Python files; no bytecode.
+Browser validation confirms exact `!5,!7,!8,!9` marking, plain `!6`, three epistemic sections,
+three simultaneous history leaves and no browser script. Temporary projection stores are
+removed and both authoritative-store fingerprints/bytes are preserved.
+Full Matthew builds: 0. Unit 3 discovery and its second-build gate were not run.
+
+This is production implementation validation, **not independent product acceptance**.
+The single checkpoint must have the freeze as its sole parent; its actual resulting SHA,
+changed paths, clean tracked/index state and preservation are verified from Git after commit,
+not fabricated in the commit's own text.
+Consumer Baseline v0 remains FROZEN. Unit 11 remains IMPLEMENTED / INDEPENDENTLY ACCEPTED
+(ACCEPT WITH MINOR FINDINGS). Unit 5 M1, Unit 7 audit M1, Unit 8 audit M-1, Unit 9 audit M-1
+and Unit 11 audit M-1 remain unresolved and distinct.
+Unit 12 is NOT AUTHORIZED. Phase remains AUTHORIZED, not COMPLETE or CLOSED.
+Stop after implementation/post-checkpoint verification; independent product acceptance,
+provisioning, evaluation authoring, semantic projection, localization and BRW integration
+require separate explicit authorization.

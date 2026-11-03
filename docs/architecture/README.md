@@ -30,9 +30,22 @@ Matthew-only, read-only consumer application. Product implementation may be sepa
 authorized against it; none, and no Unit 12, is authorized here.
 
 [Product Implementation #1](../product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md) (a product
-track document, not a Unit) is **DESIGN FROZEN / NOT IMPLEMENTED**: the Matthew Scripture Structural
-Explorer design against CB0. It implements nothing and authorizes no implementation, Unit 12, semantic
-projection or BRW integration.
+track document, not a Unit) is **IMPLEMENTED / PENDING INDEPENDENT PRODUCT ACCEPTANCE**:
+the separately authorized Matthew Scripture Structural Explorer against unchanged CB0.
+This does not authorize independent acceptance, Unit 12, semantic projection or BRW integration.
+
+## Product Implementation #1
+
+The [product package](../../product/) implements the frozen stdlib-only, loopback,
+server-rendered read-only design from `0a10c810b55da46d2358e3cd894ad59121d616bf`.
+The adapter alone imports the closed core surface; immutable view models hide local PKs.
+Source startup verification precedes offline/source-grounded projection verification;
+binding fingerprints live only in memory. Every verse page batches projection history
+into one Unit 11 call, with selections filtered in memory and exact-ref membership.
+GAP-1 uses coordinate entry; GAP-2 remains empty/partial/unconfigured persisted-store
+consumption, not provisioning. See [test evidence](../../tests/README.md#product-implementation-1)
+and [contract implementation section](../product/PRODUCT-IMPLEMENTATION-1-MATTHEW-STRUCTURAL-EXPLORER.md#26-authorized-production-implementation).
+No research Unit status, CB0, schema, fixture, audit or finding changes. Phase remains AUTHORIZED.
 
 Historical investigations remain evidence, not retrospective implementation specifications:
 

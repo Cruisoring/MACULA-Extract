@@ -1,0 +1,32 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #17212b; background: #f3f5f7; }
+body { max-width: 76rem; margin: auto; padding: 1rem; line-height: 1.5; }
+header, nav, section, .diagnostics { background: white; border: 1px solid #c4ccd4; padding: 1rem; margin-bottom: 1rem; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.3rem; }
+form { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+input { width: 6rem; padding: .4rem; }
+button { padding: .5rem 1rem; }
+a { color: #174b78; overflow-wrap: anywhere; }
+a:focus-visible, input:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #853c00; outline-offset: 3px; }
+.badge { font-size: .8rem; font-weight: bold; letter-spacing: .04rem; }
+section[data-epistemic="source_fact"] { border-left: 5px solid #305d80; }
+section[data-epistemic="derived_structural_candidate"] { border-left: 5px solid #6d508a; }
+section[data-epistemic="human_evaluation"] { border-left: 5px solid #876128; }
+.scripture { display: flex; flex-wrap: wrap; align-items: start; gap: .4rem; padding: .5rem 0; }
+.token { display: inline-flex; flex-direction: column; padding: .3rem .4rem; text-decoration: none; border-bottom: 4px solid transparent; }
+.surface { font-size: 1.5rem; }
+.token[data-membership="member"] { background: #e3d8ef; border-bottom-color: #604178; }
+.selected-token { outline: 3px solid #174b78; outline-offset: 1px; }
+.member-marker { font-size: .8rem; }
+.component-label { font-size: .7rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.candidate-card, .evaluation-card { border: 1px solid #c4ccd4; padding: 1rem; margin: 1rem 0; }
+.selected-card { border: 3px solid #174b78; }
+dl { display: grid; grid-template-columns: minmax(8rem, 15rem) minmax(0, 1fr); gap: .25rem 1rem; }
+dt { font-weight: bold; }
+dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.refs { padding-left: 1.5rem; overflow-wrap: anywhere; }
+.notice { border: 2px solid #985900; padding: .6rem; overflow-wrap: anywhere; }
+.rationale-note { white-space: pre-wrap; overflow-wrap: anywhere; background: #f3f5f7; padding: .7rem; }
+summary { cursor: pointer; font-weight: bold; }
+@media (max-width: 40rem) { dl { display: block; } dd { margin-bottom: .5rem; } body { padding: .5rem; } }
